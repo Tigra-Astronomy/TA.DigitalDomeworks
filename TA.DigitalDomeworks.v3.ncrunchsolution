@@ -1,0 +1,7 @@
+﻿<SolutionConfiguration>
+  <Settings>
+    <AllowParallelTestExecution>False</AllowParallelTestExecution>
+    <SolutionConfigured>True</SolutionConfigured>
+    <UseCPUArchitecture>x86</UseCPUArchitecture>
+  </Settings>
+</SolutionConfiguration>

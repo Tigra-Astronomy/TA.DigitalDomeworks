@@ -3,9 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27309.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.DeviceInterface", "TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj", "{D93FAA04-66CB-4C95-AF88-FEF003CE2638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TA.DigitalDomeworks.DeviceInterface", "TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj", "{D93FAA04-66CB-4C95-AF88-FEF003CE2638}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TA.DigitalDomeworks.SharedAssemblyInfo", "TA.DigitalDomeworks.Shared\TA.DigitalDomeworks.SharedAssemblyInfo.shproj", "{7397ED53-0FAC-4466-BD0F-D37D71208D00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.Specifications", "TA.DigitalDomeworks.Specifications\TA.DigitalDomeworks.Specifications.csproj", "{91D73239-42FD-4616-A8B0-687289AA3AC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.HardwareSimulator", "TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj", "{86B17C99-41B6-4611-AD1D-26B7D6C70A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.SharedTypes", "TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj", "{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TA.DigitalDomeworks.Shared\TA.DigitalDomeworks.Shared.projitems*{7397ed53-0fac-4466-bd0f-d37d71208d00}*SharedItemsImports = 13
+		TA.DigitalDomeworks.Shared\TA.DigitalDomeworks.Shared.projitems*{86b17c99-41b6-4611-ad1d-26b7d6c70a22}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -15,6 +27,18 @@ Global
 		{D93FAA04-66CB-4C95-AF88-FEF003CE2638}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93FAA04-66CB-4C95-AF88-FEF003CE2638}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93FAA04-66CB-4C95-AF88-FEF003CE2638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91D73239-42FD-4616-A8B0-687289AA3AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91D73239-42FD-4616-A8B0-687289AA3AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91D73239-42FD-4616-A8B0-687289AA3AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91D73239-42FD-4616-A8B0-687289AA3AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86B17C99-41B6-4611-AD1D-26B7D6C70A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86B17C99-41B6-4611-AD1D-26B7D6C70A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86B17C99-41B6-4611-AD1D-26B7D6C70A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86B17C99-41B6-4611-AD1D-26B7D6C70A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

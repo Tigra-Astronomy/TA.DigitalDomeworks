@@ -4,4 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
+    <PackageReference Include="NodaTime" Version="2.2.4" />
+    <PackageReference Include="TA.Ascom.ReactiveCommunications" Version="0.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\TA.DigitalDomeworks.Shared\TA.DigitalDomeworks.Shared.projitems" Label="Shared" />
+
 </Project>
