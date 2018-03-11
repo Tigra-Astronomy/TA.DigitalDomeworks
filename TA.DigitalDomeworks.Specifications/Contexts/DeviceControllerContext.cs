@@ -1,4 +1,5 @@
-﻿using TA.DigitalDomeworks.DeviceInterface;
+﻿using TA.Ascom.ReactiveCommunications;
+using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Specifications.Fakes;
 
 namespace TA.DigitalDomeworks.Specifications.Contexts {
@@ -6,6 +7,6 @@ namespace TA.DigitalDomeworks.Specifications.Contexts {
         {
         public DeviceController Controller { get; set; }
 
-        public FakeCommunicationChannel Channel { get; set; }
+        public ICommunicationChannel Channel { get; set; }
         }
     }

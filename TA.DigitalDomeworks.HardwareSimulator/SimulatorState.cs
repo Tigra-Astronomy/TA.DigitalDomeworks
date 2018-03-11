@@ -8,7 +8,7 @@
 using System;
 using NLog;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     This is the base class for all simulator state-machine states. It defines the behaviours common to all states,

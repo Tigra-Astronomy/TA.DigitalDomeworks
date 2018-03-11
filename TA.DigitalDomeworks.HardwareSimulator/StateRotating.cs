@@ -7,7 +7,7 @@
 using System;
 using System.Timers;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     internal class StateRotating : SimulatorState
         {

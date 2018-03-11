@@ -8,7 +8,7 @@
 using System.Threading;
 using TA.DigitalDomeworks.SharedTypes;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     The emergency stop state doesn't really provide any functionality but it does reflect a genuine

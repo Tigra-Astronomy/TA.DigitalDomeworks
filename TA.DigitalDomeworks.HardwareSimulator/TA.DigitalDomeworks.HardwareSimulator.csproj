@@ -8,8 +8,8 @@
     <ProjectGuid>{86B17C99-41B6-4611-AD1D-26B7D6C70A22}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TI.DigitalDomeWorks.Simulator</RootNamespace>
-    <AssemblyName>TI.DigitalDomeWorks.Simulator</AssemblyName>
+    <RootNamespace>TA.DigitalDomeworks.HardwareSimulator</RootNamespace>
+    <AssemblyName>TA.DigitalDomeworks.HardwareSimulator</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TI.DigitalDomeWorks.Simulator.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TA.DigitalDomeworks.HardwareSimulator.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
@@ -36,7 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TI.DigitalDomeWorks.Simulator.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TA.DigitalDomeworks.HardwareSimulator.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NodaTime, Version=2.2.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <HintPath>..\packages\NodaTime.2.2.4\lib\net45\NodaTime.dll</HintPath>
@@ -73,9 +73,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="AzimuthChangedEventArgs.cs" />
     <Compile Include="MotorConfiguration.cs" />
     <Compile Include="MotorConfigurationEventArgs.cs" />

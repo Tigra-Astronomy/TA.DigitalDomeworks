@@ -211,7 +211,7 @@ namespace TA.DigitalDomeworks.SharedTypes
                 AtHome ? 0 : 1,
                 HomeCounterClockwise,
                 HomeClockwise,
-                UserPins,
+                (byte)UserPins,
                 WeatherAge,
                 WindDirection,
                 WindSpeed,

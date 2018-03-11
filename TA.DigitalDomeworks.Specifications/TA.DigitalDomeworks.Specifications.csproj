@@ -39,6 +39,9 @@
     <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Machine.Specifications.Should.0.11.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="NodaTime, Version=2.2.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <HintPath>..\packages\NodaTime.2.2.4\lib\net45\NodaTime.dll</HintPath>
     </Reference>
@@ -71,8 +74,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization" />
-    <Reference Include="TA.Ascom.ReactiveCommunications">
-      <HintPath>..\..\..\..\.nuget\packages\ta.ascom.reactivecommunications\0.4.2\lib\net45\TA.Ascom.ReactiveCommunications.dll</HintPath>
+    <Reference Include="TA.Ascom.ReactiveCommunications, Version=0.5.6641.38047, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TA.Ascom.ReactiveCommunications.0.5.1\lib\net45\TA.Ascom.ReactiveCommunications.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -80,6 +83,7 @@
     <Compile Include="Builders\DeviceControllerContextBuilder.cs" />
     <Compile Include="Builders\HardwareSimulationBuilder.cs" />
     <Compile Include="Contexts\DeviceControllerContext.cs" />
+    <Compile Include="Contexts\LogSetup.cs" />
     <Compile Include="Contexts\with_device_builder_context.cs" />
     <Compile Include="DeviceInterface\ConnectionSpecs.cs" />
     <Compile Include="DeviceInterface\ControllerStatusSpecs.cs" />
@@ -89,11 +93,13 @@
     <Compile Include="Fakes\TestableDeviceTransaction.cs" />
     <Compile Include="Fakes\TransactionExtensions.cs" />
     <Compile Include="HardwareSimulatorSpecs\SimulatorIceBreakerSpecs.cs" />
+    <Compile Include="Helpers\SimulatorCommunicationsChannel.cs" />
+    <Compile Include="Helpers\SimulatorEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
-      <Project>{d93faa04-66cb-4c95-af88-fef003ce2638}</Project>
+      <Project>{020924b9-23d5-4b92-b5b1-461423bbe23c}</Project>
       <Name>TA.DigitalDomeworks.DeviceInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj">
@@ -109,5 +115,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

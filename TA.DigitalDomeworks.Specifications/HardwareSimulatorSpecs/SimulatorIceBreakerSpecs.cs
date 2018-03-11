@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
 using Machine.Specifications;
+using TA.DigitalDomeworks.HardwareSimulator;
 using TA.DigitalDomeworks.Specifications.Builders;
-using TI.DigitalDomeWorks.Simulator;
 
 namespace TA.DigitalDomeworks.Specifications
     {

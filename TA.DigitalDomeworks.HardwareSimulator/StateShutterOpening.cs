@@ -7,7 +7,7 @@
 
 using TA.DigitalDomeworks.SharedTypes;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     Variant of <see cref="StateShutterMoving" /> used when the shutter is opening.

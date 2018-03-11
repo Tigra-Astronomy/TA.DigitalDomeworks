@@ -27,7 +27,7 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
             receivedCharacters = fakeResponse.ToCharArray().ToObservable();
             ObservableReceivedCharacters = receivedCharacters.Concat(Observable.Never<char>());
             sendLog = new StringBuilder();
-            IsOpen = true;
+            IsOpen = false;
             }
 
         /// <summary>
@@ -56,11 +56,13 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
         public void Open()
             {
             TimesOpened++;
+            IsOpen = true;
             }
 
         public void Close()
             {
             TimesClosed++;
+            IsOpen = false;
             }
 
         public void Send(string txData)

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     Event arguments used by state machine events.

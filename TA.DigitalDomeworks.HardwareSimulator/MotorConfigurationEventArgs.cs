@@ -7,7 +7,7 @@
 
 using System;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     Class MotorConfigurationEventArgs. Communicates motor state and direction.

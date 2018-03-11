@@ -7,7 +7,7 @@
 
 using System;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     internal class StateStartup : SimulatorState
         {

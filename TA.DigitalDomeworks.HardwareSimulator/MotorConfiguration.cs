@@ -5,7 +5,7 @@
 // File: MotorConfiguration.cs  Created: 2016-06-20@18:14
 // Last modified: 2016-06-21@09:58 by Tim
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     // ReSharper disable once MissingXmlDoc
 #pragma warning disable 1591

@@ -5,7 +5,7 @@
 // File: StateStalled.cs  Created: 2014-10-05@00:56
 // Last modified: 2014-11-12@05:56 by Tim
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     This state is used when an unrecoverable error has occurred.

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TI.DigitalDomeWorks.Simulator;
+using TA.Ascom.ReactiveCommunications;
+using TA.DigitalDomeworks.HardwareSimulator;
 
 namespace TA.DigitalDomeworks.Specifications.Builders
 {

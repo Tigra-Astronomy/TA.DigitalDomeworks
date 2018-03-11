@@ -7,8 +7,9 @@
 
 using System.Globalization;
 using TA.DigitalDomeworks.SharedTypes;
+using TI.DigitalDomeWorks;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     internal class StateExecutingCommand : SimulatorState
         {

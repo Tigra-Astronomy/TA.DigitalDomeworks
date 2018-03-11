@@ -9,7 +9,7 @@ using System;
 using System.Timers;
 using TA.DigitalDomeworks.SharedTypes;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     internal class StateShutterMoving : SimulatorState
         {

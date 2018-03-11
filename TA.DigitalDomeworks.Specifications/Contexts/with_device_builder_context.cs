@@ -1,4 +1,5 @@
 ﻿using Machine.Specifications;
+using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Specifications.Builders;
 using TA.DigitalDomeworks.Specifications.DeviceInterface;
@@ -18,7 +19,8 @@ namespace TA.DigitalDomeworks.Specifications.Contexts
         #region Convenience properties
         public static DeviceController Controller => Context.Controller;
 
-        public static FakeCommunicationChannel FakeChannel => Context.Channel;
+        public static ICommunicationChannel Channel => Context.Channel;
+        public static FakeCommunicationChannel FakeChannel => Context.Channel as FakeCommunicationChannel;
         #endregion Convenience properties
 
         protected static DeviceControllerContextBuilder DeviceControllerContextBuilder;

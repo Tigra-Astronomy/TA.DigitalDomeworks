@@ -15,7 +15,7 @@ using NLog;
 using NodaTime;
 using TA.DigitalDomeworks.SharedTypes;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     Class SimulatorStateMachine. This class cannot be inherited.
@@ -307,7 +307,7 @@ namespace TI.DigitalDomeWorks.Simulator
         ///     Invokes the azimuth changed event.
         /// </summary>
         /// <param name="e">
-        ///     The <see cref="TI.DigitalDomeWorks.Simulator.AzimuthChangedEventArgs" /> instance containing the event
+        ///     The <see cref="AzimuthChangedEventArgs" /> instance containing the event
         ///     data.
         /// </param>
         internal void InvokeAzimuthChanged(AzimuthChangedEventArgs e)

@@ -1,27 +1,54 @@
-﻿using System;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-08@19:17 by Tim Long
+
+using System;
+using System.ComponentModel;
 using System.Text;
 using NodaTime;
 using NodaTime.Testing;
+using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.Fakes;
+using TA.DigitalDomeworks.Specifications.Helpers;
 
 namespace TA.DigitalDomeworks.Specifications.Builders
     {
-    class DeviceControllerContextBuilder
+    internal class DeviceControllerContextBuilder
         {
+        public DeviceControllerContextBuilder()
+            {
+            channelFactory = new ChannelFactory();
+            channelFactory.RegisterChannelType(
+                p => p.StartsWith("Fake", StringComparison.InvariantCultureIgnoreCase),
+                connection => new FakeEndpoint(),
+                endpoint => new FakeCommunicationChannel(fakeResponseBuilder.ToString())
+                );
+            channelFactory.RegisterChannelType(
+                SimulatorEndpoint.IsConnectionStringValid,
+                SimulatorEndpoint.FromConnectionString,
+                endpoint => new SimulatorCommunicationsChannel(endpoint as SimulatorEndpoint)
+                );
+            }
+
         bool channelShouldBeOpen;
         readonly StringBuilder fakeResponseBuilder = new StringBuilder();
-        IClock timeSource = new FakeClock(Instant.MinValue);
+        readonly IClock timeSource = new FakeClock(Instant.MinValue);
+        bool useFakeChannel;
+        readonly ChannelFactory channelFactory;
+        string connectionString = "Fake";
+        PropertyChangedEventHandler propertyChangedAction;
 
         public DeviceControllerContext Build()
             {
             // Build the communications channel
-            var channel = new FakeCommunicationChannel(fakeResponseBuilder.ToString())
-                {
-                IsOpen = channelShouldBeOpen
-                };
+            var channel = channelFactory.FromConnectionString(connectionString);
+            if (channelShouldBeOpen)
+                channel.Open();
 
             // Build the ControllerStatusFactory
             var statusFactory = new ControllerStatusFactory(timeSource);
@@ -36,11 +63,18 @@ namespace TA.DigitalDomeworks.Specifications.Builders
                 Controller = controller
                 };
 
+            // Wire up any Property Changed notifications
+            if (propertyChangedAction != null)
+                {
+                controller.PropertyChanged += propertyChangedAction;
+                }
+
             return context;
             }
 
-        public DeviceControllerContextBuilder WithOpenChannel()
+        public DeviceControllerContextBuilder WithOpenConnection(string connection)
             {
+            connectionString = connection;
             channelShouldBeOpen = true;
             return this;
             }
@@ -51,9 +85,16 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             return this;
             }
 
-        public DeviceControllerContextBuilder WithClosedChannel()
+        public DeviceControllerContextBuilder WithClosedConnection(string connection)
             {
+            connectionString = connection;
             channelShouldBeOpen = false;
+            return this;
+            }
+
+        public DeviceControllerContextBuilder OnPropertyChanged(PropertyChangedEventHandler action)
+            {
+            propertyChangedAction = action;
             return this;
             }
         }

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace TI.DigitalDomeWorks.Simulator
+namespace TA.DigitalDomeworks.HardwareSimulator
     {
     /// <summary>
     ///     Communicates the state of the various motors.
