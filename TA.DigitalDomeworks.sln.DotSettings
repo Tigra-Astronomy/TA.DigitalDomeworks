@@ -2,6 +2,11 @@
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=18DE2E70E45E9E45819A0A8F11BFA1FC/AbsolutePath/@EntryValue">C:\Users\Tim\source\repos\TA.DigitalDomeworks\TA.DigitalDomeworks.Specifications\TA.DigitalDomeworks.Specifications.csproj.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=18DE2E70E45E9E45819A0A8F11BFA1FC/RelativePath/@EntryValue">..\TA.DigitalDomeworks.Specifications\TA.DigitalDomeworks.Specifications.csproj.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=18DE2E70E45E9E45819A0A8F11BFA1FC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=26D8F86A604B3746AEBBF57D5CCEEC5B/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=26D8F86A604B3746AEBBF57D5CCEEC5B/AbsolutePath/@EntryValue">C:\Users\Tim\OneDrive\Software Engineering\ReSharper\Tigra Type Member Layout.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=26D8F86A604B3746AEBBF57D5CCEEC5B/RelativePath/@EntryValue">..\..\..\..\OneDrive\Software Engineering\ReSharper\Tigra Type Member Layout.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File18DE2E70E45E9E45819A0A8F11BFA1FC/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File18DE2E70E45E9E45819A0A8F11BFA1FC/IsOn/@EntryValue">False</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File18DE2E70E45E9E45819A0A8F11BFA1FC/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File18DE2E70E45E9E45819A0A8F11BFA1FC/RelativePriority/@EntryValue">1</s:Double>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File26D8F86A604B3746AEBBF57D5CCEEC5B/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File26D8F86A604B3746AEBBF57D5CCEEC5B/RelativePriority/@EntryValue">2</s:Double></wpf:ResourceDictionary>

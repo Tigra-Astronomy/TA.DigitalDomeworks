@@ -87,6 +87,7 @@
     <Compile Include="Contexts\with_device_builder_context.cs" />
     <Compile Include="DeviceInterface\ConnectionSpecs.cs" />
     <Compile Include="DeviceInterface\ControllerStatusSpecs.cs" />
+    <Compile Include="DeviceInterface\MovementUpdateSpecs.cs" />
     <Compile Include="Fakes\FakeCommunicationChannel.cs" />
     <Compile Include="Fakes\FakeEndpoint.cs" />
     <Compile Include="Fakes\FakeTransactionProcessor.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="HardwareSimulatorSpecs\SimulatorIceBreakerSpecs.cs" />
     <Compile Include="Helpers\SimulatorCommunicationsChannel.cs" />
     <Compile Include="Helpers\SimulatorEndpoint.cs" />
+    <Compile Include="ObservableExtensionSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
