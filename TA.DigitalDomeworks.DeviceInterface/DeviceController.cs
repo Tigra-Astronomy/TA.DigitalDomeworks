@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
+using TA.Ascom.ReactiveCommunications.Diagnostics;
+using TA.DigitalDomeworks.HardwareSimulator;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface
@@ -27,6 +29,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
         [NotNull] private IControllerStatus currentStatus;
         [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
         [CanBeNull] private IDisposable azimuthEncoderSubscription;
+        [CanBeNull] private IDisposable rotationDirectionSubscription;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory)
             {
@@ -70,12 +73,34 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 ex => throw new InvalidOperationException("Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
                 ()=>throw new InvalidOperationException("Encoder tick sequence completed unexpectedly, this is probably a bug")
             );
+            var rotationDirectionSequence = from c in channel.ObservableReceivedCharacters
+                                            where c == 'L' || c == 'R'
+                                            let direction = (c == 'L')
+                                                ? RotationDirection.CounterClockwise
+                                                : RotationDirection.Clockwise
+                                            select direction;
+            rotationDirectionSubscription = rotationDirectionSequence.Trace("Direction")
+                .Subscribe(
+                    RotationDirectionOnNext,
+                    ex => throw new InvalidOperationException(
+                        "Direction sequence produced an unexpected error (see ineer exception)", ex),
+                    () => throw new InvalidOperationException(
+                        "Direction sequence completed unexpectedly, this is probably a bug")
+                );
             }
 
         private void AzimuthEncoderOnNext(int azimuth)
             {
             AzimuthEncoderSteps = azimuth;
             DomeRotationInProgress = true;
+            ShutterMovementInProgress = false;
+        }
+
+        private void RotationDirectionOnNext(RotationDirection direction)
+            {
+            Direction = direction;
+            DomeRotationInProgress = true;
+            ShutterMovementInProgress = false;
             }
 
         /// <summary>
@@ -92,6 +117,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// <c>true</c> if the shutter motor is active.
         /// </summary>
         public bool ShutterMovementInProgress { get; private set; }
+
+        public RotationDirection Direction { get; set; }
 
         private void PerformTasksOnConnect()
             {
@@ -113,6 +140,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
             {
             azimuthEncoderSubscription?.Dispose();
             azimuthEncoderSubscription = null;
+            rotationDirectionSubscription?.Dispose();
+            rotationDirectionSubscription = null;
             }
 
         public async Task<IControllerStatus> GetStatus()

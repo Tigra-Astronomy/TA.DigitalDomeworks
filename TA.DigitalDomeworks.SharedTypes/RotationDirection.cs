@@ -5,7 +5,7 @@
 // File: RotationDirection.cs  Created: 2014-10-05@00:56
 // Last modified: 2014-11-12@05:55 by Tim
 
-namespace TA.DigitalDomeworks.HardwareSimulator
+namespace TA.DigitalDomeworks.SharedTypes
     {
     /// <summary>
     ///     Rotation direction

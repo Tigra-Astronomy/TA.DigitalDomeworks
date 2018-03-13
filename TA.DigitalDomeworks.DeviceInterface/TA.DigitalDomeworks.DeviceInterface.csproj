@@ -99,6 +99,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj">
+      <Project>{86B17C99-41B6-4611-AD1D-26B7D6C70A22}</Project>
+      <Name>TA.DigitalDomeworks.HardwareSimulator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
       <Project>{adbb1165-e995-4c75-8de9-1dbffcf34d6f}</Project>
       <Name>TA.DigitalDomeworks.SharedTypes</Name>

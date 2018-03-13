@@ -6,6 +6,7 @@
 
 using System;
 using System.Timers;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.HardwareSimulator
     {
