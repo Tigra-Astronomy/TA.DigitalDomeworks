@@ -75,7 +75,23 @@ namespace TA.DigitalDomeworks.DeviceInterface
         private void AzimuthEncoderOnNext(int azimuth)
             {
             AzimuthEncoderSteps = azimuth;
+            DomeRotationInProgress = true;
             }
+
+        /// <summary>
+        /// <c>true</c> if the azimuth motors are active
+        /// </summary>
+        public bool DomeRotationInProgress { get; private set; }
+
+        /// <summary>
+        /// <c>true</c> if any part of the building is moving.
+        /// </summary>
+        public bool IsMoving => DomeRotationInProgress | ShutterMovementInProgress;
+
+        /// <summary>
+        /// <c>true</c> if the shutter motor is active.
+        /// </summary>
+        public bool ShutterMovementInProgress { get; private set; }
 
         private void PerformTasksOnConnect()
             {

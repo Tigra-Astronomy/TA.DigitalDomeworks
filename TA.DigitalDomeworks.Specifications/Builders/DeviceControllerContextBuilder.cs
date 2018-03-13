@@ -5,7 +5,9 @@
 // File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-08@19:17 by Tim Long
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Text;
 using NodaTime;
 using NodaTime.Testing;
@@ -27,12 +29,12 @@ namespace TA.DigitalDomeworks.Specifications.Builders
                 p => p.StartsWith("Fake", StringComparison.InvariantCultureIgnoreCase),
                 connection => new FakeEndpoint(),
                 endpoint => new FakeCommunicationChannel(fakeResponseBuilder.ToString())
-                );
+            );
             channelFactory.RegisterChannelType(
                 SimulatorEndpoint.IsConnectionStringValid,
                 SimulatorEndpoint.FromConnectionString,
                 endpoint => new SimulatorCommunicationsChannel(endpoint as SimulatorEndpoint)
-                );
+            );
             }
 
         bool channelShouldBeOpen;
@@ -42,6 +44,7 @@ namespace TA.DigitalDomeworks.Specifications.Builders
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
         PropertyChangedEventHandler propertyChangedAction;
+        List<Tuple<string,Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
 
         public DeviceControllerContext Build()
             {

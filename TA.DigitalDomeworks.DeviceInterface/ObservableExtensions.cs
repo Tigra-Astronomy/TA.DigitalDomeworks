@@ -19,7 +19,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// <param name="source"></param>
         public static IObservable<int> AzimuthEncoderTicks(this IObservable<char> source)
             {
-            const string azimuthEncoderPattern = @"^P(?<Azimuth>\d\d\d\d)";
+            const string azimuthEncoderPattern = @"^P(?<Azimuth>\d{1,4})[^0-9]";
             var azimuthEncoderRegex =
                 new Regex(azimuthEncoderPattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
             var buffers = source.Publish(s => s.BufferByPredicates(p => p == 'P', q => !char.IsDigit(q)));
