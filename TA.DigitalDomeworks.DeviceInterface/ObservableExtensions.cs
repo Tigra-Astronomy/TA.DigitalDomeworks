@@ -32,6 +32,21 @@ namespace TA.DigitalDomeworks.DeviceInterface
             return azimuthValues.Trace("EncoderTicks");
             }
 
+        public static IObservable<int> ShutterCurrentReadings(this IObservable<char> source)
+            {
+            const string shutterCurrentPattern = @"^Z(?<Current>\d{1,2})[^0-9]";
+            var shutterCurrentRegex =
+                new Regex(shutterCurrentPattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+            var buffers = source.Publish(s => s.BufferByPredicates(p => p == 'Z', q => !char.IsDigit(q)));
+            var shutterCurrentValues = from buffer in buffers
+                                let message = new string(buffer.ToArray())
+                                let patternMatch = shutterCurrentRegex.Match(message)
+                                where patternMatch.Success
+                                let shutterCurrent = int.Parse(patternMatch.Groups["Current"].Value)
+                                select shutterCurrent;
+            return shutterCurrentValues.Trace("ShutterCurrent");
+        }
+
         public static IObservable<IList<char>> BufferByPredicates(this IObservable<char> source,
             Predicate<char> bufferOpening, Predicate<char> bufferClosing)
             {

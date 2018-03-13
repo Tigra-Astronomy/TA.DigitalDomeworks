@@ -30,6 +30,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
         [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
         [CanBeNull] private IDisposable azimuthEncoderSubscription;
         [CanBeNull] private IDisposable rotationDirectionSubscription;
+        private IDisposable shutterCurrentSubscription;
+        private IDisposable shutterDirectionSubscription;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory)
             {
@@ -67,26 +69,86 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         private void SubscribeControllerEvents()
             {
-            var azimuthEncoderTicks = channel.ObservableReceivedCharacters.AzimuthEncoderTicks();
-            azimuthEncoderSubscription = azimuthEncoderTicks.Subscribe(
-                AzimuthEncoderOnNext,
-                ex => throw new InvalidOperationException("Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
-                ()=>throw new InvalidOperationException("Encoder tick sequence completed unexpectedly, this is probably a bug")
+            SubscribeAzimuthEncoderTicks();
+            SubscribeRotationDirection();
+            SubscribeShutterCurrentReadings();
+            SubscribeShutterDirection();
+            }
+
+        private void SubscribeShutterDirection()
+            {
+            var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
+                                            where c == 'C' || c == 'O'
+                                            let direction = (c == 'C')
+                                                ? ShutterDirection.Closing
+                                                : ShutterDirection.Opening
+                                            select direction;
+            shutterDirectionSubscription = shutterDirectionSequence.Trace("ShutterDirection")
+                .Subscribe(
+                    ShutterDirectionOnNext,
+                    ex => throw new InvalidOperationException(
+                        "Shutter Direction sequence produced an unexpected error (see ineer exception)", ex),
+                    () => throw new InvalidOperationException(
+                        "Shutter Direction sequence completed unexpectedly, this is probably a bug")
+                );
+
+        }
+
+        private void ShutterDirectionOnNext(ShutterDirection direction)
+            {
+            ShutterDirection = direction;
+            ShutterMovementInProgress = true;
+            DomeRotationInProgress = false;
+            RotationDirection = RotationDirection.None;
+            }
+
+        private void SubscribeShutterCurrentReadings()
+            {
+            var shutterCurrentReadings = channel.ObservableReceivedCharacters.ShutterCurrentReadings();
+            shutterCurrentSubscription = shutterCurrentReadings.Subscribe(
+                ShutterCurrentOnNext,
+                ex => throw new InvalidOperationException(
+                    "Shutter Current sequence produced an unexpected error (see ineer exception)", ex),
+                () => throw new InvalidOperationException(
+                    "ShutterCurrent sequence completed unexpectedly, this is probably a bug")
             );
+            }
+
+        private void ShutterCurrentOnNext(int shutterCurrent)
+            {
+            ShutterCurrent = shutterCurrent;
+            DomeRotationInProgress = false;
+            ShutterMovementInProgress = true;
+            }
+
+        private void SubscribeRotationDirection()
+            {
             var rotationDirectionSequence = from c in channel.ObservableReceivedCharacters
                                             where c == 'L' || c == 'R'
                                             let direction = (c == 'L')
                                                 ? RotationDirection.CounterClockwise
                                                 : RotationDirection.Clockwise
                                             select direction;
-            rotationDirectionSubscription = rotationDirectionSequence.Trace("Direction")
+            rotationDirectionSubscription = rotationDirectionSequence.Trace("RotationDirection")
                 .Subscribe(
                     RotationDirectionOnNext,
                     ex => throw new InvalidOperationException(
-                        "Direction sequence produced an unexpected error (see ineer exception)", ex),
+                        "RotationDirection sequence produced an unexpected error (see ineer exception)", ex),
                     () => throw new InvalidOperationException(
-                        "Direction sequence completed unexpectedly, this is probably a bug")
+                        "RotationDirection sequence completed unexpectedly, this is probably a bug")
                 );
+            }
+
+        private void SubscribeAzimuthEncoderTicks()
+            {
+            var azimuthEncoderTicks = channel.ObservableReceivedCharacters.AzimuthEncoderTicks();
+            azimuthEncoderSubscription = azimuthEncoderTicks.Subscribe(
+                AzimuthEncoderOnNext,
+                ex => throw new InvalidOperationException(
+                    "Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
+                () => throw new InvalidOperationException(
+                    "Encoder tick sequence completed unexpectedly, this is probably a bug")
+            );
             }
 
         private void AzimuthEncoderOnNext(int azimuth)
@@ -98,7 +160,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         private void RotationDirectionOnNext(RotationDirection direction)
             {
-            Direction = direction;
+            RotationDirection = direction;
             DomeRotationInProgress = true;
             ShutterMovementInProgress = false;
             }
@@ -118,7 +180,11 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// </summary>
         public bool ShutterMovementInProgress { get; private set; }
 
-        public RotationDirection Direction { get; set; }
+        public RotationDirection RotationDirection { get; set; }
+
+        public int ShutterCurrent { get; private set; }
+
+        public ShutterDirection ShutterDirection { get; private set; }
 
         private void PerformTasksOnConnect()
             {
