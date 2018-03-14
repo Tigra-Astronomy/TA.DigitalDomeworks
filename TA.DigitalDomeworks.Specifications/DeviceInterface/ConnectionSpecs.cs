@@ -5,6 +5,7 @@ using Machine.Specifications;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
+using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
 using TA.DigitalDomeworks.Specifications.Helpers;
 using TI.DigitalDomeWorks;
 
@@ -58,6 +59,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         It should_connect_successfully = () => Exception.ShouldBeNull();
         It should_update_internal_state_to_reflect_the_received_status_response = () => 
             statusChanged.ShouldBeTrue();
+        Behaves_like<a_stopped_dome> stopped_dome;
         static IControllerStatus status;
         static Exception Exception;
         static bool statusChanged;
