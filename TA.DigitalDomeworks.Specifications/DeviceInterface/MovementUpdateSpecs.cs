@@ -10,6 +10,8 @@ using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
 
+#pragma warning disable 0169    // Field not used, triggers on Behaves_like<>
+
 namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     {
     [Subject(typeof(DeviceController), "Encoder Ticks")]

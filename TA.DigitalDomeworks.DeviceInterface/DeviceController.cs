@@ -2,14 +2,12 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-12@17:03 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-03-14@00:49 by Tim Long
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -17,7 +15,6 @@ using NLog.Fluent;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
-using TA.DigitalDomeworks.HardwareSimulator;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface
@@ -27,13 +24,13 @@ namespace TA.DigitalDomeworks.DeviceInterface
         {
         [NotNull] private readonly ICommunicationChannel channel;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [NotNull] private IControllerStatus currentStatus;
-        [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
         [CanBeNull] private IDisposable azimuthEncoderSubscription;
+        [NotNull] private IHardwareStatus currentStatus;
         [CanBeNull] private IDisposable rotationDirectionSubscription;
         [CanBeNull] private IDisposable shutterCurrentSubscription;
         [CanBeNull] private IDisposable shutterDirectionSubscription;
         [CanBeNull] private IDisposable statusUpdateSubscription;
+        [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory)
             {
@@ -42,7 +39,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             }
 
         [NotNull]
-        public IControllerStatus CurrentStatus
+        public IHardwareStatus CurrentStatus
             {
             get => currentStatus;
             private set
@@ -52,9 +49,31 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 }
             }
 
+        [IgnoreAutoChangeNotification]
         public bool IsOnline => channel.IsOpen;
 
         public int AzimuthEncoderSteps { get; private set; }
+
+        /// <summary>
+        ///     <c>true</c> if the azimuth motors are active
+        /// </summary>
+        public bool DomeRotationInProgress { get; private set; }
+
+        /// <summary>
+        ///     <c>true</c> if any part of the building is moving.
+        /// </summary>
+        public bool IsMoving => DomeRotationInProgress | ShutterMovementInProgress;
+
+        /// <summary>
+        ///     <c>true</c> if the shutter motor is active.
+        /// </summary>
+        public bool ShutterMovementInProgress { get; private set; }
+
+        public RotationDirection RotationDirection { get; set; }
+
+        public int ShutterCurrent { get; private set; }
+
+        public ShutterDirection ShutterDirection { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -97,7 +116,6 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 {
                 var status = statusFactory.FromStatusPacket(statusNotification);
                 SetStatus(status);
-
                 }
             catch (Exception ex)
                 {
@@ -108,7 +126,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 }
             }
 
-        private void SetStatus(IControllerStatus status)
+        private void SetStatus(IHardwareStatus status)
             {
             CurrentStatus = status;
             AzimuthEncoderSteps = status.CurrentAzimuth;
@@ -122,11 +140,11 @@ namespace TA.DigitalDomeworks.DeviceInterface
         private void SubscribeShutterDirection()
             {
             var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
-                                            where c == 'C' || c == 'O'
-                                            let direction = (c == 'C')
-                                                ? ShutterDirection.Closing
-                                                : ShutterDirection.Opening
-                                            select direction;
+                                           where c == 'C' || c == 'O'
+                                           let direction = c == 'C'
+                                               ? ShutterDirection.Closing
+                                               : ShutterDirection.Opening
+                                           select direction;
             shutterDirectionSubscription = shutterDirectionSequence.Trace("ShutterDirection")
                 .Subscribe(
                     ShutterDirectionOnNext,
@@ -135,8 +153,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
                     () => throw new InvalidOperationException(
                         "Shutter Direction sequence completed unexpectedly, this is probably a bug")
                 );
-
-        }
+            }
 
         private void ShutterDirectionOnNext(ShutterDirection direction)
             {
@@ -169,7 +186,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             {
             var rotationDirectionSequence = from c in channel.ObservableReceivedCharacters
                                             where c == 'L' || c == 'R'
-                                            let direction = (c == 'L')
+                                            let direction = c == 'L'
                                                 ? RotationDirection.CounterClockwise
                                                 : RotationDirection.Clockwise
                                             select direction;
@@ -200,7 +217,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             AzimuthEncoderSteps = azimuth;
             DomeRotationInProgress = true;
             ShutterMovementInProgress = false;
-        }
+            }
 
         private void RotationDirectionOnNext(RotationDirection direction)
             {
@@ -209,34 +226,13 @@ namespace TA.DigitalDomeworks.DeviceInterface
             ShutterMovementInProgress = false;
             }
 
-        /// <summary>
-        /// <c>true</c> if the azimuth motors are active
-        /// </summary>
-        public bool DomeRotationInProgress { get; private set; }
-
-        /// <summary>
-        /// <c>true</c> if any part of the building is moving.
-        /// </summary>
-        public bool IsMoving => DomeRotationInProgress | ShutterMovementInProgress;
-
-        /// <summary>
-        /// <c>true</c> if the shutter motor is active.
-        /// </summary>
-        public bool ShutterMovementInProgress { get; private set; }
-
-        public RotationDirection RotationDirection { get; set; }
-
-        public int ShutterCurrent { get; private set; }
-
-        public ShutterDirection ShutterDirection { get; private set; }
-
         private void PerformTasksOnConnect()
             {
             var transaction = new StatusTransaction(statusFactory);
             transactionProcessor.CommitTransaction(transaction);
             transaction.WaitForCompletionOrTimeout(); // Synchronous
             transaction.ThrowIfFailed();
-            CurrentStatus = transaction.ControllerStatus;
+            CurrentStatus = transaction.HardwareStatus;
             }
 
         public void Close()
@@ -260,13 +256,13 @@ namespace TA.DigitalDomeworks.DeviceInterface
             statusUpdateSubscription = null;
             }
 
-        public async Task<IControllerStatus> GetStatus()
+        public async Task<IHardwareStatus> GetStatus()
             {
             var getStatusTransaction = new StatusTransaction(statusFactory);
             transactionProcessor.CommitTransaction(getStatusTransaction);
             await getStatusTransaction.WaitForCompletionOrTimeoutAsync(CancellationToken.None);
             getStatusTransaction.ThrowIfFailed();
-            return getStatusTransaction.ControllerStatus;
+            return getStatusTransaction.HardwareStatus;
             }
 
         [NotifyPropertyChangedInvocator]

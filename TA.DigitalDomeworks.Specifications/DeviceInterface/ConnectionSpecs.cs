@@ -9,6 +9,8 @@ using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
 using TA.DigitalDomeworks.Specifications.Helpers;
 using TI.DigitalDomeWorks;
 
+#pragma warning disable 0169
+
 namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     {
     [Subject(typeof(DeviceController), "connection status")]
@@ -60,7 +62,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         It should_update_internal_state_to_reflect_the_received_status_response = () => 
             statusChanged.ShouldBeTrue();
         Behaves_like<a_stopped_dome> stopped_dome;
-        static IControllerStatus status;
+        static IHardwareStatus status;
         static Exception Exception;
         static bool statusChanged;
         }

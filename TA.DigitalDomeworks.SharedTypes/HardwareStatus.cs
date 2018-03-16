@@ -2,7 +2,7 @@
 // 
 // Copyright © 2014 TiGra Astronomy, all rights reserved.
 // 
-// File: ControllerStatus.cs  Created: 2014-10-05@00:56
+// File: HardwareStatus.cs  Created: 2014-10-05@00:56
 // Last modified: 2014-11-12@05:54 by Tim
 
 using System;
@@ -13,7 +13,7 @@ namespace TA.DigitalDomeworks.SharedTypes
     /// <summary>
     ///     An immutable class representing the state of the dome controller hardware at a point in time.
     /// </summary>
-    public sealed class ControllerStatus : IControllerStatus
+    public sealed class HardwareStatus : IHardwareStatus
         {
         /// <summary>
         ///     Indicates when the dome is in the Home Position.

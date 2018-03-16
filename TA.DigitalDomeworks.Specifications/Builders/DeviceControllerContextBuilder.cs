@@ -40,7 +40,6 @@ namespace TA.DigitalDomeworks.Specifications.Builders
         bool channelShouldBeOpen;
         readonly StringBuilder fakeResponseBuilder = new StringBuilder();
         readonly IClock timeSource = new FakeClock(Instant.MinValue);
-        bool useFakeChannel;
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
         PropertyChangedEventHandler propertyChangedAction;

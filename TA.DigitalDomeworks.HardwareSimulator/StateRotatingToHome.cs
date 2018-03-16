@@ -15,7 +15,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
 
         public override void OnEnter()
             {
-            machine.TargetAzimuthTicks = machine.HardwareStatus.HomePosition;
+            Machine.TargetAzimuthTicks = Machine.HardwareStatus.HomePosition;
             base.OnEnter();
             }
         }
