@@ -2,42 +2,40 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Rotating.cs  Last modified: 2018-03-16@18:22 by Tim Long
+// File: Uninitialized.cs  Last modified: 2018-03-17@01:37 by Tim Long
 
+using System;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal sealed class Rotating : IControllerState
+    internal class Uninitialized : IControllerState
         {
-        private readonly ControllerStateMachine machine;
-
-        public Rotating(ControllerStateMachine machine)
-            {
-            this.machine = machine;
-            }
+        private readonly InvalidOperationException uninitialized =
+            new InvalidOperationException("Call Initialize() before using the state machine");
 
         public void OnEnter()
             {
+            throw uninitialized;
             }
 
-        public void OnExit()
-            {
-            }
+        public void OnExit() { }
 
         public void EncoderTickReceived(int encoderPosition)
             {
-            machine.AzimuthEncoderPosition = encoderPosition;
+            throw uninitialized;
             }
 
         public void ShutterCurrentReadingReceived(int motorCurrent)
             {
+            throw uninitialized;
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)
             {
+            throw uninitialized;
             }
 
-        public string Name => nameof(Rotating);
+        public string Name => nameof(Uninitialized);
         }
     }

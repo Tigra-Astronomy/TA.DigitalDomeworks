@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TA.DigitalDomeworks.DeviceInterface.StateMachine.Ready">
+    <Position X="3.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAABAQAAAAQAAACAIAAAAAAAAA=</HashCode>
+      <FileName>StateMachine\Ready.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TA.DigitalDomeworks.DeviceInterface.StateMachine.Rotating">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAABAQAAAAQAAACAIAAAAAAAAA=</HashCode>
+      <FileName>StateMachine\Rotating.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TA.DigitalDomeworks.DeviceInterface.StateMachine.ControllerStateMachine">
+    <Position X="0.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAACAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>StateMachine\ControllerStateMachine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentState" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TA.DigitalDomeworks.DeviceInterface.StateMachine.StateLoggingDecorator">
+    <Position X="8.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAAAAQAAAgQAAACAIAAAAAAAAA=</HashCode>
+      <FileName>StateMachine\StateLoggingDecorator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TA.DigitalDomeworks.DeviceInterface.StateMachine.IControllerState">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAAAAQAAAAQAAACAIAAAAAAAAA=</HashCode>
+      <FileName>StateMachine\IControllerState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

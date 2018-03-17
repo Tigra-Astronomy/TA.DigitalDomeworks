@@ -26,6 +26,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void EncoderTickReceived(int encoderPosition)
             {
+            machine.AzimuthEncoderPosition = encoderPosition;
             machine.TransitionToState(new Rotating(machine));
             }
 

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-03-16@18:24 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-03-17@01:03 by Tim Long
 
 using System;
 using System.Diagnostics.Contracts;
@@ -15,20 +15,31 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         {
         public ControllerStateMachine()
             {
-            TransitionToState(new Ready(this));
+            CurrentState = new Uninitialized();
             }
-
         internal IControllerState CurrentState { get; private set; }
 
-        public void AzimuthEncoderTickReceived(int encoderPosition) => CurrentState.EncoderTickReceived(encoderPosition);
+        public int AzimuthEncoderPosition { get; internal set; }
+
+        /// <summary>
+        /// Initializes the state machine and optionally sets the starting state.
+        /// </summary>
+        /// <param name="startState"></param>
+        public void Initialize(IControllerState startState = null)
+            {
+            TransitionToState(startState ?? new Ready(this));
+            }
+
+        public void AzimuthEncoderTickReceived(int encoderPosition) =>
+            CurrentState.EncoderTickReceived(encoderPosition);
 
         public void TransitionToState([NotNull] IControllerState targetState)
             {
             Contract.Requires(targetState != null);
-            Contract.Ensures(CurrentState != null);
+            Contract.Ensures(CurrentState != null, "Make sure that Initialize() has been called");
             try
                 {
-                CurrentState?.OnExit();
+                CurrentState.OnExit();
                 }
             catch (Exception ex)
                 {
