@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Machine.Specifications;
@@ -47,23 +48,23 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         {
         Establish context = () => Context = DeviceControllerContextBuilder
             .WithClosedConnection("Simulator:Fast")
-            .OnPropertyChanged(DetectStatusChanged)
+            .OnPropertyChanged(DetectPropertyChanged)
             .Build();
 
-        static void DetectStatusChanged(object sender, PropertyChangedEventArgs e)
-            {
-            statusChanged = e.PropertyName == nameof(Controller.CurrentStatus);
-            }
+        static void DetectPropertyChanged(object sender, PropertyChangedEventArgs e) => changedProperties.Add(e.PropertyName);
 
         Because of = () => Exception = Catch.Exception(() => Controller.Open());
         It should_send_a_status_request = () =>
             (Channel as SimulatorCommunicationsChannel).SendLog.Single().ShouldEqual("GINF");
         It should_connect_successfully = () => Exception.ShouldBeNull();
-        It should_update_internal_state_to_reflect_the_received_status_response = () => 
-            statusChanged.ShouldBeTrue();
+        It should_update_the_hardware_state = () => changedProperties.ShouldBeLike(expectedChanges);
         Behaves_like<a_stopped_dome> stopped_dome;
         static IHardwareStatus status;
         static Exception Exception;
-        static bool statusChanged;
+        static List<string> changedProperties = new List<string>();
+        static List<string> expectedChanges = new List<string>
+            {
+            nameof(DeviceController.CurrentStatus)
+            };
         }
     }

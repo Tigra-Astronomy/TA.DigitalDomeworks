@@ -1,21 +1,60 @@
-﻿
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: ControllerStateMachineSpecs.cs  Last modified: 2018-03-17@22:53 by Tim Long
+
 using System;
 using Machine.Specifications;
+using NodaTime;
+using NodaTime.Testing;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
-using TA.DigitalDomeworks.Specifications.Contexts;
-using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
+using TA.DigitalDomeworks.SharedTypes;
+using TI.DigitalDomeWorks;
 
 namespace TA.DigitalDomeworks.Specifications
     {
-    [Subject(typeof(ControllerStateMachine), "construction")]
-    internal class when_the_state_machine_is_constructed
+    #region  Context base classes
+    internal class with_default_controller_state_machine
         {
-        Establish context = () => machine = new ControllerStateMachine();
-        It should_start_in_the_uninitialized_state = () => machine.CurrentState.Name.ShouldEqual(nameof(Uninitialized));
-        static ControllerStateMachine machine;
+        Establish context = () => machine = new ControllerStateMachine(SimulateRequestStatus);
+        Cleanup after = () =>
+            {
+            statusRequested = false;
+            machine = null;
+            };
+        protected static ControllerStateMachine machine;
+        protected static bool statusRequested;
+        protected static Exception Exception;
+
+        static void SimulateRequestStatus()
+            {
+            statusRequested = true;
+            }
         }
+
+    internal class with_controller_state_machine_in_ready_state : with_default_controller_state_machine
+        {
+        Establish context = () => machine.Initialize(new Ready(machine));
+        }
+
+    internal class with_controller_state_machine_in_rotating_state : with_default_controller_state_machine
+        {
+        Establish context = () => machine.Initialize(new Rotating(machine));
+        protected static ControllerStateMachine machine;
+
+        static void SimulateRequestStatus() { }
+        }
+    #endregion
+
+    [Subject(typeof(ControllerStateMachine), "construction")]
+    internal class when_the_state_machine_is_constructed : with_default_controller_state_machine
+        {
+        It should_start_in_the_uninitialized_state = () => machine.CurrentState.Name.ShouldEqual(nameof(Uninitialized));
+        }
+
     [Subject(typeof(ControllerStateMachine), "local operations")]
-    internal class when_the_local_user_rotates_the_dome : with_controller_in_ready_state
+    internal class when_an_azimuth_encoder_tick_is_received : with_controller_state_machine_in_ready_state
         {
         Because of = () => machine.AzimuthEncoderTickReceived(100);
         It should_transition_to_rotating_state = () => machine.CurrentState.Name.ShouldEqual(nameof(Rotating));
@@ -23,29 +62,23 @@ namespace TA.DigitalDomeworks.Specifications
         }
 
     [Subject(typeof(ControllerStateMachine), "initialization")]
-    internal class when_the_user_fails_to_initialize_the_state_machine
+    internal class when_the_user_fails_to_initialize_the_state_machine : with_default_controller_state_machine
         {
-        Establish context = () => machine = new ControllerStateMachine() ;
         Because of = () => Exception = Catch.Exception(() => machine.AzimuthEncoderTickReceived(0));
         It should_throw = () => Exception.ShouldBeOfExactType<InvalidOperationException>();
-        static Exception Exception;
-        static ControllerStateMachine machine;
         }
 
-    internal class with_controller_in_ready_state {
-        Establish context = () =>
+    [Subject(typeof(ControllerStateMachine), "startup")]
+    internal class when_the_state_machine_starts : with_default_controller_state_machine
+        {
+        Because of = () =>
             {
-            machine = new ControllerStateMachine();
-            machine.Initialize(new Ready(machine));
+            machine.Initialize(new RequestStatus(machine));
+            var factory = new ControllerStatusFactory(SystemClock.Instance);
+            var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
+            machine.HardwareStatusReceived(newStatus);
             };
-        protected static ControllerStateMachine machine;
-        }
-    internal class with_controller_in_rotating_state {
-        Establish context = () =>
-            {
-            machine = new ControllerStateMachine();
-            machine.Initialize(new Rotating(machine));
-            };
-        protected static ControllerStateMachine machine;
+        It should_request_the_hardware_status = () => statusRequested.ShouldBeTrue();
+        It should_finish_in_the_ready_state = () => machine.CurrentState.Name.ShouldEqual(nameof(RequestStatus));
         }
     }

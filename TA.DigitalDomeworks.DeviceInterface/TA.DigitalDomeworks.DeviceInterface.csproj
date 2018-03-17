@@ -28,7 +28,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
     <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
@@ -38,7 +38,7 @@
     <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
     <CodeContractsSuggestObjectInvariants>True</CodeContractsSuggestObjectInvariants>
     <CodeContractsMissingPublicEnsuresAsWarnings>True</CodeContractsMissingPublicEnsuresAsWarnings>
-    <CodeContractsReferenceAssembly>DoNotBuild</CodeContractsReferenceAssembly>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
   </PropertyGroup>
   <PropertyGroup>
@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="CommunicationsStackBuilder.cs" />
     <Compile Include="DeviceController.cs" />
+    <Compile Include="INotifyHardwareStateChanged.cs" />
     <Compile Include="ITransactionProcessorFactory.cs" />
     <Compile Include="ObservableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,7 +133,9 @@
     <Compile Include="StateMachine\ControllerStateMachine.cs" />
     <Compile Include="StateMachine\IControllerState.cs" />
     <Compile Include="StateMachine\Ready.cs" />
+    <Compile Include="StateMachine\RequestStatus.cs" />
     <Compile Include="StateMachine\Rotating.cs" />
+    <Compile Include="StateMachine\ShutterMoving.cs" />
     <Compile Include="StateMachine\StateLoggingDecorator.cs" />
     <Compile Include="StateMachine\Uninitialized.cs" />
     <Compile Include="StatusTransaction.cs" />

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-14@00:49 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-03-17@15:14 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -15,6 +15,7 @@ using NLog.Fluent;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
+using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface
@@ -23,9 +24,10 @@ namespace TA.DigitalDomeworks.DeviceInterface
     internal class DeviceController : INotifyPropertyChanged
         {
         [NotNull] private readonly ICommunicationChannel channel;
+        [NotNull] private readonly ControllerStateMachine stateMachine;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [CanBeNull] private IDisposable azimuthEncoderSubscription;
         [NotNull] private IHardwareStatus currentStatus;
+        [CanBeNull] private IDisposable azimuthEncoderSubscription;
         [CanBeNull] private IDisposable rotationDirectionSubscription;
         [CanBeNull] private IDisposable shutterCurrentSubscription;
         [CanBeNull] private IDisposable shutterDirectionSubscription;
@@ -36,7 +38,15 @@ namespace TA.DigitalDomeworks.DeviceInterface
             {
             this.channel = channel;
             statusFactory = factory;
+            stateMachine = new ControllerStateMachine(RequestHardwareStatus);
             }
+
+        void RequestHardwareStatus()
+            {
+            // ToDo: use a StatusTransaction to request a status update.
+            }
+
+        public INotifyHardwareStateChanged HardwareState => stateMachine;
 
         [NotNull]
         public IHardwareStatus CurrentStatus
@@ -51,6 +61,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         [IgnoreAutoChangeNotification]
         public bool IsOnline => channel.IsOpen;
+
 
         public int AzimuthEncoderSteps { get; private set; }
 
