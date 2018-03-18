@@ -30,8 +30,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             machine.AzimuthEncoderPosition = encoderPosition;
             }
 
+        /// <summary>
+        /// This trigger is invalid while the azimuth motor is active.
+        /// </summary>
+        /// <param name="motorCurrent"></param>
         public void ShutterCurrentReadingReceived(int motorCurrent)
             {
+            machine.ShutterMotorCurrent = motorCurrent;
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)

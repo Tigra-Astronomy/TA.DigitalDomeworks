@@ -20,8 +20,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
             {
             }
 
+        /// <summary>
+        /// This trigger is not valid in this state, so we basically ignore it.
+        /// </summary>
+        /// <param name="motorCurrent"></param>
         public void ShutterCurrentReadingReceived(int motorCurrent)
             {
+            machine.ShutterMotorCurrent = motorCurrent;
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)

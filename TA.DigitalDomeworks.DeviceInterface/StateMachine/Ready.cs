@@ -32,7 +32,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void ShutterCurrentReadingReceived(int motorCurrent)
             {
-            throw new NotImplementedException();
+            machine.ShutterMotorCurrent = motorCurrent;
+            machine.TransitionToState(new ShutterMoving(machine));
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)

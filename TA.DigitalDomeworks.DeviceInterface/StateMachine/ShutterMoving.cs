@@ -4,37 +4,76 @@
 // 
 // File: ControllerStateMachine.cs  Last modified: 2018-03-17@01:03 by Tim Long
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 {
     internal class ShutterMoving : IControllerState
     {
-    public void OnEnter()
+        private ControllerStateMachine machine;
+    private CancellationTokenSource timeoutCancellation;
+
+    public ShutterMoving(ControllerStateMachine machine)
         {
-        throw new System.NotImplementedException();
+            this.machine = machine;
+        }
+
+        public void OnEnter()
+        {
+        ResetTimeout();
+        machine.ShutterMotorActive = true;
         }
 
     public void OnExit()
         {
-        throw new System.NotImplementedException();
+        timeoutCancellation?.Cancel();
+        machine.ShutterMotorCurrent = 0;
+        machine.ShutterMotorActive = false;
+        machine.ShutterMovementDirection = ShutterDirection.None;
         }
 
     public void EncoderTickReceived(int encoderPosition)
         {
-        throw new System.NotImplementedException();
+        Log.Error()
+            .Message($"Invalid trigger: {nameof(EncoderTickReceived)}")
+            .Property(nameof(encoderPosition), encoderPosition)
+            .Write();
         }
 
     public void ShutterCurrentReadingReceived(int motorCurrent)
         {
-        throw new System.NotImplementedException();
+        machine.ShutterMotorCurrent = motorCurrent;
+        ResetTimeout();
+        }
+
+    private async Task ResetTimeout()
+        {
+        timeoutCancellation?.Cancel();
+        timeoutCancellation = new CancellationTokenSource();
+        await HandleShutterTimeoutAsync(timeoutCancellation.Token);
+        }
+
+    private async Task HandleShutterTimeoutAsync(CancellationToken cancel)
+        {
+        await Task.Delay(TimeSpan.FromSeconds(5), cancel);
+        if (cancel.IsCancellationRequested)
+            return;
+        Log.Warn().Message("Shutter movement timed out").Write();
+        machine.TransitionToState(new RequestStatus(machine));
         }
 
     public void StatusUpdateReceived(IHardwareStatus status)
         {
-        throw new System.NotImplementedException();
+        //ToDo: there is a potential race condition here if the timeout happens just as this method is called.
+        timeoutCancellation?.Cancel();   
+        machine.UpdateStatus(status);
+        machine.TransitionToState(new Ready(machine));
         }
 
-    public string Name { get; }
+    public string Name => nameof(ShutterMoving);
     }
 }

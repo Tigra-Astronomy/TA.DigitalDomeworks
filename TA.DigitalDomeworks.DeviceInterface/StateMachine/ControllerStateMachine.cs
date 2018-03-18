@@ -114,5 +114,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             requestHardwareStatus();
             }
+
+        public void ShutterMotorCurrentUpdated(int current)
+            {
+            CurrentState.ShutterCurrentReadingReceived(current);
+            }
         }
     }
