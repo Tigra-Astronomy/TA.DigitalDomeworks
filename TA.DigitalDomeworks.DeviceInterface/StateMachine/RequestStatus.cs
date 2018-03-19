@@ -1,4 +1,5 @@
-﻿using TA.DigitalDomeworks.SharedTypes;
+﻿using NLog.Fluent;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
     internal class RequestStatus : IControllerState
@@ -16,17 +17,29 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
 
         public void OnExit() { }
 
-        public void EncoderTickReceived(int encoderPosition)
+        public void RotationDetected()
             {
+            Log.Warn()
+                .Message("Rotation detected while expecting status. Issuing AllStop and re-requesting status.")
+                .Write();
+            EmergencyStopAndRequestStatus();
+            }
+
+        private void EmergencyStopAndRequestStatus()
+            {
+            machine.AllStop();
+            machine.RequestHardwareStatus();
             }
 
         /// <summary>
         /// This trigger is not valid in this state, so we basically ignore it.
         /// </summary>
-        /// <param name="motorCurrent"></param>
-        public void ShutterCurrentReadingReceived(int motorCurrent)
+        public void ShutterMovementDetected()
             {
-            machine.ShutterMotorCurrent = motorCurrent;
+            Log.Warn()
+                .Message("Shutter movement detected while expecting status. Issuing AllStop and re-requesting status.")
+                .Write();
+            EmergencyStopAndRequestStatus();
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)

@@ -11,8 +11,8 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours
     [Behaviors]
     internal class a_directionless_rotating_dome : device_controller_behaviour
         {
-        It should_be_rotating = () => Controller.DomeRotationInProgress.ShouldBeTrue();
-        It should_have_a_stationary_shutter = () => Controller.ShutterMovementInProgress.ShouldBeFalse();
+        It should_be_rotating = () => Controller.HardwareState.AzimuthMotorActive.ShouldBeTrue();
+        It should_have_a_stationary_shutter = () => Controller.HardwareState.ShutterMotorActive.ShouldBeFalse();
         It should_indicate_that_something_is_moving = () => Controller.IsMoving.ShouldBeTrue();
         }
     }

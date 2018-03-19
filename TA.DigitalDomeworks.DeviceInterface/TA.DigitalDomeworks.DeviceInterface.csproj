@@ -93,6 +93,9 @@
     <Reference Include="PostSharp.Patterns.Model, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.Patterns.Model.Redist.5.0.48\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
     </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.Redist.5.0.48\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
@@ -131,6 +134,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactiveTransactionProcessorFactory.cs" />
     <Compile Include="StateMachine\ControllerStateMachine.cs" />
+    <Compile Include="StateMachine\IControllerActions.cs" />
     <Compile Include="StateMachine\IControllerState.cs" />
     <Compile Include="StateMachine\Ready.cs" />
     <Compile Include="StateMachine\RequestStatus.cs" />

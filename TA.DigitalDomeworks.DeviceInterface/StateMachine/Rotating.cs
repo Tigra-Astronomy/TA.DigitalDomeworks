@@ -4,6 +4,7 @@
 // 
 // File: Rotating.cs  Last modified: 2018-03-16@18:22 by Tim Long
 
+using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
@@ -19,28 +20,40 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void OnEnter()
             {
+            machine.AzimuthMotorActive = true;
             }
 
         public void OnExit()
             {
-            }
-
-        public void EncoderTickReceived(int encoderPosition)
-            {
-            machine.AzimuthEncoderPosition = encoderPosition;
+            machine.AzimuthMotorActive = false;
             }
 
         /// <summary>
-        /// This trigger is invalid while the azimuth motor is active.
+        /// Trigger: updates the encoder position
         /// </summary>
-        /// <param name="motorCurrent"></param>
-        public void ShutterCurrentReadingReceived(int motorCurrent)
+        public void RotationDetected()
             {
-            machine.ShutterMotorCurrent = motorCurrent;
+            // ToDo - reset rotation timeout
             }
 
+        /// <summary>
+        /// Trigger: invalid for this state.
+        /// </summary>
+        public void ShutterMovementDetected()
+            {
+            Log.Error()
+                .Message("Shutter movement detected while rotating. This is unexpected.")
+                .Write();
+            }
+
+        /// <summary>
+        /// Trigger: => Ready.
+        /// </summary>
+        /// <param name="status"></param>
         public void StatusUpdateReceived(IHardwareStatus status)
             {
+            machine.UpdateStatus(status);
+            machine.TransitionToState(new Ready(machine));
             }
 
         public string Name => nameof(Rotating);

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Uninitialized.cs  Last modified: 2018-03-17@01:37 by Tim Long
+// File: Uninitialized.cs  Last modified: 2018-03-18@16:59 by Tim Long
 
 using System;
 using TA.DigitalDomeworks.SharedTypes;
@@ -21,12 +21,12 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void OnExit() { }
 
-        public void EncoderTickReceived(int encoderPosition)
+        public void RotationDetected()
             {
             throw uninitialized;
             }
 
-        public void ShutterCurrentReadingReceived(int motorCurrent)
+        public void ShutterMovementDetected()
             {
             throw uninitialized;
             }

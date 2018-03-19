@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: StateLoggingDecorator.cs  Last modified: 2018-03-16@14:10 by Tim Long
+// File: StateLoggingDecorator.cs  Last modified: 2018-03-18@17:12 by Tim Long
 
 using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
@@ -14,9 +14,9 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         private readonly IControllerState decoratedState;
 
         public StateLoggingDecorator(IControllerState targetState)
-        {
-            this.decoratedState = targetState;
-        }
+            {
+            decoratedState = targetState;
+            }
 
         public string Name => decoratedState.Name;
 
@@ -36,26 +36,27 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             decoratedState.OnExit();
             }
 
-        public void EncoderTickReceived(int encoderPosition)
+        public void RotationDetected()
             {
             Log.Info()
-                .Message($"[{decoratedState.Name}] Encoder tick value={encoderPosition}")
+                .Message($"[{decoratedState.Name}] Trigger: Rotation detected")
                 .Write();
-            decoratedState.EncoderTickReceived(encoderPosition);
+            decoratedState.RotationDetected();
             }
 
-        public void ShutterCurrentReadingReceived(int motorCurrent)
+        public void ShutterMovementDetected()
             {
             Log.Info()
-                .Message($"[{decoratedState.Name}] Shutter current value={motorCurrent}")
+                .Message($"[{decoratedState.Name}] Trigger: Shutter movement detected")
                 .Write();
-            decoratedState.ShutterCurrentReadingReceived(motorCurrent);
+            decoratedState.ShutterMovementDetected();
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)
             {
             Log.Info()
-                .Message($"[{decoratedState.Name}] Status update")
+                .Message($"[{decoratedState.Name}] Trigger: Status update")
+                .Property("status", status)
                 .Write();
             decoratedState.StatusUpdateReceived(status);
             }

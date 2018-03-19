@@ -4,6 +4,7 @@
 // 
 // File: ControllerStatusSpecs.cs  Last modified: 2018-03-13@23:53 by Tim Long
 
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Machine.Specifications;
@@ -57,21 +58,13 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     internal class when_a_status_packet_is_received : with_device_controller_context
         {
         Establish context = () => Context = DeviceControllerContextBuilder
-            .WithClosedConnection("Fake")
-            .OnPropertyChanged((sender, args) => changedProperties.Add(args.PropertyName))
-            .WithFakeResponse(RealWorldStatusPacket)
+            .WithClosedConnection("Simulator:Fast")
             .Build();
         Because of = () =>
             {
             Controller.Open(performOnConnectActions: false);
-            receivedStatus = Controller.GetStatus().Result;
-            };
-        It should_update_all_relevant_properties = () => changedProperties.ShouldBeLike(expectedUpdates);
-        static SortedSet<string> changedProperties = new SortedSet<string>();
-        static SortedSet<string> expectedUpdates = new SortedSet<string>
-            {
-            nameof(Controller.AzimuthEncoderSteps),
-            nameof(Controller.CurrentStatus)
+            Context.Actions.RequestHardwareStatus();
+            Context.StateMachine.WaitForReady(TimeSpan.FromSeconds(5));
             };
         static IHardwareStatus receivedStatus;
         Behaves_like<a_stopped_dome> stopped_dome;

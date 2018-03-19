@@ -8,22 +8,25 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using JetBrains.Annotations;
 using NLog.Fluent;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.SharedTypes;
+using PostSharp.Patterns.Threading;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     [NotifyPropertyChanged]
     internal class ControllerStateMachine : INotifyHardwareStateChanged
         {
-        private readonly Action requestHardwareStatus;
+        private readonly IControllerActions controllerActions;
+        internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
 
-        public ControllerStateMachine(Action requestHardwareStatus)
+        public ControllerStateMachine(IControllerActions controllerActions)
             {
-            this.requestHardwareStatus = requestHardwareStatus;
+            this.controllerActions = controllerActions;
             CurrentState = new Uninitialized();
             }
         internal IControllerState CurrentState { get; private set; }
@@ -50,8 +53,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             }
 
         #region State triggers 
-        public void AzimuthEncoderTickReceived(int encoderPosition) =>
-            CurrentState.EncoderTickReceived(encoderPosition);
+        public void AzimuthEncoderTickReceived(int encoderPosition)
+            {
+            AzimuthEncoderPosition = encoderPosition;
+            CurrentState.RotationDetected();
+            }
 
         public void HardwareStatusReceived(IHardwareStatus status) =>
             CurrentState.StatusUpdateReceived(status);
@@ -112,12 +118,42 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         internal void RequestHardwareStatus()
             {
-            requestHardwareStatus();
+            controllerActions.RequestHardwareStatus();
             }
 
-        public void ShutterMotorCurrentUpdated(int current)
+        public void ShutterMotorCurrentReceived(int current)
             {
-            CurrentState.ShutterCurrentReadingReceived(current);
+            ShutterMotorCurrent = current;
+            CurrentState.ShutterMovementDetected();
+            }
+
+        public void ShutterDirectionReceived(ShutterDirection direction)
+            {
+            ShutterMovementDirection = direction;
+            CurrentState.ShutterMovementDetected();
+            }
+
+        public void AllStop()
+            {
+            Log.Warn().Message("Emergency Stop requested").Write();
+            controllerActions.PerformEmergencyStop();
+            }
+
+        public void RotationDirectionReceived(RotationDirection direction)
+            {
+            AzimuthDirection = direction;
+            CurrentState.RotationDetected();
+            }
+
+        public void WaitForReady(TimeSpan timeout)
+            {
+            var signalled = InReadyState.WaitOne(timeout);
+            if (!signalled)
+                {
+                var message = $"State machine did not enter the ready state within the allotted time of {timeout}";
+                Log.Error().Message(message).Write();
+                throw new TimeoutException(message);
+                }
             }
         }
     }

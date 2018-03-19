@@ -4,7 +4,6 @@
 // 
 // File: Ready.cs  Last modified: 2018-03-16@18:14 by Tim Long
 
-using System;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
@@ -20,25 +19,23 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public string Name => nameof(Ready);
 
-        public void OnEnter() { }
+        public void OnEnter() => machine.InReadyState.Set();
 
-        public void OnExit() { }
+        public void OnExit() => machine.InReadyState.Reset();
 
-        public void EncoderTickReceived(int encoderPosition)
+        public void RotationDetected()
             {
-            machine.AzimuthEncoderPosition = encoderPosition;
             machine.TransitionToState(new Rotating(machine));
             }
 
-        public void ShutterCurrentReadingReceived(int motorCurrent)
+        public void ShutterMovementDetected()
             {
-            machine.ShutterMotorCurrent = motorCurrent;
             machine.TransitionToState(new ShutterMoving(machine));
             }
 
         public void StatusUpdateReceived(IHardwareStatus status)
             {
-            throw new NotImplementedException();
+            machine.UpdateStatus(status);
             }
         }
     }

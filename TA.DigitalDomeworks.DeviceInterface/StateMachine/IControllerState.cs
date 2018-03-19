@@ -23,20 +23,18 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         void OnExit();
 
         /// <summary>
-        ///     Trigger: called to signal that an encoder tick has been received.
+        ///     Trigger: called to signal that dome rotation is detected.
+        ///     This can be triggered by a dome rotation direction notification,
+        ///     or by an azimuth encoder tick. States are not interested in the actual
+        ///     encoder position, only that movement is detected.
         /// </summary>
-        /// <param name="encoderPosition">The encoder position value.</param>
-        void EncoderTickReceived(int encoderPosition);
+        void RotationDetected();
 
         /// <summary>
         ///     Trigger: called to signal that a shutter motor current measurement
         ///     has been received.
         /// </summary>
-        /// <param name="motorCurrent">
-        ///     The motor current value (a relative indication of current draw
-        ///     in no particular units).
-        /// </param>
-        void ShutterCurrentReadingReceived(int motorCurrent);
+        void ShutterMovementDetected();
 
         /// <summary>
         ///     Trigger: called when a status report is received from the controller.
