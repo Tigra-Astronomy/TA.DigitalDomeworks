@@ -19,7 +19,7 @@ using PostSharp.Patterns.Threading;
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     [NotifyPropertyChanged]
-    internal class ControllerStateMachine : INotifyHardwareStateChanged
+    public class ControllerStateMachine : INotifyHardwareStateChanged
         {
         private readonly IControllerActions controllerActions;
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);

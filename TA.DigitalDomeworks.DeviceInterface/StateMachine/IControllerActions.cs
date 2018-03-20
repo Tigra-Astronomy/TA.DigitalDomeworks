@@ -8,7 +8,7 @@ using System;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal interface IControllerActions
+    public interface IControllerActions
         {
         /// <summary>
         ///     Requests that the controller send a status report on the current state of the hardware.

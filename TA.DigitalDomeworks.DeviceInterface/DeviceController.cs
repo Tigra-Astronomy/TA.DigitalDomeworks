@@ -21,7 +21,7 @@ using TA.DigitalDomeworks.SharedTypes;
 namespace TA.DigitalDomeworks.DeviceInterface
     {
     [NotifyPropertyChanged]
-    internal class DeviceController : INotifyPropertyChanged
+    public class DeviceController : INotifyPropertyChanged
         {
         [NotNull] private readonly ICommunicationChannel channel;
         [NotNull] private readonly ControllerStateMachine stateMachine;

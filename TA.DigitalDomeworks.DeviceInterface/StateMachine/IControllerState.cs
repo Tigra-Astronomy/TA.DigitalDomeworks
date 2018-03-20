@@ -8,7 +8,7 @@ using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal interface IControllerState
+    public interface IControllerState
         {
         /// <summary>
         ///     Called once when the state it first entered, but after the previous state's
