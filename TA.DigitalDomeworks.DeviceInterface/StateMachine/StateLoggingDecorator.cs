@@ -9,7 +9,7 @@ using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal class StateLoggingDecorator : IControllerState
+    internal sealed class StateLoggingDecorator : IControllerState
         {
         private readonly IControllerState decoratedState;
 

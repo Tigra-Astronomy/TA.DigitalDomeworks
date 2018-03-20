@@ -2,38 +2,34 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Ready.cs  Last modified: 2018-03-16@18:14 by Tim Long
+// File: Ready.cs  Last modified: 2018-03-20@01:00 by Tim Long
 
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal sealed class Ready : IControllerState
+    internal sealed class Ready : ControllerStateBase
         {
-        private readonly ControllerStateMachine machine;
-
         public Ready(ControllerStateMachine machine)
             {
             this.machine = machine;
             }
 
-        public string Name => nameof(Ready);
+        public override void OnEnter() => machine.InReadyState.Set();
 
-        public void OnEnter() => machine.InReadyState.Set();
+        public override void OnExit() => machine.InReadyState.Reset();
 
-        public void OnExit() => machine.InReadyState.Reset();
-
-        public void RotationDetected()
+        public override void RotationDetected()
             {
             machine.TransitionToState(new Rotating(machine));
             }
 
-        public void ShutterMovementDetected()
+        public override void ShutterMovementDetected()
             {
             machine.TransitionToState(new ShutterMoving(machine));
             }
 
-        public void StatusUpdateReceived(IHardwareStatus status)
+        public override void StatusUpdateReceived(IHardwareStatus status)
             {
             machine.UpdateStatus(status);
             }

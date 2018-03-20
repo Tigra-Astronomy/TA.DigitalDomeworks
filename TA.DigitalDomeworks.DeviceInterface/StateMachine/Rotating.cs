@@ -2,60 +2,66 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Rotating.cs  Last modified: 2018-03-16@18:22 by Tim Long
+// File: Rotating.cs  Last modified: 2018-03-20@00:57 by Tim Long
 
+using System;
 using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal sealed class Rotating : IControllerState
+    internal sealed class Rotating : ControllerStateBase
         {
-        private readonly ControllerStateMachine machine;
+        private static readonly TimeSpan RotationTimeout = TimeSpan.FromSeconds(5);
 
         public Rotating(ControllerStateMachine machine)
             {
             this.machine = machine;
             }
 
-        public void OnEnter()
+        public override void OnEnter()
             {
+            base.OnEnter();
             machine.AzimuthMotorActive = true;
             }
 
-        public void OnExit()
+        public override void OnExit()
             {
+            base.OnExit();
             machine.AzimuthMotorActive = false;
             }
 
         /// <summary>
-        /// Trigger: updates the encoder position
+        ///     Trigger: updates the encoder position
         /// </summary>
-        public void RotationDetected()
-            {
-            // ToDo - reset rotation timeout
-            }
+        public override void RotationDetected() => ResetTimeout(RotationTimeout);
 
         /// <summary>
-        /// Trigger: invalid for this state.
+        ///     Trigger: invalid for this state.
         /// </summary>
-        public void ShutterMovementDetected()
+        public override void ShutterMovementDetected()
             {
+            base.ShutterMovementDetected();
             Log.Error()
                 .Message("Shutter movement detected while rotating. This is unexpected.")
                 .Write();
             }
 
         /// <summary>
-        /// Trigger: => Ready.
+        ///     Trigger: => Ready.
         /// </summary>
         /// <param name="status"></param>
-        public void StatusUpdateReceived(IHardwareStatus status)
+        public override void StatusUpdateReceived(IHardwareStatus status)
             {
+            CancelTimeout();
             machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
 
-        public string Name => nameof(Rotating);
+        protected override void HandleTimeout()
+            {
+            base.HandleTimeout();
+            machine.TransitionToState(new RequestStatus(machine));
+            }
         }
     }

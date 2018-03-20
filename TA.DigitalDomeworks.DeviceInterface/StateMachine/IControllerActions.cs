@@ -5,8 +5,6 @@
 // File: IControllerActions.cs  Last modified: 2018-03-19@17:03 by Tim Long
 
 using System;
-using TA.Ascom.ReactiveCommunications;
-using TI.DigitalDomeWorks;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
@@ -41,43 +39,5 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         ///     Requests that the controller rotates to the azimuth that it considers to be the home position.
         /// </summary>
         void RotateToHomePosition();
-        }
-
-    class RxControllerActions : IControllerActions {
-        private readonly ICommunicationChannel channel;
-
-        public RxControllerActions(ICommunicationChannel channel)
-            {
-            this.channel = channel;
-            }
-        public void RequestHardwareStatus()
-            {
-            channel.Send(Constants.CmdGetInfo);
-            }
-
-        public void PerformEmergencyStop()
-            {
-            throw new System.NotImplementedException();
-            }
-
-        public void RotateToAzimuth(int degreesClockwiseFromNorth)
-            {
-            throw new System.NotImplementedException();
-            }
-
-        public void OpenShutter()
-            {
-            throw new System.NotImplementedException();
-            }
-
-        public void CloseShutter()
-            {
-            throw new System.NotImplementedException();
-            }
-
-        public void RotateToHomePosition()
-            {
-            throw new System.NotImplementedException();
-            }
         }
     }

@@ -113,4 +113,14 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         It should_be_opening = () => HardwareState.ShutterMovementDirection.ShouldEqual(ShutterDirection.Opening);
         Behaves_like<a_dome_with_a_moving_shutter> _;
         }
+
+    [Subject(typeof(DeviceController), "emergency stop")]
+    internal class when_the_client_requests_an_emergency_stop : with_device_controller_context
+        {
+        Establish context = () => Context = DeviceControllerContextBuilder
+            .WithOpenConnection("Fake")
+            .Build();
+        Because of = () => Controller.RequestEmergencyStop();
+        It should_send_the_emergency_stop_command_three_times = () => FakeChannel.SendLog.ShouldEqual("STOP\nSTOP\nSTOP\n");
+        }
     }

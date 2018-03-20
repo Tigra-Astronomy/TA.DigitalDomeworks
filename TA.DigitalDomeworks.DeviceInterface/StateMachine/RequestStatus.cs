@@ -1,23 +1,27 @@
-﻿using NLog.Fluent;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: RequestStatus.cs  Last modified: 2018-03-20@00:55 by Tim Long
+
+using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
-namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
-    internal class RequestStatus : IControllerState
+namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
+    {
+    internal sealed class RequestStatus : ControllerStateBase
         {
-        private readonly ControllerStateMachine machine;
-
         public RequestStatus(ControllerStateMachine machine)
             {
             this.machine = machine;
             }
-        public void OnEnter()
+
+        public override void OnEnter()
             {
             machine.RequestHardwareStatus();
             }
 
-        public void OnExit() { }
-
-        public void RotationDetected()
+        public override void RotationDetected()
             {
             Log.Warn()
                 .Message("Rotation detected while expecting status. Issuing AllStop and re-requesting status.")
@@ -32,9 +36,9 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
             }
 
         /// <summary>
-        /// This trigger is not valid in this state, so we basically ignore it.
+        ///     This trigger is not valid in this state, so we basically ignore it.
         /// </summary>
-        public void ShutterMovementDetected()
+        public override void ShutterMovementDetected()
             {
             Log.Warn()
                 .Message("Shutter movement detected while expecting status. Issuing AllStop and re-requesting status.")
@@ -42,12 +46,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine {
             EmergencyStopAndRequestStatus();
             }
 
-        public void StatusUpdateReceived(IHardwareStatus status)
+        public override void StatusUpdateReceived(IHardwareStatus status)
             {
             machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
-
-        public string Name => nameof(RequestStatus);
         }
     }

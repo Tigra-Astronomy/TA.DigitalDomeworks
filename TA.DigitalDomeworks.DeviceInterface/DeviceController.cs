@@ -2,19 +2,16 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-17@15:14 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-03-20@01:30 by Tim Long
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NLog.Fluent;
-using PostSharp.Collections;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
@@ -29,15 +26,16 @@ namespace TA.DigitalDomeworks.DeviceInterface
         [NotNull] private readonly ICommunicationChannel channel;
         [NotNull] private readonly ControllerStateMachine stateMachine;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [NotNull] private IHardwareStatus currentStatus;
         [CanBeNull] private IDisposable azimuthEncoderSubscription;
+        [NotNull] private IHardwareStatus currentStatus;
         [CanBeNull] private IDisposable rotationDirectionSubscription;
         [CanBeNull] private IDisposable shutterCurrentSubscription;
         [CanBeNull] private IDisposable shutterDirectionSubscription;
         [CanBeNull] private IDisposable statusUpdateSubscription;
         [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
 
-        public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory, ControllerStateMachine machine)
+        public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
+            ControllerStateMachine machine)
             {
             this.channel = channel;
             statusFactory = factory;
@@ -110,11 +108,12 @@ namespace TA.DigitalDomeworks.DeviceInterface
             // Note: The zero-based index in the string must match the ordinal values in ShutterDirection
             const string shutterMovementIndicators = "SCO";
             var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
-                                           where shutterMovementIndicators.Contains(c)
+                                           where Enumerable.Contains(shutterMovementIndicators, c)
                                            let ordinal = shutterMovementIndicators.IndexOf(c)
                                            let direction = (ShutterDirection) ordinal
                                            select direction;
-            shutterDirectionSubscription = shutterDirectionSequence.Trace("ShutterDirection")
+            shutterDirectionSubscription = ObservableDiagnosticExtensions
+                .Trace<ShutterDirection>(shutterDirectionSequence, "ShutterDirection")
                 .Subscribe(
                     stateMachine.ShutterDirectionReceived,
                     ex => throw new InvalidOperationException(
@@ -144,7 +143,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
                                                 ? RotationDirection.CounterClockwise
                                                 : RotationDirection.Clockwise
                                             select direction;
-            rotationDirectionSubscription = rotationDirectionSequence.Trace("RotationDirection")
+            rotationDirectionSubscription = ObservableDiagnosticExtensions
+                .Trace<RotationDirection>(rotationDirectionSequence, "RotationDirection")
                 .Subscribe(
                     stateMachine.RotationDirectionReceived,
                     ex => throw new InvalidOperationException(
@@ -166,8 +166,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             );
             }
 
-        private void RotationDirectionOnNext(RotationDirection direction)
-            { }
+        private void RotationDirectionOnNext(RotationDirection direction) { }
 
         public void Close()
             {
@@ -190,19 +189,20 @@ namespace TA.DigitalDomeworks.DeviceInterface
             statusUpdateSubscription = null;
             }
 
-        public async Task<IHardwareStatus> GetStatus()
-            {
-            var getStatusTransaction = new StatusTransaction(statusFactory);
-            transactionProcessor.CommitTransaction(getStatusTransaction);
-            await getStatusTransaction.WaitForCompletionOrTimeoutAsync(CancellationToken.None);
-            getStatusTransaction.ThrowIfFailed();
-            return getStatusTransaction.HardwareStatus;
-            }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
             {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+        public void RequestEmergencyStop()
+            {
+            var pause = TimeSpan.FromSeconds(1);
+            stateMachine.AllStop();
+            Task.Delay(pause).Wait();
+            stateMachine.AllStop();
+            Task.Delay(pause).Wait();
+            stateMachine.AllStop();
             }
         }
     }

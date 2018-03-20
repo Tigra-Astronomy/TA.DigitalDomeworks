@@ -2,75 +2,67 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ShutterMoving.cs  Last modified: 2018-03-18@17:02 by Tim Long
+// File: ShutterMoving.cs  Last modified: 2018-03-20@00:56 by Tim Long
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal class ShutterMoving : IControllerState
+    internal sealed class ShutterMoving : ControllerStateBase
         {
-        private readonly ControllerStateMachine machine;
-        private CancellationTokenSource timeoutCancellation;
+        /// <summary>
+        ///     If no shutter movement indications are received for this long,
+        ///     the state will time out and attempt to request a status update.
+        /// </summary>
+        private static readonly TimeSpan shutterTimeout = TimeSpan.FromSeconds(5);
 
         public ShutterMoving(ControllerStateMachine machine)
             {
             this.machine = machine;
             }
 
-        public void OnEnter()
+        public override void OnEnter()
             {
-            ResetTimeout();
+            base.OnEnter();
+            ResetTimeout(shutterTimeout);
             machine.ShutterMotorActive = true;
             }
 
-        public void OnExit()
+        public override void OnExit()
             {
-            timeoutCancellation?.Cancel();
+            base.OnExit();
             machine.ShutterMotorCurrent = 0;
             machine.ShutterMotorActive = false;
             machine.ShutterMovementDirection = ShutterDirection.None;
             }
 
-        public void RotationDetected()
+        public override void RotationDetected()
             {
+            base.RotationDetected();
             Log.Error()
                 .Message($"Invalid trigger: {nameof(RotationDetected)}")
                 .Write();
             }
 
-        public void ShutterMovementDetected()
+        public override void ShutterMovementDetected()
             {
-            ResetTimeout();
+            base.ShutterMovementDetected();
+            ResetTimeout(shutterTimeout);
             }
 
-        public void StatusUpdateReceived(IHardwareStatus status)
+        public override void StatusUpdateReceived(IHardwareStatus status)
             {
-            //ToDo: there is a potential race condition here if the timeout happens just as this method is called.
-            timeoutCancellation?.Cancel();
+            base.StatusUpdateReceived(status);
+            CancelTimeout();
             machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
 
-        public string Name => nameof(ShutterMoving);
-
-        private async Task ResetTimeout()
+        protected override void HandleTimeout()
             {
-            timeoutCancellation?.Cancel();
-            timeoutCancellation = new CancellationTokenSource();
-            await HandleShutterTimeoutAsync(timeoutCancellation.Token);
-            }
-
-        private async Task HandleShutterTimeoutAsync(CancellationToken cancel)
-            {
-            await Task.Delay(TimeSpan.FromSeconds(5), cancel);
-            if (cancel.IsCancellationRequested)
-                return;
-            Log.Warn().Message("Shutter movement timed out").Write();
+            base.HandleTimeout();
             machine.TransitionToState(new RequestStatus(machine));
             }
         }
