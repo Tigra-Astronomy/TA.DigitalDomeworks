@@ -1,4 +1,4 @@
-namespace TA.DigitalDomeworks.Server
+﻿namespace TA.DigitalDomeworks.Server
 {
     partial class ServerStatusDisplay
     {
@@ -32,31 +32,37 @@ namespace TA.DigitalDomeworks.Server
             this.registeredClientCount = new System.Windows.Forms.Label();
             this.OnlineClients = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.ClientStatus = new System.Windows.Forms.ListBox();
             this.annunciatorPanel1 = new ASCOM.Controls.AnnunciatorPanel();
-            this.FocuserActivity = new ASCOM.Controls.Annunciator();
-            this.FocuserPosition = new ASCOM.Controls.Annunciator();
-            this.FocuserMoving = new ASCOM.Controls.Annunciator();
-            this.Calibrating = new ASCOM.Controls.Annunciator();
-            this.RotatorActivity = new ASCOM.Controls.Annunciator();
-            this.RotatorPosition = new ASCOM.Controls.Annunciator();
-            this.RotatorMoving = new ASCOM.Controls.Annunciator();
+            this.RotationTitle = new ASCOM.Controls.Annunciator();
             this.SetupCommand = new System.Windows.Forms.Button();
+            this.CounterClockwiseAnnunciator = new ASCOM.Controls.Annunciator();
+            this.AzimuthMotorAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ClockwiseAnnunciator = new ASCOM.Controls.Annunciator();
+            this.annunciator1 = new ASCOM.Controls.Annunciator();
+            this.ShutterTitle = new ASCOM.Controls.Annunciator();
+            this.ShutterOpeningAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ShutterMotorAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ShutterClosingAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ShutterCurrentAnnunciator = new ASCOM.Controls.Annunciator();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.OpenButton = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             this.annunciatorPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 10);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(93, 75);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 21);
+            this.label1.Size = new System.Drawing.Size(94, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Registered clients:";
             // 
             // registeredClientCount
             // 
             this.registeredClientCount.AutoSize = true;
-            this.registeredClientCount.Location = new System.Drawing.Point(122, 10);
+            this.registeredClientCount.Location = new System.Drawing.Point(193, 75);
             this.registeredClientCount.Name = "registeredClientCount";
             this.registeredClientCount.Size = new System.Drawing.Size(13, 13);
             this.registeredClientCount.TabIndex = 1;
@@ -65,7 +71,7 @@ namespace TA.DigitalDomeworks.Server
             // OnlineClients
             // 
             this.OnlineClients.AutoSize = true;
-            this.OnlineClients.Location = new System.Drawing.Point(226, 10);
+            this.OnlineClients.Location = new System.Drawing.Point(291, 75);
             this.OnlineClients.Name = "OnlineClients";
             this.OnlineClients.Size = new System.Drawing.Size(13, 13);
             this.OnlineClients.TabIndex = 3;
@@ -73,155 +79,50 @@ namespace TA.DigitalDomeworks.Server
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(166, 10);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(245, 75);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 21);
+            this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Online:";
-            // 
-            // ClientStatus
-            // 
-            this.ClientStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClientStatus.FormattingEnabled = true;
-            this.ClientStatus.Location = new System.Drawing.Point(13, 61);
-            this.ClientStatus.Name = "ClientStatus";
-            this.ClientStatus.Size = new System.Drawing.Size(618, 160);
-            this.ClientStatus.TabIndex = 4;
             // 
             // annunciatorPanel1
             // 
             this.annunciatorPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.annunciatorPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.annunciatorPanel1.Controls.Add(this.FocuserActivity);
-            this.annunciatorPanel1.Controls.Add(this.FocuserPosition);
-            this.annunciatorPanel1.Controls.Add(this.FocuserMoving);
-            this.annunciatorPanel1.Controls.Add(this.Calibrating);
-            this.annunciatorPanel1.Controls.Add(this.RotatorActivity);
-            this.annunciatorPanel1.Controls.Add(this.RotatorPosition);
-            this.annunciatorPanel1.Controls.Add(this.RotatorMoving);
-            this.annunciatorPanel1.Location = new System.Drawing.Point(319, 12);
+            this.annunciatorPanel1.Controls.Add(this.RotationTitle);
+            this.annunciatorPanel1.Controls.Add(this.CounterClockwiseAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.AzimuthMotorAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ClockwiseAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.annunciator1);
+            this.annunciatorPanel1.Controls.Add(this.ShutterTitle);
+            this.annunciatorPanel1.Controls.Add(this.ShutterOpeningAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterMotorAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterClosingAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterCurrentAnnunciator);
+            this.annunciatorPanel1.Location = new System.Drawing.Point(96, 12);
             this.annunciatorPanel1.Name = "annunciatorPanel1";
-            this.annunciatorPanel1.Size = new System.Drawing.Size(312, 33);
+            this.annunciatorPanel1.Size = new System.Drawing.Size(219, 37);
             this.annunciatorPanel1.TabIndex = 5;
             // 
-            // FocuserActivity
+            // RotationTitle
             // 
-            this.FocuserActivity.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserActivity.AutoSize = true;
-            this.FocuserActivity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.FocuserActivity.Enabled = false;
-            this.FocuserActivity.Font = new System.Drawing.Font("Consolas", 10F);
-            this.FocuserActivity.ForeColor = System.Drawing.Color.Yellow;
-            this.FocuserActivity.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserActivity.Location = new System.Drawing.Point(3, 0);
-            this.FocuserActivity.Mute = false;
-            this.FocuserActivity.Name = "FocuserActivity";
-            this.FocuserActivity.Size = new System.Drawing.Size(64, 17);
-            this.FocuserActivity.TabIndex = 1;
-            this.FocuserActivity.Text = "Focuser";
-            // 
-            // FocuserPosition
-            // 
-            this.FocuserPosition.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserPosition.AutoSize = true;
-            this.FocuserPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.FocuserPosition.Font = new System.Drawing.Font("Consolas", 10F);
-            this.FocuserPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserPosition.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserPosition.Location = new System.Drawing.Point(73, 0);
-            this.FocuserPosition.Mute = false;
-            this.FocuserPosition.Name = "FocuserPosition";
-            this.FocuserPosition.Size = new System.Drawing.Size(56, 17);
-            this.FocuserPosition.TabIndex = 3;
-            this.FocuserPosition.Text = "200000";
-            // 
-            // FocuserMoving
-            // 
-            this.FocuserMoving.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserMoving.AutoSize = true;
-            this.FocuserMoving.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.FocuserMoving.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
-            this.FocuserMoving.Enabled = false;
-            this.FocuserMoving.Font = new System.Drawing.Font("Consolas", 10F);
-            this.FocuserMoving.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserMoving.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.FocuserMoving.Location = new System.Drawing.Point(135, 0);
-            this.FocuserMoving.Mute = false;
-            this.FocuserMoving.Name = "FocuserMoving";
-            this.FocuserMoving.Size = new System.Drawing.Size(56, 17);
-            this.FocuserMoving.TabIndex = 0;
-            this.FocuserMoving.Text = "Moving";
-            // 
-            // Calibrating
-            // 
-            this.Calibrating.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.Calibrating.AutoSize = true;
-            this.Calibrating.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Calibrating.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
-            this.Calibrating.Enabled = false;
-            this.Calibrating.Font = new System.Drawing.Font("Consolas", 10F);
-            this.Calibrating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.Calibrating.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.Calibrating.Location = new System.Drawing.Point(197, 0);
-            this.Calibrating.Mute = false;
-            this.Calibrating.Name = "Calibrating";
-            this.Calibrating.Size = new System.Drawing.Size(96, 17);
-            this.Calibrating.TabIndex = 2;
-            this.Calibrating.Text = "Calibrating";
-            // 
-            // RotatorActivity
-            // 
-            this.RotatorActivity.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorActivity.AutoSize = true;
-            this.RotatorActivity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RotatorActivity.Enabled = false;
-            this.RotatorActivity.Font = new System.Drawing.Font("Consolas", 10F);
-            this.RotatorActivity.ForeColor = System.Drawing.Color.Yellow;
-            this.RotatorActivity.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorActivity.Location = new System.Drawing.Point(3, 17);
-            this.RotatorActivity.Mute = false;
-            this.RotatorActivity.Name = "RotatorActivity";
-            this.RotatorActivity.Size = new System.Drawing.Size(64, 17);
-            this.RotatorActivity.TabIndex = 1;
-            this.RotatorActivity.Text = "Rotator";
-            // 
-            // RotatorPosition
-            // 
-            this.RotatorPosition.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorPosition.AutoSize = true;
-            this.RotatorPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RotatorPosition.Font = new System.Drawing.Font("Consolas", 10F);
-            this.RotatorPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorPosition.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorPosition.Location = new System.Drawing.Point(73, 17);
-            this.RotatorPosition.Mute = false;
-            this.RotatorPosition.Name = "RotatorPosition";
-            this.RotatorPosition.Size = new System.Drawing.Size(64, 17);
-            this.RotatorPosition.TabIndex = 4;
-            this.RotatorPosition.Text = "360.00�";
-            // 
-            // RotatorMoving
-            // 
-            this.RotatorMoving.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorMoving.AutoSize = true;
-            this.RotatorMoving.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RotatorMoving.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
-            this.RotatorMoving.Enabled = false;
-            this.RotatorMoving.Font = new System.Drawing.Font("Consolas", 10F);
-            this.RotatorMoving.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorMoving.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.RotatorMoving.Location = new System.Drawing.Point(143, 17);
-            this.RotatorMoving.Mute = false;
-            this.RotatorMoving.Name = "RotatorMoving";
-            this.RotatorMoving.Size = new System.Drawing.Size(56, 17);
-            this.RotatorMoving.TabIndex = 0;
-            this.RotatorMoving.Text = "Moving";
+            this.RotationTitle.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.RotationTitle.AutoSize = true;
+            this.RotationTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.RotationTitle.Font = new System.Drawing.Font("Consolas", 10F);
+            this.RotationTitle.ForeColor = System.Drawing.Color.White;
+            this.RotationTitle.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.RotationTitle.Location = new System.Drawing.Point(3, 0);
+            this.RotationTitle.Mute = false;
+            this.RotationTitle.Name = "RotationTitle";
+            this.RotationTitle.Size = new System.Drawing.Size(64, 17);
+            this.RotationTitle.TabIndex = 1;
+            this.RotationTitle.Text = "Azimuth";
             // 
             // SetupCommand
             // 
-            this.SetupCommand.Location = new System.Drawing.Point(226, 12);
+            this.SetupCommand.Location = new System.Drawing.Point(12, 70);
             this.SetupCommand.Name = "SetupCommand";
             this.SetupCommand.Size = new System.Drawing.Size(75, 23);
             this.SetupCommand.TabIndex = 8;
@@ -229,23 +130,187 @@ namespace TA.DigitalDomeworks.Server
             this.SetupCommand.UseVisualStyleBackColor = true;
             this.SetupCommand.Click += new System.EventHandler(this.SetupCommand_Click);
             // 
+            // CounterClockwiseAnnunciator
+            // 
+            this.CounterClockwiseAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.CounterClockwiseAnnunciator.AutoSize = true;
+            this.CounterClockwiseAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.CounterClockwiseAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.CounterClockwiseAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.CounterClockwiseAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.CounterClockwiseAnnunciator.Location = new System.Drawing.Point(73, 0);
+            this.CounterClockwiseAnnunciator.Name = "CounterClockwiseAnnunciator";
+            this.CounterClockwiseAnnunciator.Size = new System.Drawing.Size(16, 17);
+            this.CounterClockwiseAnnunciator.TabIndex = 2;
+            this.CounterClockwiseAnnunciator.Text = "◄";
+            // 
+            // AzimuthMotorAnnunciator
+            // 
+            this.AzimuthMotorAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AzimuthMotorAnnunciator.AutoSize = true;
+            this.AzimuthMotorAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.AzimuthMotorAnnunciator.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
+            this.AzimuthMotorAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.AzimuthMotorAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AzimuthMotorAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AzimuthMotorAnnunciator.Location = new System.Drawing.Point(95, 0);
+            this.AzimuthMotorAnnunciator.Name = "AzimuthMotorAnnunciator";
+            this.AzimuthMotorAnnunciator.Size = new System.Drawing.Size(48, 17);
+            this.AzimuthMotorAnnunciator.TabIndex = 3;
+            this.AzimuthMotorAnnunciator.Text = "Motor";
+            // 
+            // ClockwiseAnnunciator
+            // 
+            this.ClockwiseAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ClockwiseAnnunciator.AutoSize = true;
+            this.ClockwiseAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ClockwiseAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ClockwiseAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ClockwiseAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ClockwiseAnnunciator.Location = new System.Drawing.Point(149, 0);
+            this.ClockwiseAnnunciator.Name = "ClockwiseAnnunciator";
+            this.ClockwiseAnnunciator.Size = new System.Drawing.Size(16, 17);
+            this.ClockwiseAnnunciator.TabIndex = 4;
+            this.ClockwiseAnnunciator.Text = "►";
+            // 
+            // annunciator1
+            // 
+            this.annunciator1.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.annunciator1.AutoSize = true;
+            this.annunciator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.annunciator1.Font = new System.Drawing.Font("Consolas", 10F);
+            this.annunciator1.ForeColor = System.Drawing.Color.PaleGoldenrod;
+            this.annunciator1.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.annunciator1.Location = new System.Drawing.Point(171, 0);
+            this.annunciator1.Mute = false;
+            this.annunciator1.Name = "annunciator1";
+            this.annunciator1.Size = new System.Drawing.Size(40, 17);
+            this.annunciator1.TabIndex = 5;
+            this.annunciator1.Tag = "{0:###}°";
+            this.annunciator1.Text = "000°";
+            // 
+            // ShutterTitle
+            // 
+            this.ShutterTitle.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterTitle.AutoSize = true;
+            this.ShutterTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterTitle.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterTitle.ForeColor = System.Drawing.Color.White;
+            this.ShutterTitle.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterTitle.Location = new System.Drawing.Point(3, 17);
+            this.ShutterTitle.Mute = false;
+            this.ShutterTitle.Name = "ShutterTitle";
+            this.ShutterTitle.Size = new System.Drawing.Size(64, 17);
+            this.ShutterTitle.TabIndex = 6;
+            this.ShutterTitle.Text = "Shutter";
+            // 
+            // ShutterOpeningAnnunciator
+            // 
+            this.ShutterOpeningAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterOpeningAnnunciator.AutoSize = true;
+            this.ShutterOpeningAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterOpeningAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterOpeningAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterOpeningAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterOpeningAnnunciator.Location = new System.Drawing.Point(73, 17);
+            this.ShutterOpeningAnnunciator.Name = "ShutterOpeningAnnunciator";
+            this.ShutterOpeningAnnunciator.Size = new System.Drawing.Size(16, 17);
+            this.ShutterOpeningAnnunciator.TabIndex = 7;
+            this.ShutterOpeningAnnunciator.Text = "▲";
+            // 
+            // ShutterMotorAnnunciator
+            // 
+            this.ShutterMotorAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterMotorAnnunciator.AutoSize = true;
+            this.ShutterMotorAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterMotorAnnunciator.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
+            this.ShutterMotorAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterMotorAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterMotorAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterMotorAnnunciator.Location = new System.Drawing.Point(95, 17);
+            this.ShutterMotorAnnunciator.Name = "ShutterMotorAnnunciator";
+            this.ShutterMotorAnnunciator.Size = new System.Drawing.Size(48, 17);
+            this.ShutterMotorAnnunciator.TabIndex = 8;
+            this.ShutterMotorAnnunciator.Text = "Motor";
+            // 
+            // ShutterClosingAnnunciator
+            // 
+            this.ShutterClosingAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterClosingAnnunciator.AutoSize = true;
+            this.ShutterClosingAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterClosingAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterClosingAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterClosingAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterClosingAnnunciator.Location = new System.Drawing.Point(149, 17);
+            this.ShutterClosingAnnunciator.Name = "ShutterClosingAnnunciator";
+            this.ShutterClosingAnnunciator.Size = new System.Drawing.Size(16, 17);
+            this.ShutterClosingAnnunciator.TabIndex = 9;
+            this.ShutterClosingAnnunciator.Text = "▼";
+            // 
+            // ShutterCurrentAnnunciator
+            // 
+            this.ShutterCurrentAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterCurrentAnnunciator.AutoSize = true;
+            this.ShutterCurrentAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterCurrentAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterCurrentAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterCurrentAnnunciator.Location = new System.Drawing.Point(171, 17);
+            this.ShutterCurrentAnnunciator.Name = "ShutterCurrentAnnunciator";
+            this.ShutterCurrentAnnunciator.Size = new System.Drawing.Size(32, 17);
+            this.ShutterCurrentAnnunciator.TabIndex = 10;
+            this.ShutterCurrentAnnunciator.Tag = "{0:###}";
+            this.ShutterCurrentAnnunciator.Text = "000";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.progressBar1.Location = new System.Drawing.Point(96, 55);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(219, 10);
+            this.progressBar1.TabIndex = 11;
+            // 
+            // OpenButton
+            // 
+            this.OpenButton.Location = new System.Drawing.Point(12, 12);
+            this.OpenButton.Name = "OpenButton";
+            this.OpenButton.Size = new System.Drawing.Size(75, 23);
+            this.OpenButton.TabIndex = 12;
+            this.OpenButton.Text = "Open";
+            this.OpenButton.UseVisualStyleBackColor = true;
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.Location = new System.Drawing.Point(12, 41);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseButton.TabIndex = 13;
+            this.CloseButton.Text = "Close";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            // 
             // ServerStatusDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 238);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(331, 105);
+            this.Controls.Add(this.CloseButton);
+            this.Controls.Add(this.OpenButton);
             this.Controls.Add(this.SetupCommand);
             this.Controls.Add(this.annunciatorPanel1);
-            this.Controls.Add(this.ClientStatus);
             this.Controls.Add(this.OnlineClients);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.registeredClientCount);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.progressBar1);
             this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "MainFormLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Location = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.MainFormLocation;
             this.Name = "ServerStatusDisplay";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "DIgital Domeworks ASCOM Server";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.LocationChanged += new System.EventHandler(this.frmMain_LocationChanged);
@@ -262,16 +327,21 @@ namespace TA.DigitalDomeworks.Server
         private System.Windows.Forms.Label registeredClientCount;
         private System.Windows.Forms.Label OnlineClients;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListBox ClientStatus;
         private ASCOM.Controls.AnnunciatorPanel annunciatorPanel1;
-        private ASCOM.Controls.Annunciator FocuserMoving;
-        private ASCOM.Controls.Annunciator FocuserActivity;
-        private ASCOM.Controls.Annunciator RotatorActivity;
-        private ASCOM.Controls.Annunciator Calibrating;
-        private ASCOM.Controls.Annunciator FocuserPosition;
-        private ASCOM.Controls.Annunciator RotatorPosition;
-        private ASCOM.Controls.Annunciator RotatorMoving;
+        private ASCOM.Controls.Annunciator RotationTitle;
         private System.Windows.Forms.Button SetupCommand;
+        private ASCOM.Controls.Annunciator CounterClockwiseAnnunciator;
+        private ASCOM.Controls.Annunciator AzimuthMotorAnnunciator;
+        private ASCOM.Controls.Annunciator ClockwiseAnnunciator;
+        private ASCOM.Controls.Annunciator annunciator1;
+        private ASCOM.Controls.Annunciator ShutterTitle;
+        private ASCOM.Controls.Annunciator ShutterOpeningAnnunciator;
+        private ASCOM.Controls.Annunciator ShutterMotorAnnunciator;
+        private ASCOM.Controls.Annunciator ShutterClosingAnnunciator;
+        private ASCOM.Controls.Annunciator ShutterCurrentAnnunciator;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button OpenButton;
+        private System.Windows.Forms.Button CloseButton;
     }
 }
 

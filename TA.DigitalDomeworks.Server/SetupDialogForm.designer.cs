@@ -127,7 +127,6 @@ namespace TA.DigitalDomeworks.Server
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
