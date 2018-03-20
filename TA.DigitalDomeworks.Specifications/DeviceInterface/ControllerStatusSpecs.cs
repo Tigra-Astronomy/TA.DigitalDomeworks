@@ -4,7 +4,9 @@
 // 
 // File: ControllerStatusSpecs.cs  Last modified: 2018-03-13@23:53 by Tim Long
 
+using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Machine.Specifications;
 using NodaTime;
 using NodaTime.Testing;
@@ -13,9 +15,11 @@ using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
 
+#pragma warning disable 0169    // Field not used, triggers on Behaves_like<>
+
 namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     {
-    [Subject(typeof(ControllerStatus), "creation")]
+    [Subject(typeof(HardwareStatus), "creation")]
     internal class when_creating_a_status
         {
         Establish context = () => factory = new ControllerStatusFactory(new FakeClock(Instant.MinValue));
@@ -44,7 +48,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         It should_have_dead_zone = () => actual.DeadZone.ShouldEqual(5);
         It should_have_offset = () => actual.Offset.ShouldEqual(5);
         //ToDo: fill in the other fields
-        static IControllerStatus actual;
+        static IHardwareStatus actual;
         static ControllerStatusFactory factory;
         // This status packet was captured from real hardware.
         const string RealWorldStatusPacket = "V4,704,293,1,289,0,0,1,0,287,299,0,0,0,0,112,50,0,0,0,180,5,5";
@@ -54,23 +58,15 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     internal class when_a_status_packet_is_received : with_device_controller_context
         {
         Establish context = () => Context = DeviceControllerContextBuilder
-            .WithClosedConnection("Fake")
-            .OnPropertyChanged((sender, args) => changedProperties.Add(args.PropertyName))
-            .WithFakeResponse(RealWorldStatusPacket)
+            .WithClosedConnection("Simulator:Fast")
             .Build();
         Because of = () =>
             {
             Controller.Open(performOnConnectActions: false);
-            receivedStatus = Controller.GetStatus().Result;
+            Context.Actions.RequestHardwareStatus();
+            Context.StateMachine.WaitForReady(TimeSpan.FromSeconds(5));
             };
-        It should_update_all_relevant_properties = () => changedProperties.ShouldBeLike(expectedUpdates);
-        static SortedSet<string> changedProperties = new SortedSet<string>();
-        static SortedSet<string> expectedUpdates = new SortedSet<string>
-            {
-            nameof(Controller.AzimuthEncoderSteps),
-            nameof(Controller.CurrentStatus)
-            };
-        static IControllerStatus receivedStatus;
+        static IHardwareStatus receivedStatus;
         Behaves_like<a_stopped_dome> stopped_dome;
         const string RealWorldStatusPacket = "V4,704,293,1,289,0,0,1,0,287,299,0,0,0,0,112,50,0,0,0,180,5,5\n";
         }

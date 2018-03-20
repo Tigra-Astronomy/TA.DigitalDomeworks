@@ -17,22 +17,22 @@ namespace TA.DigitalDomeworks.SharedTypes {
             }
 
         /// <summary>
-        ///     Creates a <see cref="IControllerStatus" /> object from the text of a status packet
+        ///     Creates a <see cref="IHardwareStatus" /> object from the text of a status packet
         /// </summary>
-        public IControllerStatus FromStatusPacket(string packet)
+        public IHardwareStatus FromStatusPacket(string packet)
             {
             Contract.Requires(!string.IsNullOrEmpty(packet));
             var elements = packet.Split(fieldDelimiters);
             switch (elements[0])
                 {
                     case "V4":
-                        return (IControllerStatus)ParseV4StatusElements(elements);
+                        return (IHardwareStatus)ParseV4StatusElements(elements);
                     default:
                         throw new ApplicationException("Unsupported firmware version");
                 }
             }
 
-        private ControllerStatus ParseV4StatusElements(IReadOnlyList<string> elements)
+        private HardwareStatus ParseV4StatusElements(IReadOnlyList<string> elements)
             {
             log.Info("V4 status");
             var elementsLength = elements.Count;
@@ -49,7 +49,7 @@ namespace TA.DigitalDomeworks.SharedTypes {
 
             try
                 {
-                var status = new ControllerStatus
+                var status = new HardwareStatus
                     {
                     TimeStamp = timeSource.GetCurrentInstant(),
                     FirmwareVersion = elements[0],

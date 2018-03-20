@@ -36,7 +36,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <summary>
         ///     Stores all of the parameters for the simulated hardware status.
         /// </summary>
-        internal ControllerStatus HardwareStatus;
+        internal HardwareStatus HardwareStatus;
 
         /// <summary>
         ///     Characters received from the serial port, which accumulate until a valid command has been received.
@@ -55,8 +55,6 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <summary>
         ///     Initializes a new instance of the <see cref="SimulatorStateMachine" /> class.
         /// </summary>
-        /// <param name="port">A pre-configured and opened <see cref="System.IO.Ports.SerialPort" /> instance.</param>
-        /// <param name="startupState">The state in which to start.</param>
         /// <param name="realTime">
         ///     When <c>true</c> the simulator introduces pauses that are representative of real equipment.
         ///     When <c>false</c>, the simulation proceeds at an accelerated pace with no pauses.
@@ -66,7 +64,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             RealTime = realTime;
             DomeSupportRingOpen = false;
             ShutterStuck = false;
-            HardwareStatus = new ControllerStatus
+            HardwareStatus = new HardwareStatus
                 {
                 AtHome = false,
                 Coast = 1,
@@ -102,8 +100,16 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             receiveSubscription = receiveObservable.Subscribe(InputStimulus, EndOfSimulation);
             }
 
+        /// <summary>
+        /// An observable sequence of characters that simulates data arriving from
+        /// the dome controller to the PC serial port.
+        /// </summary>
         public IObservable<char> ObservableResponses => transmitSubject.AsObservable();
 
+        /// <summary>
+        /// Simulate sending characters to the dome controller by calling the observer's
+        /// <see cref="IObserver{T}.OnNext"/> method.
+        /// </summary>
         public IObserver<char> InputObserver => receiveSubject.AsObserver();
 
         /// <summary>
@@ -136,7 +142,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         /// <value>The azimuth.</value>
         /// <remarks>
-        ///     When setting the value, the result is 'wrapped' at <see cref="DdwStatus.DomeCircumference" />.
+        ///     When setting the value, the result is 'wrapped' at <see cref="SharedTypes.HardwareStatus.DomeCircumference" />.
         /// </remarks>
         internal int AzimuthTicks
             {
@@ -219,8 +225,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         /// <param name="azimuth">The azimuth.</param>
         /// <returns>
-        ///     <c>true</c> if the azimuth is between <see cref="IDdwStatus.HomeCounterClockwise" />
-        ///     and <see cref="IDdwStatus.HomeClockwise" />.
+        ///     <c>true</c> if the azimuth is between <see cref="IHardwareStatus.HomeCounterClockwise" />
+        ///     and <see cref="IHardwareStatus.HomeClockwise" />.
         /// </returns>
         public bool InHomeRange(int azimuth)
             {

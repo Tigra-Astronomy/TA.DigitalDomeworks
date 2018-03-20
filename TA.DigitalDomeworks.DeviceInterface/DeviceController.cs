@@ -2,59 +2,52 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-12@17:03 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-03-20@01:30 by Tim Long
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NLog.Fluent;
 using PostSharp.Patterns.Model;
 using TA.Ascom.ReactiveCommunications;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
-using TA.DigitalDomeworks.HardwareSimulator;
+using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface
     {
     [NotifyPropertyChanged]
-    internal class DeviceController : INotifyPropertyChanged
+    public class DeviceController : INotifyPropertyChanged
         {
         [NotNull] private readonly ICommunicationChannel channel;
+        [NotNull] private readonly ControllerStateMachine stateMachine;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [NotNull] private IControllerStatus currentStatus;
-        [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
         [CanBeNull] private IDisposable azimuthEncoderSubscription;
+        [NotNull] private IHardwareStatus currentStatus;
         [CanBeNull] private IDisposable rotationDirectionSubscription;
         [CanBeNull] private IDisposable shutterCurrentSubscription;
         [CanBeNull] private IDisposable shutterDirectionSubscription;
         [CanBeNull] private IDisposable statusUpdateSubscription;
+        [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
 
-        public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory)
+        public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
+            ControllerStateMachine machine)
             {
             this.channel = channel;
             statusFactory = factory;
+            stateMachine = machine;
             }
 
-        [NotNull]
-        public IControllerStatus CurrentStatus
-            {
-            get => currentStatus;
-            private set
-                {
-                currentStatus = value;
-                AzimuthEncoderSteps = currentStatus.CurrentAzimuth;
-                }
-            }
+        public INotifyHardwareStateChanged HardwareState => stateMachine;
 
-        public bool IsOnline => channel.IsOpen;
-
-        public int AzimuthEncoderSteps { get; private set; }
+        /// <summary>
+        ///     <c>true</c> if any part of the building is moving.
+        /// </summary>
+        public bool IsMoving => HardwareState.AzimuthMotorActive || HardwareState.ShutterMotorActive;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -64,9 +57,12 @@ namespace TA.DigitalDomeworks.DeviceInterface
             transactionProcessor = new ReactiveTransactionProcessor();
             transactionProcessor.SubscribeTransactionObserver(observer);
             channel.Open();
-            if (performOnConnectActions)
-                PerformTasksOnConnect();
             SubscribeControllerEvents();
+            if (performOnConnectActions)
+                stateMachine.Initialize(new RequestStatus(stateMachine));
+            else
+                stateMachine.Initialize(new Ready(stateMachine));
+            stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
             }
 
         private void SubscribeControllerEvents()
@@ -96,8 +92,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             try
                 {
                 var status = statusFactory.FromStatusPacket(statusNotification);
-                SetStatus(status);
-
+                stateMachine.HardwareStatusReceived(status);
                 }
             catch (Exception ex)
                 {
@@ -108,49 +103,31 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 }
             }
 
-        private void SetStatus(IControllerStatus status)
-            {
-            CurrentStatus = status;
-            AzimuthEncoderSteps = status.CurrentAzimuth;
-            DomeRotationInProgress = false;
-            RotationDirection = RotationDirection.None;
-            ShutterCurrent = 0;
-            ShutterDirection = ShutterDirection.None;
-            ShutterMovementInProgress = false;
-            }
-
         private void SubscribeShutterDirection()
             {
+            // Note: The zero-based index in the string must match the ordinal values in ShutterDirection
+            const string shutterMovementIndicators = "SCO";
             var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
-                                            where c == 'C' || c == 'O'
-                                            let direction = (c == 'C')
-                                                ? ShutterDirection.Closing
-                                                : ShutterDirection.Opening
-                                            select direction;
-            shutterDirectionSubscription = shutterDirectionSequence.Trace("ShutterDirection")
+                                           where Enumerable.Contains(shutterMovementIndicators, c)
+                                           let ordinal = shutterMovementIndicators.IndexOf(c)
+                                           let direction = (ShutterDirection) ordinal
+                                           select direction;
+            shutterDirectionSubscription = ObservableDiagnosticExtensions
+                .Trace<ShutterDirection>(shutterDirectionSequence, "ShutterDirection")
                 .Subscribe(
-                    ShutterDirectionOnNext,
+                    stateMachine.ShutterDirectionReceived,
                     ex => throw new InvalidOperationException(
                         "Shutter Direction sequence produced an unexpected error (see ineer exception)", ex),
                     () => throw new InvalidOperationException(
                         "Shutter Direction sequence completed unexpectedly, this is probably a bug")
                 );
-
-        }
-
-        private void ShutterDirectionOnNext(ShutterDirection direction)
-            {
-            ShutterDirection = direction;
-            ShutterMovementInProgress = true;
-            DomeRotationInProgress = false;
-            RotationDirection = RotationDirection.None;
             }
 
         private void SubscribeShutterCurrentReadings()
             {
             var shutterCurrentReadings = channel.ObservableReceivedCharacters.ShutterCurrentReadings();
             shutterCurrentSubscription = shutterCurrentReadings.Subscribe(
-                ShutterCurrentOnNext,
+                stateMachine.ShutterMotorCurrentReceived,
                 ex => throw new InvalidOperationException(
                     "Shutter Current sequence produced an unexpected error (see ineer exception)", ex),
                 () => throw new InvalidOperationException(
@@ -158,24 +135,18 @@ namespace TA.DigitalDomeworks.DeviceInterface
             );
             }
 
-        private void ShutterCurrentOnNext(int shutterCurrent)
-            {
-            ShutterCurrent = shutterCurrent;
-            DomeRotationInProgress = false;
-            ShutterMovementInProgress = true;
-            }
-
         private void SubscribeRotationDirection()
             {
             var rotationDirectionSequence = from c in channel.ObservableReceivedCharacters
                                             where c == 'L' || c == 'R'
-                                            let direction = (c == 'L')
+                                            let direction = c == 'L'
                                                 ? RotationDirection.CounterClockwise
                                                 : RotationDirection.Clockwise
                                             select direction;
-            rotationDirectionSubscription = rotationDirectionSequence.Trace("RotationDirection")
+            rotationDirectionSubscription = ObservableDiagnosticExtensions
+                .Trace<RotationDirection>(rotationDirectionSequence, "RotationDirection")
                 .Subscribe(
-                    RotationDirectionOnNext,
+                    stateMachine.RotationDirectionReceived,
                     ex => throw new InvalidOperationException(
                         "RotationDirection sequence produced an unexpected error (see ineer exception)", ex),
                     () => throw new InvalidOperationException(
@@ -187,7 +158,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             {
             var azimuthEncoderTicks = channel.ObservableReceivedCharacters.AzimuthEncoderTicks();
             azimuthEncoderSubscription = azimuthEncoderTicks.Subscribe(
-                AzimuthEncoderOnNext,
+                stateMachine.AzimuthEncoderTickReceived,
                 ex => throw new InvalidOperationException(
                     "Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
                 () => throw new InvalidOperationException(
@@ -195,49 +166,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             );
             }
 
-        private void AzimuthEncoderOnNext(int azimuth)
-            {
-            AzimuthEncoderSteps = azimuth;
-            DomeRotationInProgress = true;
-            ShutterMovementInProgress = false;
-        }
-
-        private void RotationDirectionOnNext(RotationDirection direction)
-            {
-            RotationDirection = direction;
-            DomeRotationInProgress = true;
-            ShutterMovementInProgress = false;
-            }
-
-        /// <summary>
-        /// <c>true</c> if the azimuth motors are active
-        /// </summary>
-        public bool DomeRotationInProgress { get; private set; }
-
-        /// <summary>
-        /// <c>true</c> if any part of the building is moving.
-        /// </summary>
-        public bool IsMoving => DomeRotationInProgress | ShutterMovementInProgress;
-
-        /// <summary>
-        /// <c>true</c> if the shutter motor is active.
-        /// </summary>
-        public bool ShutterMovementInProgress { get; private set; }
-
-        public RotationDirection RotationDirection { get; set; }
-
-        public int ShutterCurrent { get; private set; }
-
-        public ShutterDirection ShutterDirection { get; private set; }
-
-        private void PerformTasksOnConnect()
-            {
-            var transaction = new StatusTransaction(statusFactory);
-            transactionProcessor.CommitTransaction(transaction);
-            transaction.WaitForCompletionOrTimeout(); // Synchronous
-            transaction.ThrowIfFailed();
-            CurrentStatus = transaction.ControllerStatus;
-            }
+        private void RotationDirectionOnNext(RotationDirection direction) { }
 
         public void Close()
             {
@@ -260,19 +189,20 @@ namespace TA.DigitalDomeworks.DeviceInterface
             statusUpdateSubscription = null;
             }
 
-        public async Task<IControllerStatus> GetStatus()
-            {
-            var getStatusTransaction = new StatusTransaction(statusFactory);
-            transactionProcessor.CommitTransaction(getStatusTransaction);
-            await getStatusTransaction.WaitForCompletionOrTimeoutAsync(CancellationToken.None);
-            getStatusTransaction.ThrowIfFailed();
-            return getStatusTransaction.ControllerStatus;
-            }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
             {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+        public void RequestEmergencyStop()
+            {
+            var pause = TimeSpan.FromSeconds(1);
+            stateMachine.AllStop();
+            Task.Delay(pause).Wait();
+            stateMachine.AllStop();
+            Task.Delay(pause).Wait();
+            stateMachine.AllStop();
             }
         }
     }

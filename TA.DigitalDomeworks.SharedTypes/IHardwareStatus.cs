@@ -1,7 +1,7 @@
 ﻿using NodaTime;
 
 namespace TA.DigitalDomeworks.SharedTypes {
-    public interface IControllerStatus {
+    public interface IHardwareStatus {
         /// <summary>
         ///     Indicates when the dome is in the Home Position.
         ///     Note that the home position covers a small range of encoder ticks and is not

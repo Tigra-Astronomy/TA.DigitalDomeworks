@@ -20,7 +20,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         ///     Provides logging services
         /// </summary>
         protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        protected readonly SimulatorStateMachine machine;
+
+        /// <summary>
+        /// A reference to the state machine that created the state.
+        /// </summary>
+        protected readonly SimulatorStateMachine Machine;
 
         /// <summary>
         ///     Initializes the simulator state with a reference to the parent state machine.
@@ -28,7 +32,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="machine">The associated state machine.</param>
         internal SimulatorState(SimulatorStateMachine machine)
             {
-            this.machine = machine;
+            this.Machine = machine;
             }
 
         /// <summary>

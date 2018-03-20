@@ -13,3 +13,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("0.0.0.0")]
 [assembly: AssemblyInformationalVersion("0.0-Integration")]
 [assembly: InternalsVisibleTo("TA.DigitalDomeworks.Specifications")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

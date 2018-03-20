@@ -32,9 +32,9 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnEnter()
             {
             base.OnEnter();
-            machine.InvokeMotorConfigurationChanged(MotorConfigurationEventArgs.AllStopped);
+            Machine.InvokeMotorConfigurationChanged(MotorConfigurationEventArgs.AllStopped);
             Thread.Sleep(1000);
-            Transition(new StateSendStatus(machine));
+            Transition(new StateSendStatus(Machine));
             }
 
         /// <summary>

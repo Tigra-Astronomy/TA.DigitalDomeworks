@@ -24,17 +24,17 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnEnter()
             {
             base.OnEnter();
-            Log.Debug($"Processing command [{machine.ReceivedChars}]");
-            if (machine.ReceivedChars.Length == 0)
+            Log.Debug($"Processing command [{Machine.ReceivedChars}]");
+            if (Machine.ReceivedChars.Length == 0)
                 {
                 Log.Warn("Nothing received");
-                Transition(new StateReceivingCommand(machine));
+                Transition(new StateReceivingCommand(Machine));
                 }
 
-            if (machine.ReceivedChars.Length != 4)
+            if (Machine.ReceivedChars.Length != 4)
                 {
                 Log.Warn("Received string not 4 characters");
-                Transition(new StateReceivingCommand(machine));
+                Transition(new StateReceivingCommand(Machine));
                 }
 
             ExecuteCommand();
@@ -51,7 +51,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             if (value == (char) AsciiSymbols.CR)
                 return; // Ignore carriage returns
 
-            Transition(new StateEmergencyStop(machine));
+            Transition(new StateEmergencyStop(Machine));
             }
 
         /// <summary>
@@ -72,24 +72,24 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </remarks>
         private void ExecuteCommand()
             {
-            var command = machine.ReceivedChars.ToString();
+            var command = Machine.ReceivedChars.ToString();
             switch (command)
                 {
                     case Constants.CmdCancelTimeout:
                         return;
                     case Constants.CmdClose:
-                        Transition(new StateRotatingForShutterClose(machine));
+                        Transition(new StateRotatingForShutterClose(Machine));
                         return;
                     case Constants.CmdFastTrack:
                         return;
                     case Constants.CmdGetInfo:
-                        Transition(new StateSendStatus(machine));
+                        Transition(new StateSendStatus(Machine));
                         return;
                     case Constants.CmdGotoHome:
-                        Transition(new StateRotatingToHome(machine));
+                        Transition(new StateRotatingToHome(Machine));
                         return;
                     case Constants.CmdOpen:
-                        Transition(new StateRotatingForShutterOpen(machine));
+                        Transition(new StateRotatingForShutterOpen(Machine));
                         return;
                     case Constants.CmdPark:
                         return;
@@ -118,11 +118,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                     out pins))
                     {
                     // Successfully parsed a user I/O pin packet.
-                    machine.HardwareStatus.UserPins = pins;
-                    Transition(new StateSendStatus(machine));
+                    Machine.HardwareStatus.UserPins = pins;
+                    Transition(new StateSendStatus(Machine));
                     }
                 }
-            else if (machine.ReceivedChars[0] == 'G')
+            else if (Machine.ReceivedChars[0] == 'G')
                 {
                 int targetDegrees;
                 if (int.TryParse(command.Substring(1, 3),
@@ -131,19 +131,19 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                     out targetDegrees))
                     {
                     // Successfully recognised a rotation command.
-                    if (machine.InDeadZone(targetDegrees))
+                    if (Machine.InDeadZone(targetDegrees))
                         {
-                        Transition(new StateSendStatus(machine));
+                        Transition(new StateSendStatus(Machine));
                         return;
                         }
 
-                    machine.TargetAzimuthDegrees = targetDegrees;
-                    Transition(new StateRotating(machine));
+                    Machine.TargetAzimuthDegrees = targetDegrees;
+                    Transition(new StateRotating(Machine));
                     }
                 else
                     {
                     Log.Warn("Gxxx command had invalid numeric part (ignored)");
-                    Transition(new StateReceivingCommand(machine));
+                    Transition(new StateReceivingCommand(Machine));
                     }
                 }
             //ToDo: Smart Tracking will likely be implemented in its own state.
@@ -155,7 +155,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             else
                 {
                 // Anything else must be an invalid or corrupted command, so discard it.
-                Transition(new StateReceivingCommand(machine));
+                Transition(new StateReceivingCommand(Machine));
                 }
             }
         }

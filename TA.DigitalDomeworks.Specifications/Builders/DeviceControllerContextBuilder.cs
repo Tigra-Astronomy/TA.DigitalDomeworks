@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Text;
+using FakeItEasy;
 using NodaTime;
 using NodaTime.Testing;
 using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
+using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.Fakes;
@@ -40,7 +42,6 @@ namespace TA.DigitalDomeworks.Specifications.Builders
         bool channelShouldBeOpen;
         readonly StringBuilder fakeResponseBuilder = new StringBuilder();
         readonly IClock timeSource = new FakeClock(Instant.MinValue);
-        bool useFakeChannel;
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
         PropertyChangedEventHandler propertyChangedAction;
@@ -56,14 +57,19 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             // Build the ControllerStatusFactory
             var statusFactory = new ControllerStatusFactory(timeSource);
 
+            var controllerActions = new RxControllerActions(channel);
+            var controllerStateMachine = new ControllerStateMachine(controllerActions);
+
             // Build the device controller
-            var controller = new DeviceController(channel, statusFactory);
+            var controller = new DeviceController(channel, statusFactory, controllerStateMachine);
 
             // Assemble the device controller test context
             var context = new DeviceControllerContext
                 {
                 Channel = channel,
-                Controller = controller
+                Controller = controller,
+                StateMachine = controllerStateMachine,
+                Actions = controllerActions
                 };
 
             // Wire up any Property Changed notifications
