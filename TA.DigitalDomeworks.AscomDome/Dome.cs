@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ASCOM;
 using ASCOM.DeviceInterface;
 using JetBrains.Annotations;
+using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Server;
 using NotImplementedException=ASCOM.NotImplementedException;
 
@@ -25,6 +26,7 @@ namespace TA.DigitalDomeworks.AscomDome
         const string DomeDriverName = "Digital Domeworks 2018 Reboot";
         private const string DomeDriverId = "ASCOM.DigitalDomeworks.Dome";
         [NotNull] private readonly Guid clientId;
+        [CanBeNull] private DeviceController controller;
 
         public Dome()
             {
@@ -106,9 +108,24 @@ namespace TA.DigitalDomeworks.AscomDome
         throw new NotImplementedException();
         }
 
-    public bool Connected { get; set; }
+        public bool Connected
+            {
+            get => controller != null;
+            set
+                {
+                if (value)
+                    {
+                    controller = SharedResources.ConnectionManager.GoOnline(clientId);
+                    }
+                else
+                    {
+                    SharedResources.ConnectionManager.GoOffline(clientId);
+                    controller = null;  //[Sentinel]
+                    }
+                }
+            }
 
-    public string Description { get; }
+        public string Description { get; }
 
     public string DriverInfo { get; }
 

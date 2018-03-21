@@ -10,7 +10,7 @@ using TI.DigitalDomeWorks;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
-    internal class RxControllerActions : IControllerActions
+    public class RxControllerActions : IControllerActions
         {
         private readonly ICommunicationChannel channel;
 

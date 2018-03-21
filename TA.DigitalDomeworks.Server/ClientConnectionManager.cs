@@ -159,13 +159,18 @@ namespace TA.DigitalDomeworks.Server
                 log.Error(e, message);
                 //ThrowOnUnrecognizedClient(clientId, e, message);
                 }
+
             client.Online = false;
             RaiseClientStatusChanged();
             if (OnlineClientCount == 0)
                 {
                 log.Warn($"The last client has gone offline - closing connection");
+
                 if (controllerInstance.Any())
-                    controllerInstance.Single().Close();
+                    {
+                    var controller = controllerInstance.Single();
+                    controller.Close();
+                    }
                 }
             }
 

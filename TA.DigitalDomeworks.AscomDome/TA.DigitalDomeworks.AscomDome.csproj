@@ -91,6 +91,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
+      <Project>{020924B9-23D5-4B92-B5B1-461423BBE23C}</Project>
+      <Name>TA.DigitalDomeworks.DeviceInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj">
       <Project>{3689a2cb-94c5-4012-a5cf-7e7d1dd27143}</Project>
       <Name>TA.DigitalDomeworks.Server</Name>

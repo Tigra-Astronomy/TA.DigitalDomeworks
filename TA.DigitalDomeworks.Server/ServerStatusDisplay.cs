@@ -5,6 +5,7 @@
 // File: ServerStatusDisplay.cs  Last modified: 2017-03-01@01:17 by Tim Long
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reactive;
@@ -12,13 +13,16 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ASCOM.Controls;
+using JetBrains.Annotations;
 using TA.DigitalDomeworks.Server.Properties;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.Server
     {
     public partial class ServerStatusDisplay : Form
         {
         private IDisposable clientStatusSubscription;
+        [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
 
         public ServerStatusDisplay()
             {
@@ -73,6 +77,8 @@ namespace TA.DigitalDomeworks.Server
         /// </summary>
         private void UnsubscribePropertyChangeNotifications()
             {
+            disposableSubscriptions.ForEach(p=>p.Dispose());
+            disposableSubscriptions.Clear();
             }
 
         private void SetUiButtonState()
@@ -101,8 +107,39 @@ namespace TA.DigitalDomeworks.Server
              *      .ObserveOn(SynchronizationContext.Current)
              *      .Subscribe(SetMotorMovingState);
              */
+            disposableSubscriptions.Add(
+                controller
+                .GetObservableValueFor(p => p.HardwareState.AzimuthMotorActive)
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(motorActive => AzimuthMotorAnnunciator.Mute = !motorActive)
+                );
+            disposableSubscriptions.Add(
+                controller
+                    .GetObservableValueFor(p => p.HardwareState.AzimuthDirection)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetRotationDirection)
+            );
+            disposableSubscriptions.Add(
+                controller
+                    .GetObservableValueFor(p => p.HardwareState.AzimuthEncoderPosition)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetAzimuthPosition)
+            );
 
-        }
+            }
+
+        void SetAzimuthPosition(int position)
+            {
+            var format = AzimuthPositionAnnunciator.Tag.ToString();
+            var formattedPosition = string.Format(format, position);
+            AzimuthPositionAnnunciator.Text = formattedPosition;
+            }
+
+        void SetRotationDirection(RotationDirection direction)
+            {
+            CounterClockwiseAnnunciator.Mute = direction != RotationDirection.CounterClockwise;
+            ClockwiseAnnunciator.Mute = direction != RotationDirection.Clockwise;
+            }
 
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)

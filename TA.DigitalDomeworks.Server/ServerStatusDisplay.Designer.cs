@@ -34,16 +34,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.annunciatorPanel1 = new ASCOM.Controls.AnnunciatorPanel();
             this.RotationTitle = new ASCOM.Controls.Annunciator();
-            this.SetupCommand = new System.Windows.Forms.Button();
             this.CounterClockwiseAnnunciator = new ASCOM.Controls.Annunciator();
             this.AzimuthMotorAnnunciator = new ASCOM.Controls.Annunciator();
             this.ClockwiseAnnunciator = new ASCOM.Controls.Annunciator();
-            this.annunciator1 = new ASCOM.Controls.Annunciator();
+            this.AzimuthPositionAnnunciator = new ASCOM.Controls.Annunciator();
             this.ShutterTitle = new ASCOM.Controls.Annunciator();
             this.ShutterOpeningAnnunciator = new ASCOM.Controls.Annunciator();
             this.ShutterMotorAnnunciator = new ASCOM.Controls.Annunciator();
             this.ShutterClosingAnnunciator = new ASCOM.Controls.Annunciator();
             this.ShutterCurrentAnnunciator = new ASCOM.Controls.Annunciator();
+            this.SetupCommand = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.OpenButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
@@ -94,7 +94,7 @@
             this.annunciatorPanel1.Controls.Add(this.CounterClockwiseAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.AzimuthMotorAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ClockwiseAnnunciator);
-            this.annunciatorPanel1.Controls.Add(this.annunciator1);
+            this.annunciatorPanel1.Controls.Add(this.AzimuthPositionAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterTitle);
             this.annunciatorPanel1.Controls.Add(this.ShutterOpeningAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterMotorAnnunciator);
@@ -120,16 +120,6 @@
             this.RotationTitle.TabIndex = 1;
             this.RotationTitle.Text = "Azimuth";
             // 
-            // SetupCommand
-            // 
-            this.SetupCommand.Location = new System.Drawing.Point(12, 70);
-            this.SetupCommand.Name = "SetupCommand";
-            this.SetupCommand.Size = new System.Drawing.Size(75, 23);
-            this.SetupCommand.TabIndex = 8;
-            this.SetupCommand.Text = "Setup...";
-            this.SetupCommand.UseVisualStyleBackColor = true;
-            this.SetupCommand.Click += new System.EventHandler(this.SetupCommand_Click);
-            // 
             // CounterClockwiseAnnunciator
             // 
             this.CounterClockwiseAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
@@ -139,6 +129,7 @@
             this.CounterClockwiseAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.CounterClockwiseAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.CounterClockwiseAnnunciator.Location = new System.Drawing.Point(73, 0);
+            this.CounterClockwiseAnnunciator.Mute = false;
             this.CounterClockwiseAnnunciator.Name = "CounterClockwiseAnnunciator";
             this.CounterClockwiseAnnunciator.Size = new System.Drawing.Size(16, 17);
             this.CounterClockwiseAnnunciator.TabIndex = 2;
@@ -154,6 +145,7 @@
             this.AzimuthMotorAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.AzimuthMotorAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.AzimuthMotorAnnunciator.Location = new System.Drawing.Point(95, 0);
+            this.AzimuthMotorAnnunciator.Mute = false;
             this.AzimuthMotorAnnunciator.Name = "AzimuthMotorAnnunciator";
             this.AzimuthMotorAnnunciator.Size = new System.Drawing.Size(48, 17);
             this.AzimuthMotorAnnunciator.TabIndex = 3;
@@ -168,26 +160,27 @@
             this.ClockwiseAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ClockwiseAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ClockwiseAnnunciator.Location = new System.Drawing.Point(149, 0);
+            this.ClockwiseAnnunciator.Mute = false;
             this.ClockwiseAnnunciator.Name = "ClockwiseAnnunciator";
             this.ClockwiseAnnunciator.Size = new System.Drawing.Size(16, 17);
             this.ClockwiseAnnunciator.TabIndex = 4;
             this.ClockwiseAnnunciator.Text = "►";
             // 
-            // annunciator1
+            // AzimuthPositionAnnunciator
             // 
-            this.annunciator1.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.annunciator1.AutoSize = true;
-            this.annunciator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.annunciator1.Font = new System.Drawing.Font("Consolas", 10F);
-            this.annunciator1.ForeColor = System.Drawing.Color.PaleGoldenrod;
-            this.annunciator1.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
-            this.annunciator1.Location = new System.Drawing.Point(171, 0);
-            this.annunciator1.Mute = false;
-            this.annunciator1.Name = "annunciator1";
-            this.annunciator1.Size = new System.Drawing.Size(40, 17);
-            this.annunciator1.TabIndex = 5;
-            this.annunciator1.Tag = "{0:###}°";
-            this.annunciator1.Text = "000°";
+            this.AzimuthPositionAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AzimuthPositionAnnunciator.AutoSize = true;
+            this.AzimuthPositionAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.AzimuthPositionAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.AzimuthPositionAnnunciator.ForeColor = System.Drawing.Color.PaleGoldenrod;
+            this.AzimuthPositionAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AzimuthPositionAnnunciator.Location = new System.Drawing.Point(171, 0);
+            this.AzimuthPositionAnnunciator.Mute = false;
+            this.AzimuthPositionAnnunciator.Name = "AzimuthPositionAnnunciator";
+            this.AzimuthPositionAnnunciator.Size = new System.Drawing.Size(40, 17);
+            this.AzimuthPositionAnnunciator.TabIndex = 5;
+            this.AzimuthPositionAnnunciator.Tag = "{0:###}°";
+            this.AzimuthPositionAnnunciator.Text = "000°";
             // 
             // ShutterTitle
             // 
@@ -213,6 +206,7 @@
             this.ShutterOpeningAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterOpeningAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterOpeningAnnunciator.Location = new System.Drawing.Point(73, 17);
+            this.ShutterOpeningAnnunciator.Mute = false;
             this.ShutterOpeningAnnunciator.Name = "ShutterOpeningAnnunciator";
             this.ShutterOpeningAnnunciator.Size = new System.Drawing.Size(16, 17);
             this.ShutterOpeningAnnunciator.TabIndex = 7;
@@ -228,6 +222,7 @@
             this.ShutterMotorAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterMotorAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterMotorAnnunciator.Location = new System.Drawing.Point(95, 17);
+            this.ShutterMotorAnnunciator.Mute = false;
             this.ShutterMotorAnnunciator.Name = "ShutterMotorAnnunciator";
             this.ShutterMotorAnnunciator.Size = new System.Drawing.Size(48, 17);
             this.ShutterMotorAnnunciator.TabIndex = 8;
@@ -242,6 +237,7 @@
             this.ShutterClosingAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterClosingAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterClosingAnnunciator.Location = new System.Drawing.Point(149, 17);
+            this.ShutterClosingAnnunciator.Mute = false;
             this.ShutterClosingAnnunciator.Name = "ShutterClosingAnnunciator";
             this.ShutterClosingAnnunciator.Size = new System.Drawing.Size(16, 17);
             this.ShutterClosingAnnunciator.TabIndex = 9;
@@ -256,11 +252,22 @@
             this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterCurrentAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterCurrentAnnunciator.Location = new System.Drawing.Point(171, 17);
+            this.ShutterCurrentAnnunciator.Mute = false;
             this.ShutterCurrentAnnunciator.Name = "ShutterCurrentAnnunciator";
             this.ShutterCurrentAnnunciator.Size = new System.Drawing.Size(32, 17);
             this.ShutterCurrentAnnunciator.TabIndex = 10;
             this.ShutterCurrentAnnunciator.Tag = "{0:###}";
             this.ShutterCurrentAnnunciator.Text = "000";
+            // 
+            // SetupCommand
+            // 
+            this.SetupCommand.Location = new System.Drawing.Point(12, 70);
+            this.SetupCommand.Name = "SetupCommand";
+            this.SetupCommand.Size = new System.Drawing.Size(75, 23);
+            this.SetupCommand.TabIndex = 8;
+            this.SetupCommand.Text = "Setup...";
+            this.SetupCommand.UseVisualStyleBackColor = true;
+            this.SetupCommand.Click += new System.EventHandler(this.SetupCommand_Click);
             // 
             // progressBar1
             // 
@@ -333,7 +340,7 @@
         private ASCOM.Controls.Annunciator CounterClockwiseAnnunciator;
         private ASCOM.Controls.Annunciator AzimuthMotorAnnunciator;
         private ASCOM.Controls.Annunciator ClockwiseAnnunciator;
-        private ASCOM.Controls.Annunciator annunciator1;
+        private ASCOM.Controls.Annunciator AzimuthPositionAnnunciator;
         private ASCOM.Controls.Annunciator ShutterTitle;
         private ASCOM.Controls.Annunciator ShutterOpeningAnnunciator;
         private ASCOM.Controls.Annunciator ShutterMotorAnnunciator;

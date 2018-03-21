@@ -173,6 +173,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
             UnsubscribeControllerEvents();
             transactionProcessor?.Dispose();
             transactionProcessor = null;
+            channel.Close();
             }
 
         private void UnsubscribeControllerEvents()

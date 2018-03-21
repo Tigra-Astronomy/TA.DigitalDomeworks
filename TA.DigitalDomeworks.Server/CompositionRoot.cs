@@ -6,7 +6,10 @@
 
 using Ninject;
 using Ninject.Modules;
+using NodaTime;
+using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
+using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 
 namespace TA.DigitalDomeworks.Server
     {
@@ -25,6 +28,12 @@ namespace TA.DigitalDomeworks.Server
         public override void Load()
             {
             Bind<DeviceController>().ToSelf().InSingletonScope();
+            Bind<ICommunicationChannel>()
+                .ToMethod(ctx => Kernel.Get<ChannelFactory>().FromConnectionString(Properties.Settings.Default.ConnectionString))
+                .InSingletonScope();
+            Bind<ChannelFactory>().ToSelf().InSingletonScope();
+            Bind<IClock>().ToMethod(ctx => SystemClock.Instance);
+            Bind<IControllerActions>().To<RxControllerActions>().InSingletonScope();
             }
         }
     }
