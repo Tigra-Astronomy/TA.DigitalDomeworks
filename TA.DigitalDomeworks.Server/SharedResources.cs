@@ -20,19 +20,11 @@ namespace TA.DigitalDomeworks.Server
         /// <summary>
         ///     ASCOM DeviceID (COM ProgID) for the rotator driver.
         /// </summary>
-        public const string RotatorDriverId = "ASCOM.Integra85.Rotator";
+        public const string DomeDriverId = "ASCOM.DigitalDomeworks2018.Dome";
         /// <summary>
         ///     Driver description for the rotator driver.
         /// </summary>
-        public const string RotatorDriverName = "Gemini Integra 85";
-        /// <summary>
-        ///     ASCOM DeviceID (COM ProgID) for the focuser driver.
-        /// </summary>
-        public const string FocuserDriverId = "ASCOM.Integra85.Focuser";
-        /// <summary>
-        ///     Driver description for the focuser driver.
-        /// </summary>
-        public const string FocuserDriverName = "Gemini Integra 85";
+        public const string DomeDriverName = "Digital Domeworks 2018 Reboot";
 
         static ILogger Log;
 

@@ -19,7 +19,7 @@ namespace TA.DigitalDomeworks.Server.Properties
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
     [SettingsProvider(typeof(SettingsProvider))]
-    [DeviceId(SharedResources.RotatorDriverId, DeviceName = SharedResources.RotatorDriverName)]
+    [DeviceId(SharedResources.DomeDriverId, DeviceName = SharedResources.DomeDriverName)]
     public sealed partial class Settings
         {
         readonly ILogger log = LogManager.GetCurrentClassLogger();

@@ -14,17 +14,14 @@ using NotImplementedException=ASCOM.NotImplementedException;
 
 namespace TA.DigitalDomeworks.AscomDome
 {
-    [ProgId(DomeDriverId)]
+    [ProgId(SharedResources.DomeDriverId)]
     [Guid("CCF89F7D-2889-4A9D-891D-E28760A0FFCA")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    [DeviceId(DomeDriverId, DeviceName = DomeDriverName)]
-    [ServedClassName(DomeDriverName)]
-
-    public class Dome : IDomeV2
+    [DeviceId(SharedResources.DomeDriverId, DeviceName = SharedResources.DomeDriverName)]
+    [ServedClassName(SharedResources.DomeDriverName)]
+    public class Dome : ReferenceCountedObject, IDomeV2
         {
-        const string DomeDriverName = "Digital Domeworks 2018 Reboot";
-        private const string DomeDriverId = "ASCOM.DigitalDomeworks.Dome";
         [NotNull] private readonly Guid clientId;
         [CanBeNull] private DeviceController controller;
 
