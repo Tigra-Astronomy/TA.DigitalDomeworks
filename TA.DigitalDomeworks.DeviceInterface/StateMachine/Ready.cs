@@ -33,5 +33,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             machine.UpdateStatus(status);
             }
+
+        public override void RotateToAzimuthDegrees(double azimuth)
+            {
+            base.RotateToAzimuthDegrees(azimuth);
+            machine.ControllerActions.RotateToAzimuth((int)azimuth);
+            }
         }
     }

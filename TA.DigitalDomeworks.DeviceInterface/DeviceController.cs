@@ -2,11 +2,13 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-20@01:30 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-03-21@18:34 by Tim Long
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -24,14 +26,9 @@ namespace TA.DigitalDomeworks.DeviceInterface
     public class DeviceController : INotifyPropertyChanged
         {
         [NotNull] private readonly ICommunicationChannel channel;
+        [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
         [NotNull] private readonly ControllerStateMachine stateMachine;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [CanBeNull] private IDisposable azimuthEncoderSubscription;
-        [NotNull] private IHardwareStatus currentStatus;
-        [CanBeNull] private IDisposable rotationDirectionSubscription;
-        [CanBeNull] private IDisposable shutterCurrentSubscription;
-        [CanBeNull] private IDisposable shutterDirectionSubscription;
-        [CanBeNull] private IDisposable statusUpdateSubscription;
         [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
@@ -76,23 +73,23 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         private void SubscribeStatusUpdates()
             {
-            var statusUpdates = channel.ObservableReceivedCharacters.DelimitedMessageStrings('V', '\n');
-            statusUpdateSubscription = statusUpdates
-                .Trace("StatusUpdate")
+            var statusUpdates = channel.ObservableReceivedCharacters.StatusUpdates(statusFactory);
+            var statusUpdateSubscription = statusUpdates
+                //.ObserveOn(Scheduler.Default)
                 .Subscribe(StatusUpdateOnNext,
                     ex => throw new InvalidOperationException(
-                        "Status Update sequence produced an unexpected error (see ineer exception)", ex),
+                        "Status Update sequence produced an unexpected error (see inner exception)", ex),
                     () => throw new InvalidOperationException(
                         "Status Update sequence completed unexpectedly, this is probably a bug")
                 );
+            disposableSubscriptions.Add(statusUpdateSubscription);
             }
 
-        private void StatusUpdateOnNext(string statusNotification)
+        private void StatusUpdateOnNext(IHardwareStatus statusNotification)
             {
             try
                 {
-                var status = statusFactory.FromStatusPacket(statusNotification);
-                stateMachine.HardwareStatusReceived(status);
+                stateMachine.HardwareStatusReceived(statusNotification);
                 }
             catch (Exception ex)
                 {
@@ -108,12 +105,12 @@ namespace TA.DigitalDomeworks.DeviceInterface
             // Note: The zero-based index in the string must match the ordinal values in ShutterDirection
             const string shutterMovementIndicators = "SCO";
             var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
-                                           where Enumerable.Contains(shutterMovementIndicators, c)
+                                           where shutterMovementIndicators.Contains(c)
                                            let ordinal = shutterMovementIndicators.IndexOf(c)
                                            let direction = (ShutterDirection) ordinal
                                            select direction;
-            shutterDirectionSubscription = ObservableDiagnosticExtensions
-                .Trace<ShutterDirection>(shutterDirectionSequence, "ShutterDirection")
+            var shutterDirectionSubscription = channel.ObservableReceivedCharacters.ShutterDirectionUpdates()
+                //.ObserveOn(Scheduler.Default)
                 .Subscribe(
                     stateMachine.ShutterDirectionReceived,
                     ex => throw new InvalidOperationException(
@@ -121,18 +118,22 @@ namespace TA.DigitalDomeworks.DeviceInterface
                     () => throw new InvalidOperationException(
                         "Shutter Direction sequence completed unexpectedly, this is probably a bug")
                 );
+            disposableSubscriptions.Add(shutterDirectionSubscription);
             }
 
         private void SubscribeShutterCurrentReadings()
             {
             var shutterCurrentReadings = channel.ObservableReceivedCharacters.ShutterCurrentReadings();
-            shutterCurrentSubscription = shutterCurrentReadings.Subscribe(
-                stateMachine.ShutterMotorCurrentReceived,
-                ex => throw new InvalidOperationException(
-                    "Shutter Current sequence produced an unexpected error (see ineer exception)", ex),
-                () => throw new InvalidOperationException(
-                    "ShutterCurrent sequence completed unexpectedly, this is probably a bug")
-            );
+            var shutterCurrentSubscription = shutterCurrentReadings
+                //.ObserveOn(Scheduler.Default)
+                .Subscribe(
+                    stateMachine.ShutterMotorCurrentReceived,
+                    ex => throw new InvalidOperationException(
+                        "Shutter Current sequence produced an unexpected error (see inner exception)", ex),
+                    () => throw new InvalidOperationException(
+                        "ShutterCurrent sequence completed unexpectedly, this is probably a bug")
+                );
+            disposableSubscriptions.Add(shutterCurrentSubscription);
             }
 
         private void SubscribeRotationDirection()
@@ -143,8 +144,9 @@ namespace TA.DigitalDomeworks.DeviceInterface
                                                 ? RotationDirection.CounterClockwise
                                                 : RotationDirection.Clockwise
                                             select direction;
-            rotationDirectionSubscription = ObservableDiagnosticExtensions
-                .Trace<RotationDirection>(rotationDirectionSequence, "RotationDirection")
+            var rotationDirectionSubscription = rotationDirectionSequence
+                .Trace("RotationDirection")
+                //.ObserveOn(Scheduler.Default)
                 .Subscribe(
                     stateMachine.RotationDirectionReceived,
                     ex => throw new InvalidOperationException(
@@ -152,18 +154,22 @@ namespace TA.DigitalDomeworks.DeviceInterface
                     () => throw new InvalidOperationException(
                         "RotationDirection sequence completed unexpectedly, this is probably a bug")
                 );
+            disposableSubscriptions.Add(rotationDirectionSubscription);
             }
 
         private void SubscribeAzimuthEncoderTicks()
             {
             var azimuthEncoderTicks = channel.ObservableReceivedCharacters.AzimuthEncoderTicks();
-            azimuthEncoderSubscription = azimuthEncoderTicks.Subscribe(
-                stateMachine.AzimuthEncoderTickReceived,
-                ex => throw new InvalidOperationException(
-                    "Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
-                () => throw new InvalidOperationException(
-                    "Encoder tick sequence completed unexpectedly, this is probably a bug")
-            );
+            var azimuthEncoderSubscription = azimuthEncoderTicks
+                //.ObserveOn(Scheduler.Default)
+                .Subscribe(
+                    stateMachine.AzimuthEncoderTickReceived,
+                    ex => throw new InvalidOperationException(
+                        "Encoder tick sequence produced an unexpected error (see ineer exception)", ex),
+                    () => throw new InvalidOperationException(
+                        "Encoder tick sequence completed unexpectedly, this is probably a bug")
+                );
+            disposableSubscriptions.Add(azimuthEncoderSubscription);
             }
 
         private void RotationDirectionOnNext(RotationDirection direction) { }
@@ -178,16 +184,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         private void UnsubscribeControllerEvents()
             {
-            azimuthEncoderSubscription?.Dispose();
-            azimuthEncoderSubscription = null;
-            rotationDirectionSubscription?.Dispose();
-            rotationDirectionSubscription = null;
-            shutterCurrentSubscription?.Dispose();
-            shutterCurrentSubscription = null;
-            shutterDirectionSubscription?.Dispose();
-            shutterDirectionSubscription = null;
-            statusUpdateSubscription?.Dispose();
-            statusUpdateSubscription = null;
+            disposableSubscriptions.ForEach(m => m.Dispose());
+            disposableSubscriptions.Clear();
             }
 
         [NotifyPropertyChangedInvocator]
@@ -204,6 +202,11 @@ namespace TA.DigitalDomeworks.DeviceInterface
             stateMachine.AllStop();
             Task.Delay(pause).Wait();
             stateMachine.AllStop();
+            }
+
+        public void SlewToAzimuth(double azimuth)
+            {
+            stateMachine.RotateToAzimuthDegrees(azimuth);
             }
         }
     }

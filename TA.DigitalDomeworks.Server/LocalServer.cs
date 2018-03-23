@@ -1,8 +1,8 @@
-// This file is part of the GTD.Integra.FocusingRotator project
+// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: LocalServer.cs  Last modified: 2017-03-02@10:13 by Tim Long
+// File: LocalServer.cs  Last modified: 2018-03-22@22:32 by Tim Long
 
 using System;
 using System.Collections;
@@ -46,7 +46,6 @@ namespace TA.DigitalDomeworks.Server
             //**TODO** -Embedding is "ActiveX start". Prohibit non_AX starting?
             //
             if (args.Length > 0)
-                {
                 switch (args[0].ToLower())
                     {
                         case "-embedding":
@@ -72,10 +71,9 @@ namespace TA.DigitalDomeworks.Server
                         default:
                             MessageBox.Show(
                                 "Unknown argument: " + args[0] + "\nValid are : -register, -unregister and -embedding",
-                                "GTD.Integra.FocusingRotator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             break;
                     }
-                }
             else
                 StartedByCOM = false;
 
@@ -182,11 +180,9 @@ namespace TA.DigitalDomeworks.Server
                     s_ComObjectAssys = new List<string>(reflectionContext.Worker.DiscoveredAssemblyNames);
                     s_ComObjectTypes = new List<Type>(reflectionContext.Worker.DiscoveredTypes);
                     }
+
                 // Now load the discovered assemblies into the current domain's execution context
-                foreach (var assemblyName in s_ComObjectAssys)
-                    {
-                    Assembly.Load(assemblyName);
-                    }
+                foreach (var assemblyName in s_ComObjectAssys) Assembly.Load(assemblyName);
                 return s_ComObjectTypes.Count;
                 }
             finally
@@ -296,7 +292,7 @@ namespace TA.DigitalDomeworks.Server
         private static List<string> s_ComObjectAssys; // Dynamically loaded assemblies containing served COM objects
         private static List<Type> s_ComObjectTypes; // Served COM object types
         private static ArrayList s_ClassFactories; // Served COM object class factories
-        private static readonly string s_appId = "{7ee650cd-66d1-4ecd-9a4a-bfb7105e3115}"; // Our AppId
+        private static readonly string s_appId = "{0bac7ff1-ebe6-4df7-87df-d433a81d65cb}"; // Our AppId
         private static readonly object lockObject = new object();
         #endregion
 
@@ -367,14 +363,12 @@ namespace TA.DigitalDomeworks.Server
             lock (lockObject)
                 {
                 if (ObjectsCount <= 0 && ServerLockCount <= 0)
-                    {
                     if (StartedByCOM)
                         {
                         var wParam = new UIntPtr(0);
                         var lParam = new IntPtr(0);
                         PostThreadMessage(MainThreadId, 0x0012, wParam, lParam);
                         }
-                    }
                 }
             }
 
@@ -416,13 +410,13 @@ namespace TA.DigitalDomeworks.Server
             catch (Win32Exception)
                 {
                 MessageBox.Show(
-                    "The GTD.Integra.FocusingRotator was not " + (arg == "/register" ? "registered" : "unregistered") +
-                    " because you did not allow it.", "GTD.Integra.FocusingRotator", MessageBoxButtons.OK,
+                    "The server was not " + (arg == "/register" ? "registered" : "unregistered") +
+                    " because you did not allow it.", "ASCOM LocalServer", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 }
             catch (Exception ex)
                 {
-                MessageBox.Show(ex.ToString(), "GTD.Integra.FocusingRotator", MessageBoxButtons.OK,
+                MessageBox.Show(ex.ToString(), "ASCOM LocalServer", MessageBoxButtons.OK,
                     MessageBoxIcon.Stop);
                 }
             }
@@ -469,6 +463,7 @@ namespace TA.DigitalDomeworks.Server
                     key.SetValue("AppID", s_appId);
                     key.SetValue("AuthenticationLevel", 1, RegistryValueKind.DWord);
                     }
+
                 //
                 // HKCR\APPID\exename.ext
                 //
@@ -481,10 +476,10 @@ namespace TA.DigitalDomeworks.Server
             catch (Exception ex)
                 {
                 MessageBox.Show("Error while registering the server:\n" + ex,
-                    "GTD.Integra.FocusingRotator", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
                 }
-            finally {}
+            finally { }
 
             //
             // For each of the driver assemblies
@@ -510,16 +505,19 @@ namespace TA.DigitalDomeworks.Server
                             {
                             key2.CreateSubKey("{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}");
                             }
+
                         using (var key2 = key.CreateSubKey("ProgId"))
                             {
                             key2.SetValue(null, progid);
                             }
+
                         key.CreateSubKey("Programmable");
                         using (var key2 = key.CreateSubKey("LocalServer32"))
                             {
                             key2.SetValue(null, Application.ExecutablePath);
                             }
                         }
+
                     //
                     // HKCR\progid
                     //
@@ -531,6 +529,7 @@ namespace TA.DigitalDomeworks.Server
                             key2.SetValue(null, clsid);
                             }
                         }
+
                     //
                     // ASCOM 
                     //
@@ -549,10 +548,11 @@ namespace TA.DigitalDomeworks.Server
                 catch (Exception ex)
                     {
                     MessageBox.Show("Error while registering the server:\n" + ex,
-                        "GTD.Integra.FocusingRotator", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     bFail = true;
                     }
-                finally {}
+                finally { }
+
                 if (bFail) break;
                 }
             }
@@ -617,7 +617,7 @@ namespace TA.DigitalDomeworks.Server
                         P.Unregister(progid);
                         }
                     }
-                catch (Exception) {}
+                catch (Exception) { }
                 }
             }
         #endregion
@@ -638,10 +638,11 @@ namespace TA.DigitalDomeworks.Server
                 if (!factory.RegisterClassObject())
                     {
                     MessageBox.Show("Failed to register class factory for " + type.Name,
-                        "GTD.Integra.FocusingRotator", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return false;
                     }
                 }
+
             ClassFactory.ResumeClassObjects(); // Served objects now go live
             return true;
             }

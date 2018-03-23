@@ -43,5 +43,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         void StatusUpdateReceived(IHardwareStatus status);
 
         string Name { get; }
+
+        /// <summary>
+        /// Requests that the dome rotate to the specified azimuth in degrees,
+        /// measured from North clockwise.
+        /// </summary>
+        void RotateToAzimuthDegrees(double azimuth);
         }
     }

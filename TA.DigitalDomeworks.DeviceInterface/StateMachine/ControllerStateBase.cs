@@ -32,6 +32,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public virtual string Name => GetType().Name;
 
+        public virtual void RotateToAzimuthDegrees(double azimuth) { }
+
         protected void ResetTimeout(TimeSpan timeout)
             {
             timeoutCancellation?.Cancel();

@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using Machine.Specifications.Model;
+using NLog.Fluent;
 using TA.Ascom.ReactiveCommunications;
 
 namespace TA.DigitalDomeworks.Specifications.Fakes
@@ -69,6 +70,7 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
 
         public void Send(string txData)
             {
+            Log.Info().Message($"Send: {txData}").Property(nameof(txData), txData).Write();
             sendLog.Append(txData);
             foreach (char c in Response)
                 {

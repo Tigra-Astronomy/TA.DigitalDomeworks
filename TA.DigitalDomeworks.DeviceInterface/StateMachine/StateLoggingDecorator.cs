@@ -20,6 +20,14 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public string Name => decoratedState.Name;
 
+        public void RotateToAzimuthDegrees(double azimuth)
+            {
+            Log.Info()
+                .Message($"Rotate to azimuth {azimuth}° requested")
+                .Write();
+            decoratedState.RotateToAzimuthDegrees(azimuth);
+            }
+
         public void OnEnter()
             {
             Log.Info()

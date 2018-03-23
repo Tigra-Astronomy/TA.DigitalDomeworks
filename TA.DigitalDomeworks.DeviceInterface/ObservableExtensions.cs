@@ -7,9 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NLog.Fluent;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface
-{
+    {
     static class ObservableExtensions
         {
         /// <summary>
@@ -39,18 +40,48 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 new Regex(shutterCurrentPattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
             var buffers = source.Publish(s => s.BufferByPredicates(p => p == 'Z', q => !char.IsDigit(q)));
             var shutterCurrentValues = from buffer in buffers
-                                let message = new string(buffer.ToArray())
-                                let patternMatch = shutterCurrentRegex.Match(message)
-                                where patternMatch.Success
-                                let shutterCurrent = int.Parse(patternMatch.Groups["Current"].Value)
-                                select shutterCurrent;
+                                       let message = new string(buffer.ToArray())
+                                       let patternMatch = shutterCurrentRegex.Match(message)
+                                       where patternMatch.Success
+                                       let shutterCurrent = int.Parse(patternMatch.Groups["Current"].Value)
+                                       select shutterCurrent;
             return shutterCurrentValues.Trace("ShutterCurrent");
-        }
+            }
 
         public static IObservable<IList<char>> BufferByPredicates(this IObservable<char> source,
             Predicate<char> bufferOpening, Predicate<char> bufferClosing)
             {
             return source.Buffer(source.Where(c => bufferOpening(c)), x => source.Where(c => bufferClosing(c)));
+            }
+
+        public static IObservable<IHardwareStatus> StatusUpdates(this IObservable<char> source,
+            ControllerStatusFactory factory)
+            {
+            const string validStatusCharacters = "V+-0123456789,";
+            const string statusPattern = @"^(?<Status>V4(,\d{1,3}){22})";
+            var statusRegex = new Regex(statusPattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+            var buffers = source.Publish(s =>
+                s.BufferByPredicates(p => p == 'V', q => !validStatusCharacters.Contains(q)));
+            var statusValues = from buffer in buffers
+                               let message = new string(buffer.ToArray())
+                               let patternMatch = statusRegex.Match(message)
+                               where patternMatch.Success
+                               let status = patternMatch.Groups["Status"].Value
+                               let harwareStatus = factory.FromStatusPacket(status)
+                               select harwareStatus;
+            return statusValues.Trace("StatusUpdates");
+            }
+
+        public static IObservable<ShutterDirection> ShutterDirectionUpdates(this IObservable<char> source)
+            {
+            // Note: The zero-based index in the string must match the ordinal values in ShutterDirection
+            const string shutterMovementIndicators = "SCO";
+            var shutterDirectionSequence = from c in source
+                                           where shutterMovementIndicators.Contains(c)
+                                           let ordinal = shutterMovementIndicators.IndexOf(c)
+                                           let direction = (ShutterDirection) ordinal
+                                           select direction;
+            return shutterDirectionSequence.Trace("ShutterDirection");
             }
         }
     }

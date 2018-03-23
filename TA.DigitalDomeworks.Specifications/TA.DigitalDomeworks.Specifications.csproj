@@ -42,6 +42,9 @@
     <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Machine.Specifications.Should.0.11.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Reactive.Testing, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reactive.Testing.3.1.1\lib\net46\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -106,6 +109,7 @@
     <Compile Include="Fakes\TestableDeviceTransaction.cs" />
     <Compile Include="Fakes\TransactionExtensions.cs" />
     <Compile Include="HardwareSimulatorSpecs\SimulatorIceBreakerSpecs.cs" />
+    <Compile Include="Helpers\ObservableTestExtensions.cs" />
     <Compile Include="Helpers\SimulatorCommunicationsChannel.cs" />
     <Compile Include="Helpers\SimulatorEndpoint.cs" />
     <Compile Include="ObservableExtensionSpecs.cs" />

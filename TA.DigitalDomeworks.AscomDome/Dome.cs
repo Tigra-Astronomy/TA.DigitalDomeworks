@@ -100,7 +100,7 @@ namespace TA.DigitalDomeworks.AscomDome
 
     public void SlewToAzimuth(double Azimuth)
         {
-        throw new NotImplementedException();
+        controller.SlewToAzimuth(Azimuth);
         }
 
     public void SyncToAzimuth(double Azimuth)

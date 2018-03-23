@@ -6,9 +6,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading;
 using Machine.Specifications;
+using Microsoft.Reactive.Testing;
+using TA.Ascom.ReactiveCommunications.Diagnostics;
 using TA.DigitalDomeworks.DeviceInterface;
+using TA.DigitalDomeworks.Specifications.Helpers;
 using ObservableExtensions = TA.DigitalDomeworks.DeviceInterface.ObservableExtensions;
 
 namespace TA.DigitalDomeworks.Specifications
@@ -17,7 +22,7 @@ namespace TA.DigitalDomeworks.Specifications
     internal class when_an_encoder_tick_is_received
         {
         Establish context = () => source = "P99\nP100\nP101\n".ToObservable();
-        Because of = () => source.AzimuthEncoderTicks().Subscribe(tick => tickHistory.Add(tick));
+        Because of = () => source.AzimuthEncoderTicks().SubscribeAndWaitForCompletion(tick => tickHistory.Add(tick));
         It should_receive_the_encoder_ticks = () => tickHistory.ShouldEqual(expectedTicks);
         static List<int> expectedTicks = new List<int> {99, 100, 101};
         static IObservable<char> source;
@@ -28,10 +33,13 @@ namespace TA.DigitalDomeworks.Specifications
     internal class when_a_shutter_current_reading_is_received
         {
         Establish context = () => source = "Z8\nZ10\nZ11\n".ToObservable();
-        Because of = () => source.ShutterCurrentReadings().Subscribe(element => elementHistory.Add(element));
+        Because of = () => source
+            .ShutterCurrentReadings().Trace("Unbelievable")
+            .SubscribeAndWaitForCompletion(item => elementHistory.Add(item));
         It should_receive_the_current_readings = () => elementHistory.ShouldEqual(expectedElements);
         static List<int> elementHistory = new List<int>();
         static List<int> expectedElements = new List<int> {8, 10, 11};
         static IObservable<char> source;
+
         }
     }

@@ -21,12 +21,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     [NotifyPropertyChanged]
     public class ControllerStateMachine : INotifyHardwareStateChanged
         {
-        private readonly IControllerActions controllerActions;
+        internal IControllerActions ControllerActions { get; }
+
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
 
         public ControllerStateMachine(IControllerActions controllerActions)
             {
-            this.controllerActions = controllerActions;
+            this.ControllerActions = controllerActions;
             CurrentState = new Uninitialized();
             }
         internal IControllerState CurrentState { get; private set; }
@@ -82,7 +83,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState = new StateLoggingDecorator(targetState);
             try
                 {
-                targetState.OnEnter();
+                CurrentState.OnEnter();
                 }
             catch (Exception ex)
                 {
@@ -118,7 +119,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         internal void RequestHardwareStatus()
             {
-            controllerActions.RequestHardwareStatus();
+            ControllerActions.RequestHardwareStatus();
             }
 
         public void ShutterMotorCurrentReceived(int current)
@@ -136,7 +137,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public void AllStop()
             {
             Log.Warn().Message("Emergency Stop requested").Write();
-            controllerActions.PerformEmergencyStop();
+            ControllerActions.PerformEmergencyStop();
             }
 
         public void RotationDirectionReceived(RotationDirection direction)
@@ -154,6 +155,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
                 Log.Error().Message(message).Write();
                 throw new TimeoutException(message);
                 }
+            }
+
+        public void RotateToAzimuthDegrees(double azimuth)
+            {
+            CurrentState.RotateToAzimuthDegrees(azimuth);
             }
         }
     }

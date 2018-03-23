@@ -37,5 +37,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             }
 
         public string Name => nameof(Uninitialized);
+
+        public void RotateToAzimuthDegrees(double azimuth)
+            {
+            throw new NotImplementedException();
+            }
         }
     }
