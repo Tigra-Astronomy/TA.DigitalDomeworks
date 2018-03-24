@@ -27,7 +27,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Controller.Open(performOnConnectActions: false);
             Channel.Send(string.Empty);
             };
-        It should_update_the_position_property = () => Controller.HardwareState.AzimuthEncoderPosition.ShouldEqual(99);
+        It should_update_the_position_property = () => Controller.AzimuthEncoderPosition.ShouldEqual(99);
         Behaves_like<a_directionless_rotating_dome> _;
         }
 
@@ -44,7 +44,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Channel.Send(string.Empty);
             };
         It should_be_rotating_counter_clockwise =
-            () => Controller.HardwareState.AzimuthDirection.ShouldEqual(RotationDirection.CounterClockwise);
+            () => Controller.AzimuthDirection.ShouldEqual(RotationDirection.CounterClockwise);
         Behaves_like<a_rotating_dome> _;
         }
 
@@ -61,7 +61,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Controller.Open(performOnConnectActions: false);
             Channel.Send(string.Empty);
             };
-        It should_be_rotating_clockwise = () => HardwareState.AzimuthDirection.ShouldEqual(RotationDirection.Clockwise);
+        It should_be_rotating_clockwise = () => Controller.AzimuthDirection.ShouldEqual(RotationDirection.Clockwise);
         Behaves_like<a_rotating_dome> _;
         }
 
@@ -78,7 +78,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Controller.Open(performOnConnectActions: false);
             Channel.Send(string.Empty);
             };
-        It should_update_the_shutter_current_property = () => HardwareState.ShutterMotorCurrent.ShouldEqual(15);
+        It should_update_the_shutter_current_property = () => Controller.ShutterMotorCurrent.ShouldEqual(15);
         Behaves_like<a_dome_with_a_moving_shutter> _;
         }
 
@@ -94,7 +94,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Controller.Open(performOnConnectActions: false);
             Channel.Send(string.Empty);
             };
-        It should_be_closing = () => HardwareState.ShutterMovementDirection.ShouldEqual(ShutterDirection.Closing);
+        It should_be_closing = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.Closing);
         Behaves_like<a_dome_with_a_moving_shutter> _;
         }
 
@@ -110,7 +110,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             Controller.Open(performOnConnectActions: false);
             Channel.Send(string.Empty);
             };
-        It should_be_opening = () => HardwareState.ShutterMovementDirection.ShouldEqual(ShutterDirection.Opening);
+        It should_be_opening = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.Opening);
         Behaves_like<a_dome_with_a_moving_shutter> _;
         }
 

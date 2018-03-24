@@ -8,7 +8,7 @@ namespace TA.DigitalDomeworks.Server
     /// </summary>
     class GarbageCollection
     {
-        protected bool m_bContinueThread;
+        protected volatile bool m_bContinueThread;
         protected bool m_GCWatchStopped;
         protected int m_iInterval;
         protected ManualResetEvent m_EventThreadEnded;

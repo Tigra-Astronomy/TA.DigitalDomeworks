@@ -104,9 +104,9 @@ namespace TA.DigitalDomeworks.Server
                 {
                 EnsureControllerInstanceCreatedAndOpen();
                 }
-            catch (TransactionException trex)
+            catch (TimeoutException tex)
                 {
-                log.Error(trex, $"NOT CONNECTED due to transaction exception: {trex.Transaction}");
+                log.Error(tex, $"Not connected because state machine did not become ready");
                 DestroyControllerInstance();
                 return null;
                 }
@@ -133,7 +133,8 @@ namespace TA.DigitalDomeworks.Server
                 }
 
             var instance = controllerInstance.Single();
-            instance.Open(performActionsOnOpen);
+            if (!instance.IsConnected)
+                instance.Open(performActionsOnOpen);
             }
 
         [Writer]

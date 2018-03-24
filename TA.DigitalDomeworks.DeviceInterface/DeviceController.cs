@@ -29,7 +29,6 @@ namespace TA.DigitalDomeworks.DeviceInterface
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
         [NotNull] private readonly ControllerStateMachine stateMachine;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
-        [CanBeNull] private ReactiveTransactionProcessor transactionProcessor;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
             ControllerStateMachine machine)
@@ -39,27 +38,38 @@ namespace TA.DigitalDomeworks.DeviceInterface
             stateMachine = machine;
             }
 
-        public INotifyHardwareStateChanged HardwareState => stateMachine;
+        public int AzimuthEncoderPosition => stateMachine.AzimuthEncoderPosition;
 
         /// <summary>
         ///     <c>true</c> if any part of the building is moving.
         /// </summary>
-        public bool IsMoving => HardwareState.AzimuthMotorActive || HardwareState.ShutterMotorActive;
+        public bool IsMoving => stateMachine.AzimuthMotorActive || stateMachine.ShutterMotorActive;
+
+        public bool IsConnected => channel.IsOpen;
+
+        public bool AzimuthMotorActive => stateMachine.AzimuthMotorActive;
+
+        public RotationDirection AzimuthDirection => stateMachine.AzimuthDirection;
+
+        public ShutterDirection ShutterMovementDirection => stateMachine.ShutterMovementDirection;
+
+        public int ShutterMotorCurrent => stateMachine.ShutterMotorCurrent;
+
+        public bool ShutterMotorActive => stateMachine.ShutterMotorActive;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Open(bool performOnConnectActions = true)
             {
-            var observer = new TransactionObserver(channel);
-            transactionProcessor = new ReactiveTransactionProcessor();
-            transactionProcessor.SubscribeTransactionObserver(observer);
-            channel.Open();
             SubscribeControllerEvents();
+            channel.Open();
             if (performOnConnectActions)
                 stateMachine.Initialize(new RequestStatus(stateMachine));
             else
+                {
                 stateMachine.Initialize(new Ready(stateMachine));
-            stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
+                stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
+                }
             }
 
         private void SubscribeControllerEvents()
@@ -177,8 +187,6 @@ namespace TA.DigitalDomeworks.DeviceInterface
         public void Close()
             {
             UnsubscribeControllerEvents();
-            transactionProcessor?.Dispose();
-            transactionProcessor = null;
             channel.Close();
             }
 
@@ -207,6 +215,16 @@ namespace TA.DigitalDomeworks.DeviceInterface
         public void SlewToAzimuth(double azimuth)
             {
             stateMachine.RotateToAzimuthDegrees(azimuth);
+            }
+
+        public void OpenShutter()
+            {
+            stateMachine.OpenShutter();
+            }
+
+        public void CloseShutter()
+            {
+            stateMachine.CloseShutter();
             }
         }
     }

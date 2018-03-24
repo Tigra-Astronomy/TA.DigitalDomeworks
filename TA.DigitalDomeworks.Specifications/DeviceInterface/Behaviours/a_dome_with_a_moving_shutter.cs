@@ -12,10 +12,10 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours
     [Behaviors]
     internal class a_dome_with_a_moving_shutter : device_controller_behaviour
         {
-        It should_not_have_rotation_direction = () => Controller.HardwareState.AzimuthDirection.ShouldEqual(RotationDirection.None);
+        It should_not_have_rotation_direction = () => Controller.AzimuthDirection.ShouldEqual(RotationDirection.None);
         It should_not_indicate_that_the_azimuth_motor_is_active =
-            () => Controller.HardwareState.AzimuthMotorActive.ShouldBeFalse();
-        It should_indicate_that_the_shutter_motor_is_active = () => Controller.HardwareState.ShutterMotorActive.ShouldBeTrue();
+            () => Controller.AzimuthMotorActive.ShouldBeFalse();
+        It should_indicate_that_the_shutter_motor_is_active = () => Controller.ShutterMotorActive.ShouldBeTrue();
         It should_indicate_that_something_is_moving = () => Controller.IsMoving.ShouldBeTrue();
         }
     }

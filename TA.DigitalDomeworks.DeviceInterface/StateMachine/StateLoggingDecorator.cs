@@ -28,6 +28,22 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             decoratedState.RotateToAzimuthDegrees(azimuth);
             }
 
+        public void OpenShutter()
+            {
+            Log.Info()
+                .Message("Open Shutter requested")
+                .Write();
+            decoratedState.OpenShutter();
+            }
+
+        public void CloseShutter()
+            {
+            Log.Info()
+                .Message("Close Shutter requested")
+                .Write();
+            decoratedState.CloseShutter();
+            }
+
         public void OnEnter()
             {
             Log.Info()

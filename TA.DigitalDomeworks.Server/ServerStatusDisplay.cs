@@ -109,19 +109,19 @@ namespace TA.DigitalDomeworks.Server
              */
             disposableSubscriptions.Add(
                 controller
-                .GetObservableValueFor(p => p.HardwareState.AzimuthMotorActive)
+                .GetObservableValueFor(p => p.AzimuthMotorActive)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(motorActive => AzimuthMotorAnnunciator.Mute = !motorActive)
                 );
             disposableSubscriptions.Add(
                 controller
-                    .GetObservableValueFor(p => p.HardwareState.AzimuthDirection)
+                    .GetObservableValueFor(p => p.AzimuthDirection)
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(SetRotationDirection)
             );
             disposableSubscriptions.Add(
                 controller
-                    .GetObservableValueFor(p => p.HardwareState.AzimuthEncoderPosition)
+                    .GetObservableValueFor(p => p.AzimuthEncoderPosition)
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(SetAzimuthPosition)
             );

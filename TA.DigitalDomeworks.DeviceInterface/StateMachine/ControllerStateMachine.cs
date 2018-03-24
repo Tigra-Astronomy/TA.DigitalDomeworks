@@ -5,7 +5,9 @@
 // File: ControllerStateMachine.cs  Last modified: 2018-03-17@01:03 by Tim Long
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -160,6 +162,16 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public void RotateToAzimuthDegrees(double azimuth)
             {
             CurrentState.RotateToAzimuthDegrees(azimuth);
+            }
+
+        public void OpenShutter()
+            {
+            CurrentState.OpenShutter();
+            }
+
+        public void CloseShutter()
+            {
+            CurrentState.CloseShutter();
             }
         }
     }

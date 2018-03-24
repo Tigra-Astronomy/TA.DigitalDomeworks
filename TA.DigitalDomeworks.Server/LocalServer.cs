@@ -118,7 +118,7 @@ namespace TA.DigitalDomeworks.Server
             RegisterClassFactories();
 
             // Start up the garbage collection thread.
-            var GarbageCollector = new GarbageCollection(1000);
+            var GarbageCollector = new GarbageCollection(10000);
             var GCThread = new Thread(GarbageCollector.GCWatch);
             GCThread.Name = "Garbage Collection Thread";
             GCThread.Start();

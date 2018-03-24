@@ -34,6 +34,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public virtual void RotateToAzimuthDegrees(double azimuth) { }
 
+        public virtual void OpenShutter() { }
+
+        public virtual void CloseShutter() { }
+
         protected void ResetTimeout(TimeSpan timeout)
             {
             timeoutCancellation?.Cancel();
@@ -55,6 +59,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
                 if (cancel.IsCancellationRequested)
                     return;
                 HandleTimeout();
+                }
+            catch (TaskCanceledException)
+                {
+                // This is expected, no action necessary.
                 }
             catch (Exception ex)
                 {

@@ -2,9 +2,8 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: RxControllerActions.cs  Last modified: 2018-03-20@01:16 by Tim Long
+// File: RxControllerActions.cs  Last modified: 2018-03-24@22:27 by Tim Long
 
-using System;
 using TA.Ascom.ReactiveCommunications;
 using TI.DigitalDomeWorks;
 
@@ -31,22 +30,23 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void RotateToAzimuth(int degreesClockwiseFromNorth)
             {
-            throw new NotImplementedException();
+            var cmd = string.Format(Constants.CmdGotoAz, degreesClockwiseFromNorth);
+            channel.Send(cmd);
             }
 
         public void OpenShutter()
             {
-            throw new NotImplementedException();
+            channel.Send(Constants.CmdOpen);
             }
 
         public void CloseShutter()
             {
-            throw new NotImplementedException();
+            channel.Send(Constants.CmdClose);
             }
 
         public void RotateToHomePosition()
             {
-            throw new NotImplementedException();
+            channel.Send(Constants.CmdGotoHome);
             }
         }
     }

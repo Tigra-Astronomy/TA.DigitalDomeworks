@@ -28,8 +28,6 @@ namespace TA.DigitalDomeworks.Specifications.Contexts
         #region Convenience properties
         public static DeviceController Controller => Context.Controller;
 
-        public static INotifyHardwareStateChanged HardwareState => Context.Controller.HardwareState;
-
         public static ICommunicationChannel Channel => Context.Channel;
 
         public static FakeCommunicationChannel FakeChannel => Context.Channel as FakeCommunicationChannel;

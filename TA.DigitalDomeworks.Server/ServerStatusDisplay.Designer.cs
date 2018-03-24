@@ -179,7 +179,7 @@
             this.AzimuthPositionAnnunciator.Name = "AzimuthPositionAnnunciator";
             this.AzimuthPositionAnnunciator.Size = new System.Drawing.Size(40, 17);
             this.AzimuthPositionAnnunciator.TabIndex = 5;
-            this.AzimuthPositionAnnunciator.Tag = "{0:###}°";
+            this.AzimuthPositionAnnunciator.Tag = "{0:D3}°";
             this.AzimuthPositionAnnunciator.Text = "000°";
             // 
             // ShutterTitle
@@ -256,7 +256,7 @@
             this.ShutterCurrentAnnunciator.Name = "ShutterCurrentAnnunciator";
             this.ShutterCurrentAnnunciator.Size = new System.Drawing.Size(32, 17);
             this.ShutterCurrentAnnunciator.TabIndex = 10;
-            this.ShutterCurrentAnnunciator.Tag = "{0:###}";
+            this.ShutterCurrentAnnunciator.Tag = "{0:D3}";
             this.ShutterCurrentAnnunciator.Text = "000";
             // 
             // SetupCommand

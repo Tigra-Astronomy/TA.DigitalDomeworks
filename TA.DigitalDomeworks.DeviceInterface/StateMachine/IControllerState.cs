@@ -49,5 +49,15 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         /// measured from North clockwise.
         /// </summary>
         void RotateToAzimuthDegrees(double azimuth);
+
+        /// <summary>
+        /// Action: Open Shutter
+        /// </summary>
+        void OpenShutter();
+
+        /// <summary>
+        /// Action: Close Shutter
+        /// </summary>
+        void CloseShutter();
         }
     }

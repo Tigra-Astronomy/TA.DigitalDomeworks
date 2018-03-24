@@ -40,7 +40,17 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void RotateToAzimuthDegrees(double azimuth)
             {
-            throw new NotImplementedException();
+            throw uninitialized;
+            }
+
+        public void OpenShutter()
+            {
+            throw uninitialized;
+            }
+
+        public void CloseShutter()
+            {
+            throw uninitialized;
             }
         }
     }

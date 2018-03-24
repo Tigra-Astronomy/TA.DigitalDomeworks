@@ -37,7 +37,22 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void RotateToAzimuthDegrees(double azimuth)
             {
             base.RotateToAzimuthDegrees(azimuth);
-            machine.ControllerActions.RotateToAzimuth((int)azimuth);
+            machine.ControllerActions.RotateToAzimuth((int) azimuth);
+            machine.TransitionToState(new Rotating(machine));
+            }
+
+        public override void OpenShutter()
+            {
+            base.OpenShutter();
+            machine.ControllerActions.OpenShutter();
+            machine.TransitionToState(new ShutterMoving(machine));
+            }
+
+        public override void CloseShutter()
+            {
+            base.CloseShutter();
+            machine.ControllerActions.CloseShutter();
+            machine.TransitionToState(new ShutterMoving(machine));
             }
         }
     }

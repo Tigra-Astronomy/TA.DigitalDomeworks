@@ -67,7 +67,7 @@ namespace TA.DigitalDomeworks.AscomDome
 
     public void CloseShutter()
         {
-        throw new NotImplementedException();
+        controller.CloseShutter();
         }
 
     public void FindHome()
@@ -77,7 +77,7 @@ namespace TA.DigitalDomeworks.AscomDome
 
     public void OpenShutter()
         {
-        throw new NotImplementedException();
+        controller.OpenShutter();
         }
 
     public void Park()
@@ -107,7 +107,7 @@ namespace TA.DigitalDomeworks.AscomDome
 
         public bool Connected
             {
-            get => controller != null;
+            get => controller?.IsConnected ?? false;
             set
                 {
                 if (value)
