@@ -44,6 +44,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void OpenShutter()
             {
             base.OpenShutter();
+            machine.ShutterMovementDirection = ShutterDirection.Opening;
             machine.ControllerActions.OpenShutter();
             machine.TransitionToState(new Rotating(machine));
             }
@@ -51,6 +52,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void CloseShutter()
             {
             base.CloseShutter();
+            machine.ShutterMovementDirection = ShutterDirection.Closing;
             machine.ControllerActions.CloseShutter();
             machine.TransitionToState(new Rotating(machine));
             }
