@@ -56,7 +56,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.StatusUpdateReceived(status);
             CancelTimeout();
-            machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
 

@@ -32,18 +32,23 @@ namespace TA.DigitalDomeworks.Server
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.picASCOM = new System.Windows.Forms.PictureBox();
-            this.communicationSettingsControl1 = new CommunicationSettingsControl();
             this.AboutBox = new System.Windows.Forms.Button();
             this.ConnectionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.communicationSettingsControl1 = new TA.DigitalDomeworks.Server.CommunicationSettingsControl();
+            this.CommunicationsGroup = new System.Windows.Forms.GroupBox();
+            this.StartupOptionsGroup = new System.Windows.Forms.GroupBox();
+            this.PerformShutterRecovery = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).BeginInit();
+            this.CommunicationsGroup.SuspendLayout();
+            this.StartupOptionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdOK
             // 
-            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(12, 139);
+            this.cmdOK.Location = new System.Drawing.Point(12, 406);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -53,9 +58,9 @@ namespace TA.DigitalDomeworks.Server
             // 
             // cmdCancel
             // 
-            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(77, 139);
+            this.cmdCancel.Location = new System.Drawing.Point(77, 406);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -68,7 +73,7 @@ namespace TA.DigitalDomeworks.Server
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picASCOM.Image = global::TA.DigitalDomeworks.Server.Properties.Resources.ASCOM;
-            this.picASCOM.Location = new System.Drawing.Point(292, 9);
+            this.picASCOM.Location = new System.Drawing.Point(581, 9);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);
             this.picASCOM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -77,17 +82,10 @@ namespace TA.DigitalDomeworks.Server
             this.picASCOM.Click += new System.EventHandler(this.BrowseToAscom);
             this.picASCOM.DoubleClick += new System.EventHandler(this.BrowseToAscom);
             // 
-            // communicationSettingsControl1
-            // 
-            this.ConnectionErrorProvider.SetIconAlignment(this.communicationSettingsControl1, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
-            this.communicationSettingsControl1.Location = new System.Drawing.Point(12, 43);
-            this.communicationSettingsControl1.Name = "communicationSettingsControl1";
-            this.communicationSettingsControl1.Size = new System.Drawing.Size(238, 22);
-            this.communicationSettingsControl1.TabIndex = 7;
-            // 
             // AboutBox
             // 
-            this.AboutBox.Location = new System.Drawing.Point(263, 139);
+            this.AboutBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AboutBox.Location = new System.Drawing.Point(552, 406);
             this.AboutBox.Name = "AboutBox";
             this.AboutBox.Size = new System.Drawing.Size(75, 23);
             this.AboutBox.TabIndex = 8;
@@ -101,15 +99,56 @@ namespace TA.DigitalDomeworks.Server
             this.ConnectionErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
             this.ConnectionErrorProvider.ContainerControl = this;
             // 
+            // communicationSettingsControl1
+            // 
+            this.communicationSettingsControl1.Location = new System.Drawing.Point(6, 19);
+            this.communicationSettingsControl1.Name = "communicationSettingsControl1";
+            this.communicationSettingsControl1.Size = new System.Drawing.Size(238, 22);
+            this.communicationSettingsControl1.TabIndex = 7;
+            // 
+            // CommunicationsGroup
+            // 
+            this.CommunicationsGroup.Controls.Add(this.communicationSettingsControl1);
+            this.CommunicationsGroup.Location = new System.Drawing.Point(12, 12);
+            this.CommunicationsGroup.Name = "CommunicationsGroup";
+            this.CommunicationsGroup.Size = new System.Drawing.Size(262, 53);
+            this.CommunicationsGroup.TabIndex = 9;
+            this.CommunicationsGroup.TabStop = false;
+            this.CommunicationsGroup.Text = "Communications";
+            // 
+            // StartupOptionsGroup
+            // 
+            this.StartupOptionsGroup.Controls.Add(this.PerformShutterRecovery);
+            this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 71);
+            this.StartupOptionsGroup.Name = "StartupOptionsGroup";
+            this.StartupOptionsGroup.Size = new System.Drawing.Size(262, 100);
+            this.StartupOptionsGroup.TabIndex = 10;
+            this.StartupOptionsGroup.TabStop = false;
+            this.StartupOptionsGroup.Text = "Startup Options";
+            // 
+            // PerformShutterRecovery
+            // 
+            this.PerformShutterRecovery.AutoSize = true;
+            this.PerformShutterRecovery.Checked = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.PerformShutterRecovery;
+            this.PerformShutterRecovery.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PerformShutterRecovery.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "PerformShutterRecovery", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.PerformShutterRecovery.Location = new System.Drawing.Point(7, 20);
+            this.PerformShutterRecovery.Name = "PerformShutterRecovery";
+            this.PerformShutterRecovery.Size = new System.Drawing.Size(233, 17);
+            this.PerformShutterRecovery.TabIndex = 0;
+            this.PerformShutterRecovery.Text = "Close the shutter if the position is not known";
+            this.PerformShutterRecovery.UseVisualStyleBackColor = true;
+            // 
             // SetupDialogForm
             // 
             this.AcceptButton = this.cmdOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(350, 175);
+            this.ClientSize = new System.Drawing.Size(639, 442);
+            this.Controls.Add(this.StartupOptionsGroup);
+            this.Controls.Add(this.CommunicationsGroup);
             this.Controls.Add(this.AboutBox);
-            this.Controls.Add(this.communicationSettingsControl1);
             this.Controls.Add(this.picASCOM);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdOK);
@@ -125,8 +164,12 @@ namespace TA.DigitalDomeworks.Server
             this.Load += new System.EventHandler(this.SetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
+            this.CommunicationsGroup.ResumeLayout(false);
+            this.StartupOptionsGroup.ResumeLayout(false);
+            this.StartupOptionsGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -137,5 +180,8 @@ namespace TA.DigitalDomeworks.Server
         private CommunicationSettingsControl communicationSettingsControl1;
         private System.Windows.Forms.Button AboutBox;
         private System.Windows.Forms.ErrorProvider ConnectionErrorProvider;
+        private System.Windows.Forms.GroupBox CommunicationsGroup;
+        private System.Windows.Forms.GroupBox StartupOptionsGroup;
+        private System.Windows.Forms.CheckBox PerformShutterRecovery;
     }
 }

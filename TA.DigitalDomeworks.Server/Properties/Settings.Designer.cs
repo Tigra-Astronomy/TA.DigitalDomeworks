@@ -70,5 +70,17 @@ namespace TA.DigitalDomeworks.Server.Properties {
                 this["MainFormLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PerformShutterRecovery {
+            get {
+                return ((bool)(this["PerformShutterRecovery"]));
+            }
+            set {
+                this["PerformShutterRecovery"] = value;
+            }
+        }
     }
 }

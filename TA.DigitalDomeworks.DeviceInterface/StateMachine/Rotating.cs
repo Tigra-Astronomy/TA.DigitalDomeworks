@@ -24,6 +24,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             base.OnEnter();
             ResetTimeout(RotationTimeout);
             machine.AzimuthMotorActive = true;
+            machine.AtHome = false;
             }
 
         public override void OnExit()
@@ -54,7 +55,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void StatusUpdateReceived(IHardwareStatus status)
             {
             CancelTimeout();
-            machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
 

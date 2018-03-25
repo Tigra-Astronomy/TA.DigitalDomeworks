@@ -29,11 +29,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             machine.TransitionToState(new ShutterMoving(machine));
             }
 
-        public override void StatusUpdateReceived(IHardwareStatus status)
-            {
-            machine.UpdateStatus(status);
-            }
-
         public override void RotateToAzimuthDegrees(double azimuth)
             {
             base.RotateToAzimuthDegrees(azimuth);

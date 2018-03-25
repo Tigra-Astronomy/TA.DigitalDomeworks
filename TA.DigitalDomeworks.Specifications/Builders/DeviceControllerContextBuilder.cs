@@ -59,9 +59,10 @@ namespace TA.DigitalDomeworks.Specifications.Builders
 
             var controllerActions = new RxControllerActions(channel);
             var controllerStateMachine = new ControllerStateMachine(controllerActions);
+            var controllerOptions = new DeviceControllerOptions();
 
             // Build the device controller
-            var controller = new DeviceController(channel, statusFactory, controllerStateMachine);
+            var controller = new DeviceController(channel, statusFactory, controllerStateMachine, controllerOptions);
 
             // Assemble the device controller test context
             var context = new DeviceControllerContext

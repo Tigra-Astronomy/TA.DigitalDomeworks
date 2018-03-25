@@ -47,6 +47,15 @@
             this.ShutterCurrentBar = new System.Windows.Forms.ProgressBar();
             this.OpenButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
+            this.ShutterOpenAnnunciator = new ASCOM.Controls.Annunciator();
+            this.AtHomeAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ShutterClosedAnnunciator = new ASCOM.Controls.Annunciator();
+            this.ShutterIndeterminateAnnunciator = new ASCOM.Controls.Annunciator();
+            this.label2 = new System.Windows.Forms.Label();
+            this.UserPin1Annunciator = new ASCOM.Controls.Annunciator();
+            this.UserPin2Annunciator = new ASCOM.Controls.Annunciator();
+            this.UserPin3Annunciator = new ASCOM.Controls.Annunciator();
+            this.UserPin4Annunciator = new ASCOM.Controls.Annunciator();
             this.annunciatorPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,21 +97,30 @@
             // 
             // annunciatorPanel1
             // 
-            this.annunciatorPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.annunciatorPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.annunciatorPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.annunciatorPanel1.Controls.Add(this.RotationTitle);
             this.annunciatorPanel1.Controls.Add(this.CounterClockwiseAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.AzimuthMotorAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ClockwiseAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.AzimuthPositionAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.AtHomeAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.UserPin1Annunciator);
+            this.annunciatorPanel1.Controls.Add(this.UserPin2Annunciator);
+            this.annunciatorPanel1.Controls.Add(this.UserPin3Annunciator);
+            this.annunciatorPanel1.Controls.Add(this.UserPin4Annunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterTitle);
             this.annunciatorPanel1.Controls.Add(this.ShutterOpeningAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterMotorAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterClosingAnnunciator);
             this.annunciatorPanel1.Controls.Add(this.ShutterCurrentAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterOpenAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterClosedAnnunciator);
+            this.annunciatorPanel1.Controls.Add(this.ShutterIndeterminateAnnunciator);
             this.annunciatorPanel1.Location = new System.Drawing.Point(96, 12);
             this.annunciatorPanel1.Name = "annunciatorPanel1";
-            this.annunciatorPanel1.Size = new System.Drawing.Size(219, 37);
+            this.annunciatorPanel1.Size = new System.Drawing.Size(387, 37);
             this.annunciatorPanel1.TabIndex = 5;
             // 
             // RotationTitle
@@ -245,11 +263,11 @@
             // 
             // ShutterCurrentAnnunciator
             // 
-            this.ShutterCurrentAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterCurrentAnnunciator.ActiveColor = System.Drawing.Color.LightGoldenrodYellow;
             this.ShutterCurrentAnnunciator.AutoSize = true;
             this.ShutterCurrentAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.ShutterCurrentAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
-            this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.PaleGoldenrod;
+            this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.LightGoldenrodYellow;
             this.ShutterCurrentAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterCurrentAnnunciator.Location = new System.Drawing.Point(171, 17);
             this.ShutterCurrentAnnunciator.Mute = false;
@@ -271,11 +289,13 @@
             // 
             // ShutterCurrentBar
             // 
+            this.ShutterCurrentBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ShutterCurrentBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ShutterCurrentBar.Location = new System.Drawing.Point(96, 55);
+            this.ShutterCurrentBar.Location = new System.Drawing.Point(210, 58);
             this.ShutterCurrentBar.Maximum = 20;
             this.ShutterCurrentBar.Name = "ShutterCurrentBar";
-            this.ShutterCurrentBar.Size = new System.Drawing.Size(219, 10);
+            this.ShutterCurrentBar.Size = new System.Drawing.Size(273, 10);
             this.ShutterCurrentBar.TabIndex = 11;
             // 
             // OpenButton
@@ -296,13 +316,137 @@
             this.CloseButton.Text = "Close";
             this.CloseButton.UseVisualStyleBackColor = true;
             // 
+            // ShutterOpenAnnunciator
+            // 
+            this.ShutterOpenAnnunciator.ActiveColor = System.Drawing.Color.LightGoldenrodYellow;
+            this.ShutterOpenAnnunciator.AutoSize = true;
+            this.ShutterOpenAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterOpenAnnunciator.Cadence = ASCOM.Controls.CadencePattern.Wink;
+            this.ShutterOpenAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterOpenAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterOpenAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterOpenAnnunciator.Location = new System.Drawing.Point(209, 17);
+            this.ShutterOpenAnnunciator.Name = "ShutterOpenAnnunciator";
+            this.ShutterOpenAnnunciator.Size = new System.Drawing.Size(40, 17);
+            this.ShutterOpenAnnunciator.TabIndex = 11;
+            this.ShutterOpenAnnunciator.Text = "Open";
+            // 
+            // AtHomeAnnunciator
+            // 
+            this.AtHomeAnnunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.AtHomeAnnunciator.AutoSize = true;
+            this.AtHomeAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.AtHomeAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.AtHomeAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AtHomeAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.AtHomeAnnunciator.Location = new System.Drawing.Point(217, 0);
+            this.AtHomeAnnunciator.Name = "AtHomeAnnunciator";
+            this.AtHomeAnnunciator.Size = new System.Drawing.Size(40, 17);
+            this.AtHomeAnnunciator.TabIndex = 12;
+            this.AtHomeAnnunciator.Text = "Home";
+            // 
+            // ShutterClosedAnnunciator
+            // 
+            this.ShutterClosedAnnunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.ShutterClosedAnnunciator.AutoSize = true;
+            this.ShutterClosedAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterClosedAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterClosedAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterClosedAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterClosedAnnunciator.Location = new System.Drawing.Point(255, 17);
+            this.ShutterClosedAnnunciator.Name = "ShutterClosedAnnunciator";
+            this.ShutterClosedAnnunciator.Size = new System.Drawing.Size(56, 17);
+            this.ShutterClosedAnnunciator.TabIndex = 13;
+            this.ShutterClosedAnnunciator.Text = "Closed";
+            // 
+            // ShutterIndeterminateAnnunciator
+            // 
+            this.ShutterIndeterminateAnnunciator.ActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterIndeterminateAnnunciator.AutoSize = true;
+            this.ShutterIndeterminateAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterIndeterminateAnnunciator.Cadence = ASCOM.Controls.CadencePattern.BlinkAlarm;
+            this.ShutterIndeterminateAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.ShutterIndeterminateAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterIndeterminateAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterIndeterminateAnnunciator.Location = new System.Drawing.Point(317, 17);
+            this.ShutterIndeterminateAnnunciator.Name = "ShutterIndeterminateAnnunciator";
+            this.ShutterIndeterminateAnnunciator.Size = new System.Drawing.Size(64, 17);
+            this.ShutterIndeterminateAnnunciator.TabIndex = 15;
+            this.ShutterIndeterminateAnnunciator.Text = "Unknown";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(93, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(108, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Shutter Motor Current";
+            // 
+            // UserPin1Annunciator
+            // 
+            this.UserPin1Annunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.UserPin1Annunciator.AutoSize = true;
+            this.UserPin1Annunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.UserPin1Annunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.UserPin1Annunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin1Annunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin1Annunciator.Location = new System.Drawing.Point(263, 0);
+            this.UserPin1Annunciator.Name = "UserPin1Annunciator";
+            this.UserPin1Annunciator.Size = new System.Drawing.Size(24, 17);
+            this.UserPin1Annunciator.TabIndex = 16;
+            this.UserPin1Annunciator.Text = " 1";
+            // 
+            // UserPin2Annunciator
+            // 
+            this.UserPin2Annunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.UserPin2Annunciator.AutoSize = true;
+            this.UserPin2Annunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.UserPin2Annunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.UserPin2Annunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin2Annunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin2Annunciator.Location = new System.Drawing.Point(293, 0);
+            this.UserPin2Annunciator.Name = "UserPin2Annunciator";
+            this.UserPin2Annunciator.Size = new System.Drawing.Size(24, 17);
+            this.UserPin2Annunciator.TabIndex = 17;
+            this.UserPin2Annunciator.Text = " 2";
+            // 
+            // UserPin3Annunciator
+            // 
+            this.UserPin3Annunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.UserPin3Annunciator.AutoSize = true;
+            this.UserPin3Annunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.UserPin3Annunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.UserPin3Annunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin3Annunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin3Annunciator.Location = new System.Drawing.Point(323, 0);
+            this.UserPin3Annunciator.Name = "UserPin3Annunciator";
+            this.UserPin3Annunciator.Size = new System.Drawing.Size(24, 17);
+            this.UserPin3Annunciator.TabIndex = 17;
+            this.UserPin3Annunciator.Text = " 3";
+            // 
+            // UserPin4Annunciator
+            // 
+            this.UserPin4Annunciator.ActiveColor = System.Drawing.Color.DarkSeaGreen;
+            this.UserPin4Annunciator.AutoSize = true;
+            this.UserPin4Annunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.UserPin4Annunciator.Font = new System.Drawing.Font("Consolas", 10F);
+            this.UserPin4Annunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin4Annunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.UserPin4Annunciator.Location = new System.Drawing.Point(353, 0);
+            this.UserPin4Annunciator.Name = "UserPin4Annunciator";
+            this.UserPin4Annunciator.Size = new System.Drawing.Size(24, 17);
+            this.UserPin4Annunciator.TabIndex = 17;
+            this.UserPin4Annunciator.Text = " 4";
+            // 
             // ServerStatusDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(331, 105);
+            this.ClientSize = new System.Drawing.Size(499, 105);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.OpenButton);
             this.Controls.Add(this.SetupCommand);
@@ -322,6 +466,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.LocationChanged += new System.EventHandler(this.frmMain_LocationChanged);
+            this.VisibleChanged += new System.EventHandler(this.ServerStatusDisplay_VisibleChanged);
             this.annunciatorPanel1.ResumeLayout(false);
             this.annunciatorPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -350,6 +495,15 @@
         private System.Windows.Forms.ProgressBar ShutterCurrentBar;
         private System.Windows.Forms.Button OpenButton;
         private System.Windows.Forms.Button CloseButton;
+        private ASCOM.Controls.Annunciator AtHomeAnnunciator;
+        private ASCOM.Controls.Annunciator UserPin1Annunciator;
+        private ASCOM.Controls.Annunciator UserPin2Annunciator;
+        private ASCOM.Controls.Annunciator UserPin3Annunciator;
+        private ASCOM.Controls.Annunciator UserPin4Annunciator;
+        private ASCOM.Controls.Annunciator ShutterOpenAnnunciator;
+        private ASCOM.Controls.Annunciator ShutterClosedAnnunciator;
+        private ASCOM.Controls.Annunciator ShutterIndeterminateAnnunciator;
+        private System.Windows.Forms.Label label2;
     }
 }
 

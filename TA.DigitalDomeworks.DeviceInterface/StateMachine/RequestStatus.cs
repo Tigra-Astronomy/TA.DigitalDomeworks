@@ -48,7 +48,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public override void StatusUpdateReceived(IHardwareStatus status)
             {
-            machine.UpdateStatus(status);
             machine.TransitionToState(new Ready(machine));
             }
         }

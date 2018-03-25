@@ -14,6 +14,7 @@ using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
 using TA.DigitalDomeworks.Specifications.Helpers;
+using TI.DigitalDomeWorks;
 
 #pragma warning disable 0169
 
@@ -37,10 +38,11 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             .Build();
 
         Because of = () => exception = Catch.Exception(() => Controller.Open());
-        It should_send_a_status_request = () =>
-            (Channel as SimulatorCommunicationsChannel).SendLog.Single().ShouldEqual("GINF");
+        It should_send_a_status_request = () => SimulatorChannel.SendLog.First().ShouldEqual("GINF");
+        It should_perform_shutter_recovery = () => SimulatorChannel.SendLog.Skip(1).First().ShouldEqual(Constants.CmdClose);
         It should_connect_successfully = () => exception.ShouldBeNull();
         static Exception exception;
         Behaves_like<a_stopped_dome> stopped_dome;
+        static SimulatorCommunicationsChannel SimulatorChannel => (SimulatorCommunicationsChannel) Channel;
         }
     }

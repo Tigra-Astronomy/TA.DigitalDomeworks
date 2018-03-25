@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-03-25@02:11 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-03-25@18:17 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -32,6 +32,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         [CanBeNull]
         public IHardwareStatus HardwareStatus { get; private set; }
+
+        public bool AtHome { get; set; }
+
+        public SensorState ShutterPosition { get; set; }
 
         public int AzimuthEncoderPosition { get; internal set; }
 
@@ -104,6 +108,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             ShutterMotorActive = false;
             ShutterMovementDirection = ShutterDirection.None;
             ShutterMotorCurrent = 0;
+            ShutterPosition = status.ShutterSensor;
+            AtHome = status.AtHome;
             }
 
         internal void RequestHardwareStatus()
@@ -135,6 +141,15 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.RotationDetected();
             }
 
+        /// <summary>
+        ///     Waits for the state machine to enter the Ready state. If the state is not reached within
+        ///     the specified time limit, an exception is thrown.
+        /// </summary>
+        /// <param name="timeout">THe maximum amount of time to wait.</param>
+        /// <exception cref="TimeoutException">
+        ///     Thrown if the state machine is not ready within the
+        ///     allotted time.
+        /// </exception>
         public void WaitForReady(TimeSpan timeout)
             {
             var signalled = InReadyState.WaitOne(timeout);
@@ -171,6 +186,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public void HardwareStatusReceived(IHardwareStatus status)
             {
             HardwareStatus = status;
+            UpdateStatus(status);
             CurrentState.StatusUpdateReceived(status);
             }
         #endregion State triggers

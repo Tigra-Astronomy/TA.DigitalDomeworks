@@ -128,6 +128,7 @@ namespace TA.DigitalDomeworks.Server
             {
             if (!controllerInstance.Any())
                 {
+                CompositionRoot.BeginSessionScope();
                 var controller = CompositionRoot.Kernel.Get<DeviceController>();
                 controllerInstance = new Maybe<DeviceController>(controller);
                 }
@@ -172,6 +173,8 @@ namespace TA.DigitalDomeworks.Server
                     var controller = controllerInstance.Single();
                     controller.Close();
                     }
+
+                controllerInstance = Maybe<DeviceController>.Empty;
                 }
             }
 

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ServerStatusDisplay.cs  Last modified: 2018-03-24@23:40 by Tim Long
+// File: ServerStatusDisplay.cs  Last modified: 2018-03-25@21:44 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -42,17 +42,20 @@ namespace TA.DigitalDomeworks.Server
 
         private void ConfigureAnnunciators()
             {
-            var annunciators = new List<Annunciator>();
-            annunciators.Add(AzimuthMotorAnnunciator);
-            annunciators.Add(ClockwiseAnnunciator);
-            annunciators.Add(CounterClockwiseAnnunciator);
-            annunciators.Add(ShutterMotorAnnunciator);
-            annunciators.Add(ShutterOpeningAnnunciator);
-            annunciators.Add(ShutterClosingAnnunciator);
+            var annunciators = new List<Annunciator>
+                {
+                AzimuthMotorAnnunciator, ClockwiseAnnunciator, CounterClockwiseAnnunciator,
+                ShutterMotorAnnunciator, ShutterOpeningAnnunciator, ShutterClosingAnnunciator,
+                ShutterOpenAnnunciator, ShutterClosedAnnunciator, ShutterIndeterminateAnnunciator,
+                UserPin1Annunciator, UserPin2Annunciator, UserPin3Annunciator, UserPin4Annunciator,
+                AtHomeAnnunciator
+                };
             annunciators.ForEach(p => p.Mute = false);
             annunciators.ForEach(p => p.Cadence = CadencePattern.SteadyOn);
             AzimuthMotorAnnunciator.Cadence = CadencePattern.BlinkAlarm;
             ShutterMotorAnnunciator.Cadence = CadencePattern.BlinkAlarm;
+            ShutterOpenAnnunciator.Cadence = CadencePattern.Wink;
+            AtHomeAnnunciator.Cadence = CadencePattern.Wink;
             annunciators.ForEach(p => p.Mute = true);
             }
 
@@ -146,23 +149,40 @@ namespace TA.DigitalDomeworks.Server
                     .Subscribe(motorActive => ShutterMotorAnnunciator.Mute = !motorActive)
             );
             disposableSubscriptions.Add(
-                controller
-                    .GetObservableValueFor(p => p.ShutterMovementDirection)
+                controller.GetObservableValueFor(p => p.ShutterMovementDirection)
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(SetShutterDirection)
             );
             disposableSubscriptions.Add(
-                controller
-                    .GetObservableValueFor(p => p.ShutterMotorCurrent)
+                controller.GetObservableValueFor(p => p.ShutterMotorCurrent)
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(SetShutterMotorCurrent)
             );
+            disposableSubscriptions.Add(
+                controller.GetObservableValueFor(p => p.ShutterPosition)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetShutterPosition)
+            );
+            disposableSubscriptions.Add(
+                controller.GetObservableValueFor(p => p.AtHome)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(home => AtHomeAnnunciator.Mute = !home)
+            );
+            }
+
+        private void SetShutterPosition(SensorState position)
+            {
+            var controller = SharedResources.ConnectionManager.MaybeControllerInstance.Single();
+            var shutterMoving = controller?.ShutterMotorActive ?? false;
+            ShutterClosedAnnunciator.Mute = position != SensorState.Closed || shutterMoving;
+            ShutterIndeterminateAnnunciator.Mute = position != SensorState.Indeterminate || shutterMoving;
+            ShutterOpenAnnunciator.Mute = position != SensorState.Open || shutterMoving;
             }
 
         private void SetAzimuthPosition(float position)
             {
             var format = AzimuthPositionAnnunciator.Tag.ToString();
-            var formattedPosition = string.Format(format, (int)position);
+            var formattedPosition = string.Format(format, (int) position);
             AzimuthPositionAnnunciator.Text = formattedPosition;
             }
 
@@ -206,6 +226,11 @@ namespace TA.DigitalDomeworks.Server
         private void frmMain_LocationChanged(object sender, EventArgs e)
             {
             Settings.Default.Save();
+            }
+
+        private void ServerStatusDisplay_VisibleChanged(object sender, EventArgs e)
+            {
+            BringToFront();
             }
         }
     }

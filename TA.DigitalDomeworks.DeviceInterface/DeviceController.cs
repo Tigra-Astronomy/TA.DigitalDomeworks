@@ -28,14 +28,16 @@ namespace TA.DigitalDomeworks.DeviceInterface
         [NotNull] private readonly ICommunicationChannel channel;
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
         [NotNull] private readonly ControllerStateMachine stateMachine;
+        private readonly DeviceControllerOptions configuration;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
-            ControllerStateMachine machine)
+            ControllerStateMachine machine, DeviceControllerOptions configuration)
             {
             this.channel = channel;
             statusFactory = factory;
             stateMachine = machine;
+            this.configuration = configuration;
             }
 
         public int AzimuthEncoderPosition => stateMachine.AzimuthEncoderPosition;
@@ -70,11 +72,45 @@ namespace TA.DigitalDomeworks.DeviceInterface
             if (performOnConnectActions)
                 stateMachine.Initialize(new RequestStatus(stateMachine));
             else
-                {
                 stateMachine.Initialize(new Ready(stateMachine));
-                stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
+            stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
+            if (performOnConnectActions && configuration.PerformShutterRecovery)
+                {
+                /*
+                 * Perform shutter recovery if configured.
+                 * This can throw a TimeoutException which indicates a fatal
+                 * unrecoverable situation, so we allow the exception to
+                 * propagate up. The shutter position may still be 'indeterminate'
+                 * even if no exception is thrown and it is up to the client application
+                 * to decide what to do about that.
+                 */
+                PerformShutterRecovery();
                 }
             }
+
+        /// <summary>
+        /// Tries to establish a known shutter condition at startup.
+        /// Assumes that a valid status packet has already been received.
+        /// </summary>
+        /// <exception cref="TimeoutException">
+        ///     Thrown if shutter recovery does not complete within the
+        ///     allotted time.
+        /// </exception>
+        private void PerformShutterRecovery()
+            {
+            if (ShutterPosition == SensorState.Indeterminate)
+                {
+                Log.Info()
+                    .Message("Shutter position is indeterminate, attempting to close the shutter.")
+                    .Write();
+                stateMachine.CloseShutter();
+                stateMachine.WaitForReady(TimeSpan.FromMinutes(2));
+                }
+            }
+
+        public SensorState ShutterPosition => stateMachine.ShutterPosition;
+
+        public bool AtHome => stateMachine.AtHome;
 
         private void SubscribeControllerEvents()
             {

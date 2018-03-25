@@ -67,6 +67,7 @@
     <Compile Include="AsciiSymbols.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DeviceControllerOptions.cs" />
     <Compile Include="HardwareStatus.cs" />
     <Compile Include="ControllerStatusFactory.cs" />
     <Compile Include="IHardwareStatus.cs" />
