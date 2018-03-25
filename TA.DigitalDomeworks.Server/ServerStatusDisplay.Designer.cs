@@ -44,7 +44,7 @@
             this.ShutterClosingAnnunciator = new ASCOM.Controls.Annunciator();
             this.ShutterCurrentAnnunciator = new ASCOM.Controls.Annunciator();
             this.SetupCommand = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.ShutterCurrentBar = new System.Windows.Forms.ProgressBar();
             this.OpenButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.annunciatorPanel1.SuspendLayout();
@@ -249,7 +249,7 @@
             this.ShutterCurrentAnnunciator.AutoSize = true;
             this.ShutterCurrentAnnunciator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.ShutterCurrentAnnunciator.Font = new System.Drawing.Font("Consolas", 10F);
-            this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
+            this.ShutterCurrentAnnunciator.ForeColor = System.Drawing.Color.PaleGoldenrod;
             this.ShutterCurrentAnnunciator.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ShutterCurrentAnnunciator.Location = new System.Drawing.Point(171, 17);
             this.ShutterCurrentAnnunciator.Mute = false;
@@ -269,13 +269,14 @@
             this.SetupCommand.UseVisualStyleBackColor = true;
             this.SetupCommand.Click += new System.EventHandler(this.SetupCommand_Click);
             // 
-            // progressBar1
+            // ShutterCurrentBar
             // 
-            this.progressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.progressBar1.Location = new System.Drawing.Point(96, 55);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(219, 10);
-            this.progressBar1.TabIndex = 11;
+            this.ShutterCurrentBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ShutterCurrentBar.Location = new System.Drawing.Point(96, 55);
+            this.ShutterCurrentBar.Maximum = 20;
+            this.ShutterCurrentBar.Name = "ShutterCurrentBar";
+            this.ShutterCurrentBar.Size = new System.Drawing.Size(219, 10);
+            this.ShutterCurrentBar.TabIndex = 11;
             // 
             // OpenButton
             // 
@@ -310,7 +311,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.registeredClientCount);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.ShutterCurrentBar);
             this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "MainFormLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Location = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.MainFormLocation;
@@ -346,7 +347,7 @@
         private ASCOM.Controls.Annunciator ShutterMotorAnnunciator;
         private ASCOM.Controls.Annunciator ShutterClosingAnnunciator;
         private ASCOM.Controls.Annunciator ShutterCurrentAnnunciator;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar ShutterCurrentBar;
         private System.Windows.Forms.Button OpenButton;
         private System.Windows.Forms.Button CloseButton;
     }

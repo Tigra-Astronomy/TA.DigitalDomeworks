@@ -45,14 +45,14 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.OpenShutter();
             machine.ControllerActions.OpenShutter();
-            machine.TransitionToState(new ShutterMoving(machine));
+            machine.TransitionToState(new Rotating(machine));
             }
 
         public override void CloseShutter()
             {
             base.CloseShutter();
             machine.ControllerActions.CloseShutter();
-            machine.TransitionToState(new ShutterMoving(machine));
+            machine.TransitionToState(new Rotating(machine));
             }
         }
     }

@@ -22,6 +22,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void OnEnter()
             {
             base.OnEnter();
+            ResetTimeout(RotationTimeout);
             machine.AzimuthMotorActive = true;
             }
 
@@ -29,6 +30,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.OnExit();
             machine.AzimuthMotorActive = false;
+            machine.AzimuthDirection = RotationDirection.None;
             }
 
         /// <summary>
@@ -42,9 +44,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public override void ShutterMovementDetected()
             {
             base.ShutterMovementDetected();
-            Log.Error()
-                .Message("Shutter movement detected while rotating. This is unexpected.")
-                .Write();
+            machine.TransitionToState(new ShutterMoving(machine));
             }
 
         /// <summary>

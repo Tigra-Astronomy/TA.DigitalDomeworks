@@ -40,6 +40,10 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public int AzimuthEncoderPosition => stateMachine.AzimuthEncoderPosition;
 
+        public float AzimuthDegrees => AzimuthEncoderPosition * DegreesPerTick;
+
+        private float DegreesPerTick => 360f / stateMachine.HardwareStatus?.DomeCircumference ?? 100;
+
         /// <summary>
         ///     <c>true</c> if any part of the building is moving.
         /// </summary>

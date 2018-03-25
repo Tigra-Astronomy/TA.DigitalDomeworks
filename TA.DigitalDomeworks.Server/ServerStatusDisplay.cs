@@ -1,12 +1,11 @@
-// This file is part of the GTD.Integra.FocusingRotator project
+// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ServerStatusDisplay.cs  Last modified: 2017-03-01@01:17 by Tim Long
+// File: ServerStatusDisplay.cs  Last modified: 2018-03-24@23:40 by Tim Long
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -21,8 +20,8 @@ namespace TA.DigitalDomeworks.Server
     {
     public partial class ServerStatusDisplay : Form
         {
-        private IDisposable clientStatusSubscription;
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
+        private IDisposable clientStatusSubscription;
 
         public ServerStatusDisplay()
             {
@@ -31,6 +30,7 @@ namespace TA.DigitalDomeworks.Server
 
         private void frmMain_Load(object sender, EventArgs e)
             {
+            ConfigureAnnunciators();
             var clientStatusObservable = Observable.FromEventPattern<EventHandler<EventArgs>, EventArgs>(
                 handler => SharedResources.ConnectionManager.ClientStatusChanged += handler,
                 handler => SharedResources.ConnectionManager.ClientStatusChanged -= handler);
@@ -38,6 +38,22 @@ namespace TA.DigitalDomeworks.Server
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(ObserveClientStatusChanged);
             ObserveClientStatusChanged(null); // This sets the initial UI state before any notifications arrive
+            }
+
+        private void ConfigureAnnunciators()
+            {
+            var annunciators = new List<Annunciator>();
+            annunciators.Add(AzimuthMotorAnnunciator);
+            annunciators.Add(ClockwiseAnnunciator);
+            annunciators.Add(CounterClockwiseAnnunciator);
+            annunciators.Add(ShutterMotorAnnunciator);
+            annunciators.Add(ShutterOpeningAnnunciator);
+            annunciators.Add(ShutterClosingAnnunciator);
+            annunciators.ForEach(p => p.Mute = false);
+            annunciators.ForEach(p => p.Cadence = CadencePattern.SteadyOn);
+            AzimuthMotorAnnunciator.Cadence = CadencePattern.BlinkAlarm;
+            ShutterMotorAnnunciator.Cadence = CadencePattern.BlinkAlarm;
+            annunciators.ForEach(p => p.Mute = true);
             }
 
 
@@ -58,6 +74,8 @@ namespace TA.DigitalDomeworks.Server
         private void SetUiDeviceConnectedState()
             {
             var clients = SharedResources.ConnectionManager.Clients;
+            if (clients.Count == 1)
+                ConfigureAnnunciators();
             }
 
         /// <summary>
@@ -77,7 +95,7 @@ namespace TA.DigitalDomeworks.Server
         /// </summary>
         private void UnsubscribePropertyChangeNotifications()
             {
-            disposableSubscriptions.ForEach(p=>p.Dispose());
+            disposableSubscriptions.ForEach(p => p.Dispose());
             disposableSubscriptions.Clear();
             }
 
@@ -85,10 +103,7 @@ namespace TA.DigitalDomeworks.Server
             {
             if (!SharedResources.ConnectionManager.MaybeControllerInstance.Any() ||
                 SharedResources.ConnectionManager.OnlineClientCount < 1)
-                {
-                // No controller instance or no clients, so disable everything and return.
                 return;
-                }
             var controller = SharedResources.ConnectionManager.MaybeControllerInstance.Single();
             }
 
@@ -109,10 +124,10 @@ namespace TA.DigitalDomeworks.Server
              */
             disposableSubscriptions.Add(
                 controller
-                .GetObservableValueFor(p => p.AzimuthMotorActive)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(motorActive => AzimuthMotorAnnunciator.Mute = !motorActive)
-                );
+                    .GetObservableValueFor(p => p.AzimuthMotorActive)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(motorActive => AzimuthMotorAnnunciator.Mute = !motorActive)
+            );
             disposableSubscriptions.Add(
                 controller
                     .GetObservableValueFor(p => p.AzimuthDirection)
@@ -121,24 +136,56 @@ namespace TA.DigitalDomeworks.Server
             );
             disposableSubscriptions.Add(
                 controller
-                    .GetObservableValueFor(p => p.AzimuthEncoderPosition)
+                    .GetObservableValueFor(p => p.AzimuthDegrees)
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(SetAzimuthPosition)
             );
-
+            disposableSubscriptions.Add(
+                controller.GetObservableValueFor(p => p.ShutterMotorActive)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(motorActive => ShutterMotorAnnunciator.Mute = !motorActive)
+            );
+            disposableSubscriptions.Add(
+                controller
+                    .GetObservableValueFor(p => p.ShutterMovementDirection)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetShutterDirection)
+            );
+            disposableSubscriptions.Add(
+                controller
+                    .GetObservableValueFor(p => p.ShutterMotorCurrent)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetShutterMotorCurrent)
+            );
             }
 
-        void SetAzimuthPosition(int position)
+        private void SetAzimuthPosition(float position)
             {
             var format = AzimuthPositionAnnunciator.Tag.ToString();
-            var formattedPosition = string.Format(format, position);
+            var formattedPosition = string.Format(format, (int)position);
             AzimuthPositionAnnunciator.Text = formattedPosition;
             }
 
-        void SetRotationDirection(RotationDirection direction)
+        private void SetShutterMotorCurrent(int current)
+            {
+            var format = ShutterCurrentAnnunciator.Tag.ToString();
+            var formattedValue = string.Format(format, current);
+            ShutterCurrentAnnunciator.Text = formattedValue;
+            // Auto-scale the progress bar
+            ShutterCurrentBar.Maximum = Math.Max(ShutterCurrentBar.Maximum, current);
+            ShutterCurrentBar.Value = current;
+            }
+
+        private void SetRotationDirection(RotationDirection direction)
             {
             CounterClockwiseAnnunciator.Mute = direction != RotationDirection.CounterClockwise;
             ClockwiseAnnunciator.Mute = direction != RotationDirection.Clockwise;
+            }
+
+        private void SetShutterDirection(ShutterDirection direction)
+            {
+            ShutterOpeningAnnunciator.Mute = direction != ShutterDirection.Opening;
+            ShutterClosingAnnunciator.Mute = direction != ShutterDirection.Closing;
             }
 
 
@@ -147,10 +194,7 @@ namespace TA.DigitalDomeworks.Server
             clientStatusSubscription?.Dispose();
             UnsubscribePropertyChangeNotifications();
             var clients = SharedResources.ConnectionManager.Clients;
-            foreach (var client in clients)
-                {
-                SharedResources.ConnectionManager.GoOffline(client.ClientId);
-                }
+            foreach (var client in clients) SharedResources.ConnectionManager.GoOffline(client.ClientId);
             Application.Exit();
             }
 

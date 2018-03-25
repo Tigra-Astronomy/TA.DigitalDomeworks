@@ -35,7 +35,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public static IObservable<int> ShutterCurrentReadings(this IObservable<char> source)
             {
-            const string shutterCurrentPattern = @"^Z(?<Current>\d{1,2})[^0-9]";
+            const string shutterCurrentPattern = @"^Z(?<Current>\d{1,3})";
             var shutterCurrentRegex =
                 new Regex(shutterCurrentPattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
             var buffers = source.Publish(s => s.BufferByPredicates(p => p == 'Z', q => !char.IsDigit(q)));
