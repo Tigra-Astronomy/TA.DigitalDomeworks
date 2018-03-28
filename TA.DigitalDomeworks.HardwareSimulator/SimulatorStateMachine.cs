@@ -1,9 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SimulatorStateMachine.cs  Created: 2016-06-20@18:14
-// Last modified: 2016-09-11@00:43 by Tim
+// File: SimulatorStateMachine.cs  Last modified: 2018-03-28@17:49 by Tim Long
 
 using System;
 using System.Reactive;
@@ -12,7 +11,6 @@ using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 using NLog;
-using NodaTime;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.HardwareSimulator
@@ -30,7 +28,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly Subject<char> receiveSubject = new Subject<char>();
         private readonly IDisposable receiveSubscription;
-        private readonly SystemClock timeSource = SystemClock.Instance;
+        private readonly IClock timeSource;
         private readonly Subject<char> transmitSubject = new Subject<char>();
 
         /// <summary>
@@ -59,9 +57,10 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         ///     When <c>true</c> the simulator introduces pauses that are representative of real equipment.
         ///     When <c>false</c>, the simulation proceeds at an accelerated pace with no pauses.
         /// </param>
-        public SimulatorStateMachine(bool realTime)
+        public SimulatorStateMachine(bool realTime, IClock timeSource)
             {
             RealTime = realTime;
+            this.timeSource = timeSource;
             DomeSupportRingOpen = false;
             ShutterStuck = false;
             HardwareStatus = new HardwareStatus
@@ -84,7 +83,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 Snow = 255,
                 // For weather items, 255 means no data
                 Temperature = 255,
-                TimeStamp = timeSource.GetCurrentInstant(),
+                TimeStamp = timeSource.GetCurrentTime(),
                 UserPins = 0,
                 WeatherAge = 128,
                 WindDirection = 255,
@@ -101,14 +100,14 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             }
 
         /// <summary>
-        /// An observable sequence of characters that simulates data arriving from
-        /// the dome controller to the PC serial port.
+        ///     An observable sequence of characters that simulates data arriving from
+        ///     the dome controller to the PC serial port.
         /// </summary>
         public IObservable<char> ObservableResponses => transmitSubject.AsObservable();
 
         /// <summary>
-        /// Simulate sending characters to the dome controller by calling the observer's
-        /// <see cref="IObserver{T}.OnNext"/> method.
+        ///     Simulate sending characters to the dome controller by calling the observer's
+        ///     <see cref="IObserver{T}.OnNext" /> method.
         /// </summary>
         public IObserver<char> InputObserver => receiveSubject.AsObserver();
 

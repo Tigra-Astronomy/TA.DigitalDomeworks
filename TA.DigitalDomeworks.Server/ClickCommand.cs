@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ClickCommand.cs  Last modified: 2018-03-28@04:02 by Tim Long
+// File: ClickCommand.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Windows.Forms;
@@ -72,6 +72,7 @@ namespace TA.DigitalDomeworks.Server
             Func<bool> canExecute = null)
             {
             var command = new ClickCommand(clickableControl, execute, canExecute);
+            command.CanExecuteChanged();
             return command;
             }
         }

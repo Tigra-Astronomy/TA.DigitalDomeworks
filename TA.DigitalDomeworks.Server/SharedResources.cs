@@ -1,8 +1,8 @@
-// This file is part of the GTD.Integra.FocusingRotator project
+// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SharedResources.cs  Last modified: 2017-02-27@19:16 by Tim Long
+// File: SharedResources.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Windows.Forms;
@@ -12,8 +12,7 @@ using TA.DigitalDomeworks.Server.Properties;
 namespace TA.DigitalDomeworks.Server
     {
     /// <summary>
-    ///     The resources shared by all drivers and devices. This is how ASCOM drivers will obtain
-    ///     an instance of the <see cref="IntegraController" />.
+    ///     The resources shared by all drivers and devices.
     /// </summary>
     public static class SharedResources
         {
@@ -51,10 +50,8 @@ namespace TA.DigitalDomeworks.Server
                             Settings.Default.Save();
                             var newConnectionString = Settings.Default.ConnectionString;
                             if (oldConnectionString != newConnectionString)
-                                {
                                 Log.Warn(
                                     $"Connection string has changed from {oldConnectionString} to {newConnectionString} - replacing the TansactionProcessorFactory");
-                                }
                             break;
                         default:
                             Log.Warn("SetupDialog cancelled or failed - reverting to previous settings");
@@ -64,7 +61,7 @@ namespace TA.DigitalDomeworks.Server
                 }
             }
 
-        static ClientConnectionManager CreateConnectionManager()
+        private static ClientConnectionManager CreateConnectionManager()
             {
             Log.Info("Creating ClientConnectionManager");
             return new ClientConnectionManager();

@@ -112,9 +112,6 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NodaTime, Version=2.2.5.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.2.2.5\lib\net45\NodaTime.dll</HintPath>
-    </Reference>
     <Reference Include="PostSharp, Version=5.0.48.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.Redist.5.0.48\lib\net45\PostSharp.dll</HintPath>
       <Private>True</Private>
@@ -289,6 +286,10 @@
     <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
       <Project>{020924b9-23d5-4b92-b5b1-461423bbe23c}</Project>
       <Name>TA.DigitalDomeworks.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj">
+      <Project>{86b17c99-41b6-4611-ad1d-26b7d6c70a22}</Project>
+      <Name>TA.DigitalDomeworks.HardwareSimulator</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
       <Project>{adbb1165-e995-4c75-8de9-1dbffcf34d6f}</Project>

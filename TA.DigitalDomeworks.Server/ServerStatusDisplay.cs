@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ServerStatusDisplay.cs  Last modified: 2018-03-25@21:44 by Tim Long
+// File: ServerStatusDisplay.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -21,8 +21,8 @@ namespace TA.DigitalDomeworks.Server
     public partial class ServerStatusDisplay : Form
         {
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
-        private IDisposable clientStatusSubscription;
         [NotNull] private List<ClickCommand> clickCommands = new List<ClickCommand>();
+        private IDisposable clientStatusSubscription;
 
         public ServerStatusDisplay()
             {
@@ -39,6 +39,7 @@ namespace TA.DigitalDomeworks.Server
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(ObserveClientStatusChanged);
             ObserveClientStatusChanged(null); // This sets the initial UI state before any notifications arrive
+            SetupCommand.AttachCommand(ExecuteSetupDialog, CanSetup);
             }
 
         private void ConfigureAnnunciators()
@@ -71,13 +72,14 @@ namespace TA.DigitalDomeworks.Server
             ConfigureUiPropertyNotifications();
             if (onlineClientCount == 1)
                 AttachCommands();
-            if (onlineClientCount==0)
+            if (onlineClientCount == 0)
                 DetachCommands();
             }
 
-        private bool CanSetup() => CanMoveShutterOrDome() || !SharedResources.ConnectionManager.MaybeControllerInstance.Any();
+        private bool CanSetup() =>
+            CanMoveShutterOrDome() || !SharedResources.ConnectionManager.MaybeControllerInstance.Any();
 
-        bool CanMoveShutterOrDome()
+        private bool CanMoveShutterOrDome()
             {
             var maybeController = SharedResources.ConnectionManager.MaybeControllerInstance;
             if (!maybeController.Any()) return false;
@@ -91,7 +93,7 @@ namespace TA.DigitalDomeworks.Server
          * OnClick events, and have the controls enable/disable themselves using the
          * command's CanExecuteChanged() method.
          */
-        void AttachCommands()
+        private void AttachCommands()
             {
             var maybeController = SharedResources.ConnectionManager.MaybeControllerInstance;
             if (!maybeController.Any()) return;
@@ -99,14 +101,13 @@ namespace TA.DigitalDomeworks.Server
             clickCommands = new List<ClickCommand>
                 {
                 OpenButton.AttachCommand(ExecuteOpenShutter, CanMoveShutterOrDome),
-                CloseButton.AttachCommand(ExecuteCloseShutter, CanMoveShutterOrDome),
-                SetupCommand.AttachCommand(ExecuteSetupDialog, CanSetup )
+                CloseButton.AttachCommand(ExecuteCloseShutter, CanMoveShutterOrDome)
                 };
             }
 
-        void DetachCommands()
+        private void DetachCommands()
             {
-            clickCommands.ForEach(p=>p.Dispose());
+            clickCommands.ForEach(p => p.Dispose());
             clickCommands.Clear();
             }
 
@@ -207,12 +208,12 @@ namespace TA.DigitalDomeworks.Server
             );
             disposableSubscriptions.Add(
                 controller.GetPropertyChangedEvents()
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(p=>clickCommands.ForEach(q=>q.CanExecuteChanged()))
-                );
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(p => clickCommands.ForEach(q => q.CanExecuteChanged()))
+            );
             }
 
-        void SetUserPins(Octet pinState)
+        private void SetUserPins(Octet pinState)
             {
             UserPin1Annunciator.Mute = !pinState[0];
             UserPin2Annunciator.Mute = !pinState[1];
@@ -286,17 +287,13 @@ namespace TA.DigitalDomeworks.Server
         private void ExecuteOpenShutter()
             {
             if (SharedResources.ConnectionManager.MaybeControllerInstance.Any())
-                {
                 SharedResources.ConnectionManager.MaybeControllerInstance.Single().OpenShutter();
-                }
             }
 
         private void ExecuteCloseShutter()
             {
             if (SharedResources.ConnectionManager.MaybeControllerInstance.Any())
-                {
                 SharedResources.ConnectionManager.MaybeControllerInstance.Single().CloseShutter();
-                }
             }
         }
     }

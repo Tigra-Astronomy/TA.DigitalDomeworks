@@ -101,9 +101,11 @@ namespace TA.DigitalDomeworks.Server
             // 
             // communicationSettingsControl1
             // 
+            this.communicationSettingsControl1.AutoSize = true;
+            this.communicationSettingsControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.communicationSettingsControl1.Location = new System.Drawing.Point(6, 19);
             this.communicationSettingsControl1.Name = "communicationSettingsControl1";
-            this.communicationSettingsControl1.Size = new System.Drawing.Size(238, 22);
+            this.communicationSettingsControl1.Size = new System.Drawing.Size(253, 36);
             this.communicationSettingsControl1.TabIndex = 7;
             // 
             // CommunicationsGroup
@@ -111,7 +113,7 @@ namespace TA.DigitalDomeworks.Server
             this.CommunicationsGroup.Controls.Add(this.communicationSettingsControl1);
             this.CommunicationsGroup.Location = new System.Drawing.Point(12, 12);
             this.CommunicationsGroup.Name = "CommunicationsGroup";
-            this.CommunicationsGroup.Size = new System.Drawing.Size(262, 53);
+            this.CommunicationsGroup.Size = new System.Drawing.Size(262, 74);
             this.CommunicationsGroup.TabIndex = 9;
             this.CommunicationsGroup.TabStop = false;
             this.CommunicationsGroup.Text = "Communications";
@@ -119,7 +121,7 @@ namespace TA.DigitalDomeworks.Server
             // StartupOptionsGroup
             // 
             this.StartupOptionsGroup.Controls.Add(this.PerformShutterRecovery);
-            this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 71);
+            this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 119);
             this.StartupOptionsGroup.Name = "StartupOptionsGroup";
             this.StartupOptionsGroup.Size = new System.Drawing.Size(262, 100);
             this.StartupOptionsGroup.TabIndex = 10;
@@ -165,6 +167,7 @@ namespace TA.DigitalDomeworks.Server
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
             this.CommunicationsGroup.ResumeLayout(false);
+            this.CommunicationsGroup.PerformLayout();
             this.StartupOptionsGroup.ResumeLayout(false);
             this.StartupOptionsGroup.PerformLayout();
             this.ResumeLayout(false);

@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: AboutBox.cs  Last modified: 2017-02-27@23:48 by Tim Long
+// File: AboutBox.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Diagnostics;
@@ -18,9 +18,9 @@ namespace TA.DigitalDomeworks.Server
             InitializeComponent();
             }
 
-        void label1_Click(object sender, EventArgs e) {}
+        private void label1_Click(object sender, EventArgs e) { }
 
-        void AboutBox_Load(object sender, EventArgs e)
+        private void AboutBox_Load(object sender, EventArgs e)
             {
             var me = Assembly.GetExecutingAssembly();
             var name = me.GetName();
@@ -28,9 +28,9 @@ namespace TA.DigitalDomeworks.Server
             DriverVersion.Text = driverVersion.ToString();
             }
 
-        void DriverVersion_Click(object sender, EventArgs e) {}
+        private void DriverVersion_Click(object sender, EventArgs e) { }
 
-        void NavigateToWebPage(object sender, EventArgs e)
+        private void NavigateToWebPage(object sender, EventArgs e)
             {
             var control = sender as Control;
             if (control == null)
@@ -48,7 +48,7 @@ namespace TA.DigitalDomeworks.Server
                 }
             }
 
-        void OkCommand_Click(object sender, EventArgs e)
+        private void OkCommand_Click(object sender, EventArgs e)
             {
             Close();
             }

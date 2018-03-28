@@ -7,8 +7,6 @@
 using System;
 using FakeItEasy;
 using Machine.Specifications;
-using NodaTime;
-using NodaTime.Testing;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
 using TI.DigitalDomeWorks;
@@ -71,7 +69,7 @@ namespace TA.DigitalDomeworks.Specifications
         Because of = () =>
             {
             Machine.Initialize(new RequestStatus(Machine));
-            var factory = new ControllerStatusFactory(SystemClock.Instance);
+            var factory = new ControllerStatusFactory(new SystemDateTimeUtcClock());
             var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
             Machine.HardwareStatusReceived(newStatus);
             };

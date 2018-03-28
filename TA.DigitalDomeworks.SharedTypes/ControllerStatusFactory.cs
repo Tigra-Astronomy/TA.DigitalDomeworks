@@ -1,14 +1,21 @@
-﻿using System;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: ControllerStatusFactory.cs  Last modified: 2018-03-28@17:43 by Tim Long
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using NLog;
-using NodaTime;
 
-namespace TA.DigitalDomeworks.SharedTypes {
-    public sealed class ControllerStatusFactory {
-        private readonly IClock timeSource;
+namespace TA.DigitalDomeworks.SharedTypes
+    {
+    public sealed class ControllerStatusFactory
+        {
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private static readonly char[] fieldDelimiters = {','};
+        private readonly IClock timeSource;
 
         public ControllerStatusFactory(IClock timeSource)
             {
@@ -26,7 +33,7 @@ namespace TA.DigitalDomeworks.SharedTypes {
             switch (elements[0])
                 {
                     case "V4":
-                        return (IHardwareStatus)ParseV4StatusElements(elements);
+                        return ParseV4StatusElements(elements);
                     default:
                         throw new ApplicationException("Unsupported firmware version");
                 }
@@ -51,7 +58,7 @@ namespace TA.DigitalDomeworks.SharedTypes {
                 {
                 var status = new HardwareStatus
                     {
-                    TimeStamp = timeSource.GetCurrentInstant(),
+                    TimeStamp = timeSource.GetCurrentTime(),
                     FirmwareVersion = elements[0],
                     DomeCircumference = Convert.ToInt16(elements[1]),
                     HomePosition = Convert.ToInt16(elements[2]),

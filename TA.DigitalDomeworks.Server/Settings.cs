@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Settings.cs  Last modified: 2017-02-26@23:55 by Tim Long
+// File: Settings.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System.ComponentModel;
 using System.Configuration;
@@ -22,7 +22,7 @@ namespace TA.DigitalDomeworks.Server.Properties
     [DeviceId(SharedResources.DomeDriverId, DeviceName = SharedResources.DomeDriverName)]
     public sealed partial class Settings
         {
-        readonly ILogger log = LogManager.GetCurrentClassLogger();
+        private readonly ILogger log = LogManager.GetCurrentClassLogger();
 
         public Settings()
             {
@@ -32,22 +32,22 @@ namespace TA.DigitalDomeworks.Server.Properties
             PropertyChanged += SettingChangedEventHandler;
             }
 
-        void SettingChangedEventHandler(object sender, PropertyChangedEventArgs args)
+        private void SettingChangedEventHandler(object sender, PropertyChangedEventArgs args)
             {
             log.Debug($"Setting changed: {args.PropertyName}");
             }
 
-        void SettingsLoadedEventHandler(object sender, SettingsLoadedEventArgs e)
+        private void SettingsLoadedEventHandler(object sender, SettingsLoadedEventArgs e)
             {
             log.Warn("Settings loaded");
             }
 
-        void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
+        private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
             {
             log.Debug($"Setting changing {e.SettingName}[{e.SettingKey}] -> {e.NewValue}");
             }
 
-        void SettingsSavingEventHandler(object sender, CancelEventArgs e)
+        private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
             {
             log.Warn($"Saving settings");
             }

@@ -2,18 +2,15 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStatusSpecs.cs  Last modified: 2018-03-13@23:53 by Tim Long
+// File: ControllerStatusSpecs.cs  Last modified: 2018-03-28@18:17 by Tim Long
 
 using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using Machine.Specifications;
-using NodaTime;
-using NodaTime.Testing;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
+using TA.DigitalDomeworks.Specifications.Fakes;
 
 #pragma warning disable 0169    // Field not used, triggers on Behaves_like<>
 
@@ -22,7 +19,8 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
     [Subject(typeof(HardwareStatus), "creation")]
     internal class when_creating_a_status
         {
-        Establish context = () => factory = new ControllerStatusFactory(new FakeClock(Instant.MinValue));
+        Establish context = () =>
+            factory = new ControllerStatusFactory(new FakeClock(DateTime.MinValue.ToUniversalTime()));
         Because of = () => actual = factory.FromStatusPacket(RealWorldStatusPacket);
         It should_be_v4 = () => actual.FirmwareVersion.ShouldEqual("V4");
         It should_have_circumference = () => actual.DomeCircumference.ShouldEqual(704);

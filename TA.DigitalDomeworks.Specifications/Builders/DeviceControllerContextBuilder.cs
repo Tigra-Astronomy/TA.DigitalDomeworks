@@ -2,23 +2,19 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-08@19:17 by Tim Long
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-28@18:17 by Tim Long
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Text;
-using FakeItEasy;
-using NodaTime;
-using NodaTime.Testing;
 using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
+using TA.DigitalDomeworks.HardwareSimulator;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.Fakes;
-using TA.DigitalDomeworks.Specifications.Helpers;
 
 namespace TA.DigitalDomeworks.Specifications.Builders
     {
@@ -41,11 +37,11 @@ namespace TA.DigitalDomeworks.Specifications.Builders
 
         bool channelShouldBeOpen;
         readonly StringBuilder fakeResponseBuilder = new StringBuilder();
-        readonly IClock timeSource = new FakeClock(Instant.MinValue);
+        readonly IClock timeSource = new FakeClock(DateTime.MinValue.ToUniversalTime());
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
         PropertyChangedEventHandler propertyChangedAction;
-        List<Tuple<string,Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
+        List<Tuple<string, Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
 
         public DeviceControllerContext Build()
             {
@@ -74,10 +70,7 @@ namespace TA.DigitalDomeworks.Specifications.Builders
                 };
 
             // Wire up any Property Changed notifications
-            if (propertyChangedAction != null)
-                {
-                controller.PropertyChanged += propertyChangedAction;
-                }
+            if (propertyChangedAction != null) controller.PropertyChanged += propertyChangedAction;
 
             return context;
             }

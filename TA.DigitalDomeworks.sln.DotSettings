@@ -1,5 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolutionBuilderNext/AlwaysBuildProjects/@EntryValue">0b22461b-2d19-4342-a87d-4e90efd3e2a9</s:String>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolutionBuilderNext/AlwaysBuildProjects/@EntryValue">0b22461b-2d19-4342-a87d-4e90efd3e2a9;f95208c4-450f-4b51-810a-c805a8efbb7a</s:String>
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/SolutionBuilderNext/ParallelProcessesCount2/@EntryValue">4</s:Int64>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=18DE2E70E45E9E45819A0A8F11BFA1FC/AbsolutePath/@EntryValue">C:\Users\Tim\source\repos\TA.DigitalDomeworks\TA.DigitalDomeworks.Specifications\TA.DigitalDomeworks.Specifications.csproj.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=18DE2E70E45E9E45819A0A8F11BFA1FC/RelativePath/@EntryValue">..\TA.DigitalDomeworks.Specifications\TA.DigitalDomeworks.Specifications.csproj.DotSettings</s:String>

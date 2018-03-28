@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ServedComClassLocator.cs  Last modified: 2017-02-18@22:54 by Tim Long
+// File: ServedComClassLocator.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace TA.DigitalDomeworks.Server
     {
     internal class ServedComClassLocator : MarshalByRefObject
         {
-        readonly ILogger Log = LogManager.GetCurrentClassLogger();
+        private readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         public ServedComClassLocator()
             {
@@ -97,7 +97,7 @@ namespace TA.DigitalDomeworks.Server
                         }
                     catch (BadImageFormatException ex)
                         {
-                        Log.Warn(ex,$"BadImageFormat: {fi.Name}.{fi.Extension} continuing");
+                        Log.Warn(ex, $"BadImageFormat: {fi.Name}.{fi.Extension} continuing");
                         // Probably an attempt to load a Win32 DLL (i.e. not a .net assembly)
                         // Just swallow the exception and continue to the next item.
                         }
@@ -116,12 +116,12 @@ namespace TA.DigitalDomeworks.Server
 
 
         /// <summary>
-        /// Handles the reflection only assembly resolve.
+        ///     Handles the reflection only assembly resolve.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="ResolveEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="ResolveEventArgs" /> instance containing the event data.</param>
         /// <returns>Assembly.</returns>
-        Assembly HandleReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        private Assembly HandleReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
             {
             try
                 {

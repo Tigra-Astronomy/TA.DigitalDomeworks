@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: GlobalAssemblyInfo.cs  Last modified: 2018-03-28@22:19 by Tim Long
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

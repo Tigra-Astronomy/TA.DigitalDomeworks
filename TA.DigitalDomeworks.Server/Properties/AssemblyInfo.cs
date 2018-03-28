@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: AssemblyInfo.cs  Last modified: 2017-01-28@14:27 by Tim Long
+// File: AssemblyInfo.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System.Reflection;
 
@@ -10,5 +10,5 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("ASCOM GTD.Integra.FocusingRotator server")]
-[assembly: AssemblyDescription("ASCOM multi-interface server for GTD.Integra.FocusingRotator")]
+[assembly: AssemblyTitle("ASCOM server for Digital Domeworks")]
+[assembly: AssemblyDescription("ASCOM multi-interface server for Digital Domeworks")]

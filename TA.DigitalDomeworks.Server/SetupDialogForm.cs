@@ -1,8 +1,8 @@
-// This file is part of the GTD.Integra.FocusingRotator project
+// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SetupDialogForm.cs  Last modified: 2017-02-27@23:36 by Tim Long
+// File: SetupDialogForm.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -20,17 +20,17 @@ namespace TA.DigitalDomeworks.Server
             InitializeComponent();
             }
 
-        void cmdOK_Click(object sender, EventArgs e) // OK button event handler
+        private void cmdOK_Click(object sender, EventArgs e) // OK button event handler
             {
             communicationSettingsControl1.Save();
             }
 
-        void cmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
+        private void cmdCancel_Click(object sender, EventArgs e) // Cancel button event handler
             {
             Close();
             }
 
-        void BrowseToAscom(object sender, EventArgs e) // Click on ASCOM logo event handler
+        private void BrowseToAscom(object sender, EventArgs e) // Click on ASCOM logo event handler
             {
             try
                 {
@@ -47,7 +47,7 @@ namespace TA.DigitalDomeworks.Server
                 }
             }
 
-        void SetupDialogForm_Load(object sender, EventArgs e)
+        private void SetupDialogForm_Load(object sender, EventArgs e)
             {
             var onlineClients = SharedResources.ConnectionManager.OnlineClientCount;
             if (onlineClients == 0)
@@ -63,7 +63,7 @@ namespace TA.DigitalDomeworks.Server
                 }
             }
 
-        void AboutBox_Click(object sender, EventArgs e)
+        private void AboutBox_Click(object sender, EventArgs e)
             {
             using (var aboutBox = new AboutBox())
                 {

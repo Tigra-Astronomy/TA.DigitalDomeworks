@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: CLientStatus.cs  Last modified: 2017-02-11@15:30 by Tim Long
+// File: CLientStatus.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 

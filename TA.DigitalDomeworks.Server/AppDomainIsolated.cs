@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: AppDomainIsolated.cs  Last modified: 2017-02-18@20:49 by Tim Long
+// File: AppDomainIsolated.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 
@@ -11,7 +11,7 @@ namespace TA.DigitalDomeworks.Server
     internal class AppDomainIsolated<TWorker> : IDisposable
         where TWorker : MarshalByRefObject
         {
-        AppDomain domain;
+        private AppDomain domain;
 
         public AppDomainIsolated()
             {

@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ClientConnectionManager.cs  Last modified: 2017-02-27@23:21 by Tim Long
+// File: ClientConnectionManager.cs  Last modified: 2018-03-28@22:20 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -24,9 +24,9 @@ namespace TA.DigitalDomeworks.Server
     [ReaderWriterSynchronized]
     public class ClientConnectionManager
         {
-        [Reference] readonly ILogger log = LogManager.GetCurrentClassLogger();
-        readonly bool performActionsOnOpen;
-        [Reference] Maybe<DeviceController> controllerInstance;
+        [Reference] private readonly ILogger log = LogManager.GetCurrentClassLogger();
+        private readonly bool performActionsOnOpen;
+        [Reference] private Maybe<DeviceController> controllerInstance;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ClientConnectionManager" /> class.
@@ -124,7 +124,7 @@ namespace TA.DigitalDomeworks.Server
             }
 
         [Writer]
-        void EnsureControllerInstanceCreatedAndOpen()
+        private void EnsureControllerInstanceCreatedAndOpen()
             {
             if (!controllerInstance.Any())
                 {
@@ -139,7 +139,7 @@ namespace TA.DigitalDomeworks.Server
             }
 
         [Writer]
-        void DestroyControllerInstance()
+        private void DestroyControllerInstance()
             {
             if (controllerInstance.Any())
                 controllerInstance.Single().Close();
@@ -217,6 +217,7 @@ namespace TA.DigitalDomeworks.Server
                 log.Error(e, message);
                 //ThrowOnUnrecognizedClient(clientId, e, "Attempt to unregister an unknown client");
                 }
+
             if (previousClientCount == 1 && RegisteredClientCount == 0)
                 {
                 DestroyControllerInstance();
@@ -231,7 +232,7 @@ namespace TA.DigitalDomeworks.Server
         /// <param name="e">The original (inner) exception.</param>
         /// <param name="message">The error message.</param>
         [ContractAnnotation("=>halt")]
-        void ThrowOnUnrecognizedClient(Guid clientId, Exception e, string message)
+        private void ThrowOnUnrecognizedClient(Guid clientId, Exception e, string message)
             {
             var ex = new ASCOM.InvalidOperationException($"Connection Manager: {message}", e);
             ex.Data["RegisteredClients"] = Clients;
