@@ -44,6 +44,22 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             decoratedState.CloseShutter();
             }
 
+        public void RotateToHomePosition()
+            {
+            Log.Info()
+                .Message("Rotate To Home requested")
+                .Write();
+            decoratedState.RotateToHomePosition();
+            }
+
+        public void SetUserOutputPins(Octet newState)
+            {
+            Log.Info()
+                .Message($"User output pins set to {newState}")
+                .Write();
+            decoratedState.SetUserOutputPins(newState);
+            }
+
         public void OnEnter()
             {
             Log.Info()

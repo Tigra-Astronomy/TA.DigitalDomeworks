@@ -110,7 +110,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             ShutterMotorCurrent = 0;
             ShutterPosition = status.ShutterSensor;
             AtHome = status.AtHome;
+            UserPins = status.UserPins;
             }
+
+        /// <summary>
+        /// The state of the user output pins. Bits 0..3 are significant, other bits are unused.
+        /// </summary>
+        public Octet UserPins { get; private set; } = Octet.Zero;
 
         internal void RequestHardwareStatus()
             {
@@ -190,5 +196,16 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.StatusUpdateReceived(status);
             }
         #endregion State triggers
+
+        public void RotateToHomePosition()
+            {
+            CurrentState.RotateToHomePosition();
+            }
+
+        public void SetUserOutputPins(Octet newState)
+            {
+            UserPins = newState;
+            CurrentState.SetUserOutputPins(newState);
+            }
         }
     }

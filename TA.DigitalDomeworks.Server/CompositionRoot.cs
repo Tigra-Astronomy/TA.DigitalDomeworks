@@ -75,7 +75,9 @@ namespace TA.DigitalDomeworks.Server
             {
             var options = new DeviceControllerOptions
                 {
-                PerformShutterRecovery = Settings.Default.PerformShutterRecovery
+                PerformShutterRecovery = Settings.Default.PerformShutterRecovery,
+                MaximumShutterCloseTime = Settings.Default.ShutterCloseTimeout,
+                MaximumFullRotationTime = Settings.Default.FullRotationTimeout
                 };
             return options;
             }

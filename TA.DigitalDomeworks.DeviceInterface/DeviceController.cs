@@ -40,6 +40,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
             this.configuration = configuration;
             }
 
+        public Octet UserPins => stateMachine.UserPins;
+
         public int AzimuthEncoderPosition => stateMachine.AzimuthEncoderPosition;
 
         public float AzimuthDegrees => AzimuthEncoderPosition * DegreesPerTick;
@@ -242,6 +244,12 @@ namespace TA.DigitalDomeworks.DeviceInterface
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
+        public void SetUserOutputPin(int pinNumber, bool state)
+            {
+            var newState = UserPins.WithBitSetTo(pinNumber, state);
+            stateMachine.SetUserOutputPins(newState);
+            }
+
         public void RequestEmergencyStop()
             {
             var pause = TimeSpan.FromSeconds(1);
@@ -265,6 +273,27 @@ namespace TA.DigitalDomeworks.DeviceInterface
         public void CloseShutter()
             {
             stateMachine.CloseShutter();
+            }
+
+        /// <summary>
+        /// Parks the dome by closing the shutter.
+        /// Blocks until completed or an error occurs.
+        /// </summary>
+        public void Park()
+            {
+            TimeSpan timeout;
+            if (ShutterPosition != SensorState.Closed)
+                {
+                stateMachine.CloseShutter();
+                timeout = configuration.MaximumFullRotationTime + configuration.MaximumShutterCloseTime;
+                }
+            else
+                {
+                stateMachine.RotateToHomePosition();
+                timeout = configuration.MaximumFullRotationTime;
+                }
+            // Potentially throws TimeoutException - let this propagate to the client application.
+            stateMachine.WaitForReady(timeout);
             }
         }
     }

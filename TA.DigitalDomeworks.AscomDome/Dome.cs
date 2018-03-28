@@ -7,11 +7,14 @@
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using ASCOM;
 using ASCOM.DeviceInterface;
 using JetBrains.Annotations;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Server;
+using TA.DigitalDomeworks.SharedTypes;
+using TA.PostSharp.Aspects;
 using NotImplementedException = ASCOM.NotImplementedException;
 
 namespace TA.DigitalDomeworks.AscomDome
@@ -22,7 +25,7 @@ namespace TA.DigitalDomeworks.AscomDome
     [ClassInterface(ClassInterfaceType.None)]
     [DeviceId(SharedResources.DomeDriverId, DeviceName = SharedResources.DomeDriverName)]
     [ServedClassName(SharedResources.DomeDriverName)]
-    public class Dome : ReferenceCountedObject, IDomeV2
+    public class Dome : ReferenceCountedObject, IDomeV2, IAscomDriver
         {
         [NotNull] private readonly Guid clientId;
         [CanBeNull] private DeviceController controller;
@@ -61,31 +64,38 @@ namespace TA.DigitalDomeworks.AscomDome
             {
             SharedResources.ConnectionManager.GoOffline(clientId);
             SharedResources.ConnectionManager.UnregisterClient(clientId);
+            controller = null; //[Sentinel]
             }
 
+        [MustBeConnected]
         public void AbortSlew()
             {
             controller.RequestEmergencyStop();
             }
 
+        [MustBeConnected]
         public void CloseShutter()
             {
             controller.CloseShutter();
             }
 
+        [MustBeConnected]
         public void FindHome()
             {
             throw new NotImplementedException();
             }
 
+        [MustBeConnected]
         public void OpenShutter()
             {
             controller.OpenShutter();
             }
 
+        [MustBeConnected]
         public void Park()
             {
-            throw new NotImplementedException();
+            controller.Park();
+            AtPark = controller.AtHome && controller.ShutterPosition == SensorState.Closed;
             }
 
         public void SetPark()
@@ -98,6 +108,7 @@ namespace TA.DigitalDomeworks.AscomDome
             throw new NotImplementedException();
             }
 
+        [MustBeConnected]
         public void SlewToAzimuth(double Azimuth)
             {
             controller.SlewToAzimuth(Azimuth);
@@ -125,46 +136,74 @@ namespace TA.DigitalDomeworks.AscomDome
                 }
             }
 
-        public string Description { get; }
+        public string Description => "ASCOM Dome driver for Digital Domeworks";
 
-        public string DriverInfo { get; }
+        public string DriverInfo => @"ASCOM Dome driver for Digital Domeworks, 2018 reboot
+An open source ASCOM driver by Tigra Astronomy
+Home page: http://tigra-astronomy.com
+Source code: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks
+License: https://tigra.mit-license.org/
+Copyright © 2018 Tigra Astronomy";
 
-        public string DriverVersion { get; }
+        public string DriverVersion => "7.0";
 
-        public short InterfaceVersion { get; }
+        public short InterfaceVersion => 2;
 
-        public string Name { get; }
+        public string Name => "Digital Domeworks 2018 Reboot";
 
-        public ArrayList SupportedActions { get; }
+        public ArrayList SupportedActions => new ArrayList();
 
-        public double Altitude { get; }
+        public double Altitude => throw new PropertyNotImplementedException(nameof(Altitude), accessorSet: false);
 
-        public bool AtHome { get; }
+        [MustBeConnected]
+        public bool AtHome => controller.AtHome;
 
-        public bool AtPark { get; }
+        [MustBeConnected]
+        public bool AtPark { get; private set; }
 
-        public double Azimuth { get; }
+        [MustBeConnected]
+        public double Azimuth => controller.AzimuthDegrees;
 
-        public bool CanFindHome { get; }
+        public bool CanFindHome => true;
 
-        public bool CanPark { get; }
+        public bool CanPark => true;
 
-        public bool CanSetAltitude { get; }
+        public bool CanSetAltitude => false;
 
-        public bool CanSetAzimuth { get; }
+        public bool CanSetAzimuth => true;
 
-        public bool CanSetPark { get; }
+        public bool CanSetPark => false;
 
-        public bool CanSetShutter { get; }
+        public bool CanSetShutter => true;
 
-        public bool CanSlave { get; }
+        public bool CanSlave => false;
 
-        public bool CanSyncAzimuth { get; }
+        public bool CanSyncAzimuth => false;
 
-        public ShutterState ShutterStatus { get; }
+        [MustBeConnected]
+        public ShutterState ShutterStatus
+            {
+            get
+                {
+                if (controller.ShutterMovementDirection == ShutterDirection.Closing)
+                    return ShutterState.shutterClosing;
+                if (controller.ShutterMovementDirection == ShutterDirection.Opening)
+                    return ShutterState.shutterOpening;
+                if (controller.ShutterPosition == SensorState.Closed)
+                    return ShutterState.shutterClosed;
+                if (controller.ShutterPosition == SensorState.Open)
+                    return ShutterState.shutterOpen;
+                return ShutterState.shutterError;
+                }
+            }
 
-        public bool Slaved { get; set; }
+        public bool Slaved
+            {
+            get => false;
+            set => throw new NotImplementedException();
+            }
 
-        public bool Slewing { get; }
+        [MustBeConnected]
+        public bool Slewing => controller.IsMoving;
         }
     }

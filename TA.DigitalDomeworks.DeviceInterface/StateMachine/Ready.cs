@@ -51,5 +51,18 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             machine.ControllerActions.CloseShutter();
             machine.TransitionToState(new Rotating(machine));
             }
+
+        public override void RotateToHomePosition()
+            {
+            base.RotateToHomePosition();
+            machine.ControllerActions.RotateToHomePosition();
+            machine.TransitionToState(new Rotating(machine));
+            }
+
+        public override void SetUserOutputPins(Octet newState)
+            {
+            base.SetUserOutputPins(newState);
+            machine.ControllerActions.SetUserOutputPins(newState);
+            }
         }
     }

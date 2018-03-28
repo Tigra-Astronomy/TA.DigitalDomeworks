@@ -17,16 +17,12 @@ namespace TA.DigitalDomeworks.Server
     /// </summary>
     public static class SharedResources
         {
-        /// <summary>
-        ///     ASCOM DeviceID (COM ProgID) for the rotator driver.
-        /// </summary>
         public const string DomeDriverId = "ASCOM.DigitalDomeworks2018.Dome";
-        /// <summary>
-        ///     Driver description for the rotator driver.
-        /// </summary>
+        public const string SwitchDriverId = "ASCOM.DigitalDomeworks2018.Switch";
         public const string DomeDriverName = "Digital Domeworks 2018 Reboot";
+        public const string SwitchDriverName = "Digital Domeworks 2018 Reboot";
 
-        static ILogger Log;
+        private static readonly ILogger Log;
 
         static SharedResources()
             {
@@ -39,6 +35,7 @@ namespace TA.DigitalDomeworks.Server
         /// </summary>
         /// <value>The connection manager.</value>
         public static ClientConnectionManager ConnectionManager { get; }
+
 
         public static void DoSetupDialog(Guid clientId)
             {

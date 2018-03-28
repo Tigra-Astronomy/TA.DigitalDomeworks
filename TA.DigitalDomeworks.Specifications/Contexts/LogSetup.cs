@@ -24,6 +24,7 @@ namespace TA.DigitalDomeworks.Specifications.Contexts
             configuration.AddTarget("Unit test runner", unitTestRunnerTarget);
             unitTestRunnerTarget.Layout =
                 "${time}|${pad:padding=-5:inner=${uppercase:${level}}}|${pad:padding=-16:inner=${callsite:className=true:fileName=false:includeSourcePath=false:methodName=false:includeNamespace=false}}|${message}";
+            unitTestRunnerTarget.RawWrite = true;
             var logEverything = new LoggingRule("*", LogLevel.Trace, unitTestRunnerTarget);
             configuration.LoggingRules.Add(logEverything);
             LogManager.Configuration = configuration;

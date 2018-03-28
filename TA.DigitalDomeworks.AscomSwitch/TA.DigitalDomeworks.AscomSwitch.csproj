@@ -1,19 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B22461B-2D19-4342-A87D-4E90EFD3E2A9}</ProjectGuid>
+    <ProjectGuid>{F95208C4-450F-4B51-810A-C805A8EFBB7A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TA.DigitalDomeworks.AscomDome</RootNamespace>
-    <AssemblyName>TA.DigitalDomeworks.AscomDome</AssemblyName>
+    <RootNamespace>TA.DigitalDomeworks.AscomSwitch</RootNamespace>
+    <AssemblyName>TA.DigitalDomeworks.AscomSwitch</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,20 +73,9 @@
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="PostSharp, Version=5.0.48.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Redist.5.0.48\lib\net45\PostSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="PostSharp, Version=5.0.48.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -98,12 +84,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dome.cs" />
+    <Compile Include="Switch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
@@ -111,7 +93,7 @@
       <Name>TA.DigitalDomeworks.DeviceInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj">
-      <Project>{3689a2cb-94c5-4012-a5cf-7e7d1dd27143}</Project>
+      <Project>{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}</Project>
       <Name>TA.DigitalDomeworks.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
@@ -123,13 +105,9 @@
       <Name>TA.PostSharp.Aspects</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\PostSharp.5.0.48\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.48\build\PostSharp.props'))" />
-    <Error Condition="!Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.48\build\PostSharp.targets'))" />
-  </Target>
-  <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" />
 </Project>

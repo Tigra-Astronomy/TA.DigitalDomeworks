@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: IControllerState.cs  Last modified: 2018-03-16@14:17 by Tim Long
+// File: IControllerState.cs  Last modified: 2018-03-28@00:58 by Tim Long
 
 using TA.DigitalDomeworks.SharedTypes;
 
@@ -10,6 +10,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     public interface IControllerState
         {
+        string Name { get; }
+
         /// <summary>
         ///     Called once when the state it first entered, but after the previous state's
         ///     <see cref="OnExit" /> method has been called.
@@ -42,22 +44,30 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         /// <param name="status">An object containing the current hardware state.</param>
         void StatusUpdateReceived(IHardwareStatus status);
 
-        string Name { get; }
-
         /// <summary>
-        /// Requests that the dome rotate to the specified azimuth in degrees,
-        /// measured from North clockwise.
+        ///     Requests that the dome rotate to the specified azimuth in degrees,
+        ///     measured from North clockwise.
         /// </summary>
         void RotateToAzimuthDegrees(double azimuth);
 
         /// <summary>
-        /// Action: Open Shutter
+        ///     Action: Open Shutter
         /// </summary>
         void OpenShutter();
 
         /// <summary>
-        /// Action: Close Shutter
+        ///     Action: Close Shutter
         /// </summary>
         void CloseShutter();
+
+        /// <summary>
+        ///     Action: requests that the dome is rotated to the home position.
+        /// </summary>
+        void RotateToHomePosition();
+
+        /// <summary>
+        ///     Action: set the state of the user output pins
+        /// </summary>
+        void SetUserOutputPins(Octet newState);
         }
     }

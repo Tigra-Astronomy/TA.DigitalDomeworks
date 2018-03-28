@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateBase.cs  Last modified: 2018-03-20@01:00 by Tim Long
+// File: ControllerStateBase.cs  Last modified: 2018-03-28@00:58 by Tim Long
 
 using System;
 using System.Threading;
@@ -37,6 +37,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public virtual void OpenShutter() { }
 
         public virtual void CloseShutter() { }
+
+        public virtual void RotateToHomePosition() { }
+
+        public virtual void SetUserOutputPins(Octet newState) { }
 
         protected void ResetTimeout(TimeSpan timeout)
             {

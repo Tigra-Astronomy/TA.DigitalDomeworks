@@ -5,6 +5,7 @@
 // File: RxControllerActions.cs  Last modified: 2018-03-24@22:27 by Tim Long
 
 using TA.Ascom.ReactiveCommunications;
+using TA.DigitalDomeworks.SharedTypes;
 using TI.DigitalDomeWorks;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
@@ -47,6 +48,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public void RotateToHomePosition()
             {
             channel.Send(Constants.CmdGotoHome);
+            }
+
+        public void SetUserOutputPins(Octet newState)
+            {
+            channel.Send(string.Format(Constants.CmdSetUserPins, (byte)newState));
             }
         }
     }

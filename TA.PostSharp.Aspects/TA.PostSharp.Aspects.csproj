@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B22461B-2D19-4342-A87D-4E90EFD3E2A9}</ProjectGuid>
+    <ProjectGuid>{9CDCF319-DADC-41EB-B787-DE3862017E95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TA.DigitalDomeworks.AscomDome</RootNamespace>
-    <AssemblyName>TA.DigitalDomeworks.AscomDome</AssemblyName>
+    <RootNamespace>TA.PostSharp.Aspects</RootNamespace>
+    <AssemblyName>TA.PostSharp.Aspects</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\BuildOutput\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\BuildOutput\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -73,9 +73,6 @@
       <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Utilities.Video.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -98,30 +95,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dome.cs" />
+    <Compile Include="IAscomDriver.cs" />
+    <Compile Include="MustBeConnectedAttribute.cs" />
+    <Compile Include="NLogTraceWithArgumentsAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
-      <Project>{020924B9-23D5-4B92-B5B1-461423BBE23C}</Project>
-      <Name>TA.DigitalDomeworks.DeviceInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj">
-      <Project>{3689a2cb-94c5-4012-a5cf-7e7d1dd27143}</Project>
-      <Name>TA.DigitalDomeworks.Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
-      <Project>{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}</Project>
-      <Name>TA.DigitalDomeworks.SharedTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj">
-      <Project>{9CDCF319-DADC-41EB-B787-DE3862017E95}</Project>
-      <Name>TA.PostSharp.Aspects</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -132,4 +112,11 @@
     <Error Condition="!Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.48\build\PostSharp.targets'))" />
   </Target>
   <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

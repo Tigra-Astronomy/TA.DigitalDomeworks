@@ -2,9 +2,9 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: IControllerActions.cs  Last modified: 2018-03-19@17:03 by Tim Long
+// File: IControllerActions.cs  Last modified: 2018-03-28@00:57 by Tim Long
 
-using System;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
@@ -39,5 +39,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         ///     Requests that the controller rotates to the azimuth that it considers to be the home position.
         /// </summary>
         void RotateToHomePosition();
+
+        /// <summary>
+        ///     Sets the state of the user output pins.
+        /// </summary>
+        /// <param name="newState">An octet with the state of the user pins in bits 0..3.</param>
+        void SetUserOutputPins(Octet newState);
         }
     }

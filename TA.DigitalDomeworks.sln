@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.AscomDo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.Server", "TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj", "{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.PostSharp.Aspects", "TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj", "{9CDCF319-DADC-41EB-B787-DE3862017E95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.AscomSwitch", "TA.DigitalDomeworks.AscomSwitch\TA.DigitalDomeworks.AscomSwitch.csproj", "{F95208C4-450F-4B51-810A-C805A8EFBB7A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TA.DigitalDomeworks.Shared\TA.DigitalDomeworks.Shared.projitems*{020924b9-23d5-4b92-b5b1-461423bbe23c}*SharedItemsImports = 4
@@ -80,6 +84,22 @@ Global
 		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Release|x86.ActiveCfg = Release|Any CPU
 		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Release|x86.Build.0 = Release|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Debug|x86.Build.0 = Debug|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Release|x86.ActiveCfg = Release|Any CPU
+		{9CDCF319-DADC-41EB-B787-DE3862017E95}.Release|x86.Build.0 = Release|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Debug|x86.Build.0 = Debug|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Release|x86.ActiveCfg = Release|Any CPU
+		{F95208C4-450F-4B51-810A-C805A8EFBB7A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

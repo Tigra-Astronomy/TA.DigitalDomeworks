@@ -22,6 +22,7 @@ namespace TA.DigitalDomeworks.Server
         {
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
         private IDisposable clientStatusSubscription;
+        [NotNull] private List<ClickCommand> clickCommands = new List<ClickCommand>();
 
         public ServerStatusDisplay()
             {
@@ -62,12 +63,51 @@ namespace TA.DigitalDomeworks.Server
 
         private void ObserveClientStatusChanged(EventPattern<EventArgs> eventPattern)
             {
-            SetUiButtonState();
             SetUiDeviceConnectedState();
             var clientStatus = SharedResources.ConnectionManager.Clients;
             registeredClientCount.Text = clientStatus.Count().ToString();
-            OnlineClients.Text = clientStatus.Count(p => p.Online).ToString();
+            var onlineClientCount = clientStatus.Count(p => p.Online);
+            OnlineClients.Text = onlineClientCount.ToString();
             ConfigureUiPropertyNotifications();
+            if (onlineClientCount == 1)
+                AttachCommands();
+            if (onlineClientCount==0)
+                DetachCommands();
+            }
+
+        private bool CanSetup() => CanMoveShutterOrDome() || !SharedResources.ConnectionManager.MaybeControllerInstance.Any();
+
+        bool CanMoveShutterOrDome()
+            {
+            var maybeController = SharedResources.ConnectionManager.MaybeControllerInstance;
+            if (!maybeController.Any()) return false;
+            var controller = maybeController.Single();
+            return !controller.IsMoving;
+            }
+
+        /*
+         * Experimental code!
+         * Exploring the use of the Command pattern to wire up controls to
+         * OnClick events, and have the controls enable/disable themselves using the
+         * command's CanExecuteChanged() method.
+         */
+        void AttachCommands()
+            {
+            var maybeController = SharedResources.ConnectionManager.MaybeControllerInstance;
+            if (!maybeController.Any()) return;
+            var controller = maybeController.Single();
+            clickCommands = new List<ClickCommand>
+                {
+                OpenButton.AttachCommand(ExecuteOpenShutter, CanMoveShutterOrDome),
+                CloseButton.AttachCommand(ExecuteCloseShutter, CanMoveShutterOrDome),
+                SetupCommand.AttachCommand(ExecuteSetupDialog, CanSetup )
+                };
+            }
+
+        void DetachCommands()
+            {
+            clickCommands.ForEach(p=>p.Dispose());
+            clickCommands.Clear();
             }
 
         /// <summary>
@@ -100,14 +140,6 @@ namespace TA.DigitalDomeworks.Server
             {
             disposableSubscriptions.ForEach(p => p.Dispose());
             disposableSubscriptions.Clear();
-            }
-
-        private void SetUiButtonState()
-            {
-            if (!SharedResources.ConnectionManager.MaybeControllerInstance.Any() ||
-                SharedResources.ConnectionManager.OnlineClientCount < 1)
-                return;
-            var controller = SharedResources.ConnectionManager.MaybeControllerInstance.Single();
             }
 
         /// <summary>
@@ -168,6 +200,24 @@ namespace TA.DigitalDomeworks.Server
                     .ObserveOn(SynchronizationContext.Current)
                     .Subscribe(home => AtHomeAnnunciator.Mute = !home)
             );
+            disposableSubscriptions.Add(
+                controller.GetObservableValueFor(p => p.UserPins)
+                    .ObserveOn(SynchronizationContext.Current)
+                    .Subscribe(SetUserPins)
+            );
+            disposableSubscriptions.Add(
+                controller.GetPropertyChangedEvents()
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(p=>clickCommands.ForEach(q=>q.CanExecuteChanged()))
+                );
+            }
+
+        void SetUserPins(Octet pinState)
+            {
+            UserPin1Annunciator.Mute = !pinState[0];
+            UserPin2Annunciator.Mute = !pinState[1];
+            UserPin3Annunciator.Mute = !pinState[2];
+            UserPin4Annunciator.Mute = !pinState[3];
             }
 
         private void SetShutterPosition(SensorState position)
@@ -218,7 +268,7 @@ namespace TA.DigitalDomeworks.Server
             Application.Exit();
             }
 
-        private void SetupCommand_Click(object sender, EventArgs e)
+        private void ExecuteSetupDialog()
             {
             SharedResources.DoSetupDialog(default(Guid));
             }
@@ -231,6 +281,22 @@ namespace TA.DigitalDomeworks.Server
         private void ServerStatusDisplay_VisibleChanged(object sender, EventArgs e)
             {
             BringToFront();
+            }
+
+        private void ExecuteOpenShutter()
+            {
+            if (SharedResources.ConnectionManager.MaybeControllerInstance.Any())
+                {
+                SharedResources.ConnectionManager.MaybeControllerInstance.Single().OpenShutter();
+                }
+            }
+
+        private void ExecuteCloseShutter()
+            {
+            if (SharedResources.ConnectionManager.MaybeControllerInstance.Any())
+                {
+                SharedResources.ConnectionManager.MaybeControllerInstance.Single().CloseShutter();
+                }
             }
         }
     }

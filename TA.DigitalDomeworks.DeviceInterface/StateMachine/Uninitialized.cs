@@ -52,5 +52,15 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             throw uninitialized;
             }
+
+        public void RotateToHomePosition()
+            {
+            throw uninitialized;
+            }
+
+        public void SetUserOutputPins(Octet newState)
+            {
+            throw uninitialized;
+            }
         }
     }
