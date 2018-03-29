@@ -229,6 +229,8 @@
   <ItemGroup>
     <Content Include="ASCOM.png" />
     <Content Include="Resources\ASCOM.ico" />
+    <None Include="Resources\DigitalDomeworks.jpg" />
+    <None Include="Resources\AuroraWideWithText.png" />
     <None Include="NLog.Debug.config">
       <DependentUpon>NLog.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -240,10 +242,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\Integra85_2017_transparent.png" />
-    <None Include="Resources\Integra85.ico" />
-    <None Include="Resources\GTD-logo.jpg" />
-    <None Include="Resources\GTD-logo-no-text.png" />
     <None Include="Resources\TiGra Astronomy logo 800x900.png" />
     <None Include="Resources\TiGra Astronomy Icon 256x256.png" />
     <None Include="Resources\ASCOM.png" />

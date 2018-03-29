@@ -25,7 +25,9 @@ namespace TA.DigitalDomeworks.Server
             var me = Assembly.GetExecutingAssembly();
             var name = me.GetName();
             var driverVersion = name.Version;
+            var productVersion = me.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
             DriverVersion.Text = driverVersion.ToString();
+            ProductVersion.Text = productVersion;
             }
 
         private void DriverVersion_Click(object sender, EventArgs e) { }

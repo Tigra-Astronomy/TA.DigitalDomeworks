@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: MustBeConnectedAttribute.cs  Last modified: 2017-02-13@01:17 by Tim Long
+// File: MustBeConnectedAttribute.cs  Last modified: 2018-03-29@02:55 by Tim Long
 
 using System;
 using System.Reflection;
@@ -22,7 +22,7 @@ namespace TA.PostSharp.Aspects
     [ProvideAspectRole("ASCOM")]
     public sealed class MustBeConnectedAttribute : OnMethodBoundaryAspect
         {
-        static int nesting;
+        private static int nesting;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MustBeConnectedAttribute" /> class. Forces
@@ -38,10 +38,8 @@ namespace TA.PostSharp.Aspects
             {
             var targetType = method.DeclaringType;
             if (!typeof(IAscomDriver).IsAssignableFrom(targetType))
-                {
                 throw new InvalidAnnotationException(
                     "This aspect can only be applied to members of types that implement IAscomDriver");
-                }
             return base.CompileTimeValidate(method);
             }
 

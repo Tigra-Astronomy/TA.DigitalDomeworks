@@ -1,8 +1,8 @@
-﻿// This file is part of the GTD.Integra.FocusingRotator project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016-2017 Tigra Astronomy., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: IAscomDriver.cs  Last modified: 2017-02-13@01:06 by Tim Long
+// File: IAscomDriver.cs  Last modified: 2018-03-29@02:55 by Tim Long
 
 namespace TA.PostSharp.Aspects
     {
