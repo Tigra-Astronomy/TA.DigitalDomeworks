@@ -46,9 +46,9 @@ namespace TA.DigitalDomeworks.Server
             // 
             // cmdOK
             // 
-            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(12, 406);
+            this.cmdOK.Location = new System.Drawing.Point(308, 107);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -58,9 +58,9 @@ namespace TA.DigitalDomeworks.Server
             // 
             // cmdCancel
             // 
-            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(77, 406);
+            this.cmdCancel.Location = new System.Drawing.Point(308, 137);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -73,7 +73,7 @@ namespace TA.DigitalDomeworks.Server
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picASCOM.Image = global::TA.DigitalDomeworks.Server.Properties.Resources.ASCOM;
-            this.picASCOM.Location = new System.Drawing.Point(581, 9);
+            this.picASCOM.Location = new System.Drawing.Point(321, 9);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);
             this.picASCOM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -85,9 +85,9 @@ namespace TA.DigitalDomeworks.Server
             // AboutBox
             // 
             this.AboutBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AboutBox.Location = new System.Drawing.Point(552, 406);
+            this.AboutBox.Location = new System.Drawing.Point(308, 79);
             this.AboutBox.Name = "AboutBox";
-            this.AboutBox.Size = new System.Drawing.Size(75, 23);
+            this.AboutBox.Size = new System.Drawing.Size(59, 23);
             this.AboutBox.TabIndex = 8;
             this.AboutBox.Text = "About...";
             this.AboutBox.UseVisualStyleBackColor = true;
@@ -121,9 +121,9 @@ namespace TA.DigitalDomeworks.Server
             // StartupOptionsGroup
             // 
             this.StartupOptionsGroup.Controls.Add(this.PerformShutterRecovery);
-            this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 119);
+            this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 92);
             this.StartupOptionsGroup.Name = "StartupOptionsGroup";
-            this.StartupOptionsGroup.Size = new System.Drawing.Size(262, 100);
+            this.StartupOptionsGroup.Size = new System.Drawing.Size(262, 70);
             this.StartupOptionsGroup.TabIndex = 10;
             this.StartupOptionsGroup.TabStop = false;
             this.StartupOptionsGroup.Text = "Startup Options";
@@ -147,7 +147,7 @@ namespace TA.DigitalDomeworks.Server
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(639, 442);
+            this.ClientSize = new System.Drawing.Size(379, 174);
             this.Controls.Add(this.StartupOptionsGroup);
             this.Controls.Add(this.CommunicationsGroup);
             this.Controls.Add(this.AboutBox);
@@ -159,10 +159,11 @@ namespace TA.DigitalDomeworks.Server
             this.Location = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.SetupDialogLocation;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(395, 213);
             this.Name = "SetupDialogForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Integra85 Rotator Setup";
+            this.Text = "ASCOM Drivers for Digital Domeworks Setup";
             this.Load += new System.EventHandler(this.SetupDialogForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).EndInit();
