@@ -51,7 +51,7 @@
         </RegistryKey>
 
         <!-- HKCR\{driver-prog-id} -->
-        <RegistryKey Root="HKCR" Key="$(var.DomeDriverProgId)">
+        <RegistryKey Root="HKCR" Key="$(var.SwitchDriverProgId)">
           <RegistryValue Value="$(var.DriverDescription)" Type="string" />
           <RegistryKey Key="CLSID">
             <RegistryValue Value="$(var.SwitchDriverClsId)" Type="string" />

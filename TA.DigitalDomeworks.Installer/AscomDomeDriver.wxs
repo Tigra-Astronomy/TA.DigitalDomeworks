@@ -27,6 +27,8 @@
               Vital="yes"
               Assembly=".net"
               AssemblyApplication="filDomeDriverAssembly" />
+      </Component>
+      <Component Id="cmpAscomDomeRegistry" Guid="*" Win64="no">
         <!-- Registry entries suitable for a LocalServer served class -->
         <!-- HKCR\CLSID\{driver-guid} -->
         <RegistryKey Root="HKCR" Key="CLSID">
