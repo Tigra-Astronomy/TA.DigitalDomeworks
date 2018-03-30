@@ -2,10 +2,11 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: NotifyPropertyChangeReactiveExtensions.cs  Last modified: 2018-03-12@21:14 by Tim Long
+// File: NotifyPropertyChangeReactiveExtensions.cs  Last modified: 2018-03-30@01:42 by Tim Long
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -33,6 +34,7 @@ namespace TA.DigitalDomeworks.SharedTypes
             this TSource source, Expression<Func<TSource, TValue>> property)
             where TSource : INotifyPropertyChanged
             {
+            Contract.Requires(property != null);
             var memberExpression =
                 property.Body as MemberExpression;
 
@@ -69,6 +71,7 @@ namespace TA.DigitalDomeworks.SharedTypes
                 Action<TValue> observer)
             where TSource : INotifyPropertyChanged
             {
+            Contract.Requires(property != null);
             return source
                 .GetObservableValueFor(property)
                 .Subscribe(observer);

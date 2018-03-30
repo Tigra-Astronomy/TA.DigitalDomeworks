@@ -2,8 +2,9 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: StateLoggingDecorator.cs  Last modified: 2018-03-18@17:12 by Tim Long
+// File: StateLoggingDecorator.cs  Last modified: 2018-03-30@02:02 by Tim Long
 
+using System.Diagnostics.Contracts;
 using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
@@ -16,6 +17,12 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public StateLoggingDecorator(IControllerState targetState)
             {
             decoratedState = targetState;
+            }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+            {
+            Contract.Invariant(decoratedState != null);
             }
 
         public string Name => decoratedState.Name;

@@ -2,10 +2,11 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-03-25@18:17 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-03-30@03:37 by Tim Long
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
@@ -36,6 +37,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public bool AtHome { get; set; }
 
         public SensorState ShutterPosition { get; set; }
+
+        /// <summary>
+        ///     The state of the user output pins. Bits 0..3 are significant, other bits are unused.
+        /// </summary>
+        public Octet UserPins { get; private set; } = Octet.Zero;
 
         public int AzimuthEncoderPosition { get; internal set; }
 
@@ -113,11 +119,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             UserPins = status.UserPins;
             }
 
-        /// <summary>
-        /// The state of the user output pins. Bits 0..3 are significant, other bits are unused.
-        /// </summary>
-        public Octet UserPins { get; private set; } = Octet.Zero;
-
         internal void RequestHardwareStatus()
             {
             ControllerActions.RequestHardwareStatus();
@@ -182,6 +183,17 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.CloseShutter();
             }
 
+        public void RotateToHomePosition()
+            {
+            CurrentState.RotateToHomePosition();
+            }
+
+        public void SetUserOutputPins(Octet newState)
+            {
+            UserPins = newState;
+            CurrentState.SetUserOutputPins(newState);
+            }
+
         #region State triggers 
         public void AzimuthEncoderTickReceived(int encoderPosition)
             {
@@ -196,16 +208,5 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.StatusUpdateReceived(status);
             }
         #endregion State triggers
-
-        public void RotateToHomePosition()
-            {
-            CurrentState.RotateToHomePosition();
-            }
-
-        public void SetUserOutputPins(Octet newState)
-            {
-            UserPins = newState;
-            CurrentState.SetUserOutputPins(newState);
-            }
         }
     }

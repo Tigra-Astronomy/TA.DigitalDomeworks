@@ -10,10 +10,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     internal sealed class Ready : ControllerStateBase
         {
-        public Ready(ControllerStateMachine machine)
-            {
-            this.machine = machine;
-            }
+        public Ready(ControllerStateMachine machine) : base(machine) { }
 
         public override void OnEnter() => machine.InReadyState.Set();
 

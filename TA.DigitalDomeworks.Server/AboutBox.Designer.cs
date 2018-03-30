@@ -39,7 +39,7 @@
             this.DriverVersion = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.ShowUserGuideCommand = new System.Windows.Forms.Button();
-            this.ProductVersion = new System.Windows.Forms.Label();
+            this.InformationalVersion = new System.Windows.Forms.Label();
             DriverVersionLabel = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ProductIcon)).BeginInit();
@@ -177,15 +177,15 @@
             this.ShowUserGuideCommand.UseVisualStyleBackColor = true;
             this.ShowUserGuideCommand.Click += new System.EventHandler(this.NavigateToWebPage);
             // 
-            // ProductVersion
+            // InformationalVersion
             // 
-            this.ProductVersion.AutoSize = true;
-            this.ProductVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProductVersion.Location = new System.Drawing.Point(156, 232);
-            this.ProductVersion.Name = "ProductVersion";
-            this.ProductVersion.Size = new System.Drawing.Size(60, 21);
-            this.ProductVersion.TabIndex = 10;
-            this.ProductVersion.Text = "(unset)";
+            this.InformationalVersion.AutoSize = true;
+            this.InformationalVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InformationalVersion.Location = new System.Drawing.Point(156, 232);
+            this.InformationalVersion.Name = "InformationalVersion";
+            this.InformationalVersion.Size = new System.Drawing.Size(60, 21);
+            this.InformationalVersion.TabIndex = 10;
+            this.InformationalVersion.Text = "(unset)";
             // 
             // AboutBox
             // 
@@ -193,7 +193,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(536, 612);
-            this.Controls.Add(this.ProductVersion);
+            this.Controls.Add(this.InformationalVersion);
             this.Controls.Add(label3);
             this.Controls.Add(this.ShowUserGuideCommand);
             this.Controls.Add(this.linkLabel1);
@@ -228,6 +228,6 @@
         private System.Windows.Forms.Label DriverVersion;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button ShowUserGuideCommand;
-        private System.Windows.Forms.Label ProductVersion;
+        private System.Windows.Forms.Label InformationalVersion;
     }
 }

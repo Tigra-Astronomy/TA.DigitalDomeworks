@@ -2,10 +2,11 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachineSpecs.cs  Last modified: 2018-03-17@22:53 by Tim Long
+// File: ControllerStateMachineSpecs.cs  Last modified: 2018-03-30@03:34 by Tim Long
 
 using System;
 using FakeItEasy;
+using JetBrains.Annotations;
 using Machine.Specifications;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
@@ -26,10 +27,10 @@ namespace TA.DigitalDomeworks.Specifications
             StatusRequested = false;
             Machine = null;
             };
-        protected static ControllerStateMachine Machine;
-        protected static bool StatusRequested;
         protected static Exception Exception;
         protected static IControllerActions FakeControllerActions;
+        protected static ControllerStateMachine Machine;
+        protected static bool StatusRequested;
 
         static void SimulateRequestStatus()
             {
@@ -87,34 +88,38 @@ namespace TA.DigitalDomeworks.Specifications
         It should_update_the_azimuth_property = () => Machine.AzimuthEncoderPosition.ShouldEqual(100);
         }
 
-    [Behaviors]
-    internal class ShutterMoving
-        {
-        protected static ControllerStateMachine Machine;
-        It should_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeTrue();
-        It should_not_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeFalse();
-        It should_not_indicate_rotation_direction = () => Machine.AzimuthDirection.ShouldEqual(RotationDirection.None);
-    }
-
-    [Behaviors]
-    internal class AzimuthRotation
-        {
-        protected static ControllerStateMachine Machine;
-        It should_not_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeFalse();
-        It should_not_indicate_shutter_direction = () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
-        It should_not_indicate_any_shutter_motor_current = () => Machine.ShutterMotorCurrent.ShouldEqual(0);
-        It should_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeTrue();
-    }
-
     [Subject(typeof(ControllerStateMachine), "local operations")]
-    internal class when_idle_and_a_shutter_current_measurement_is_received : with_controller_state_machine_in_ready_state
+    internal class
+        when_idle_and_a_shutter_current_measurement_is_received : with_controller_state_machine_in_ready_state
         {
         Because of = () => Machine.ShutterMotorCurrentReceived(15);
-        Behaves_like<ShutterMoving> the_shutter_is_moving;
-        It should_transition_to_shutter_moving_state = () => Machine.CurrentState.Name.ShouldEqual(nameof(ShutterMoving));
+        It should_transition_to_shutter_moving_state =
+            () => Machine.CurrentState.Name.ShouldEqual(nameof(ShutterMoving));
         It should_update_the_shutter_current_property = () => Machine.ShutterMotorCurrent.ShouldEqual(15);
         It should_not_set_a_shutter_direction =
             () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
+        Behaves_like<ShutterMoving> the_shutter_is_moving;
         }
 
-}
+    [Behaviors]
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    internal class ShutterMoving
+        {
+        [UsedImplicitly] protected static ControllerStateMachine Machine;
+        It should_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeTrue();
+        It should_not_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeFalse();
+        It should_not_indicate_rotation_direction = () => Machine.AzimuthDirection.ShouldEqual(RotationDirection.None);
+        }
+
+    [Behaviors]
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    internal class AzimuthRotation
+        {
+        [UsedImplicitly] protected static ControllerStateMachine Machine;
+        It should_not_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeFalse();
+        It should_not_indicate_shutter_direction =
+            () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
+        It should_not_indicate_any_shutter_motor_current = () => Machine.ShutterMotorCurrent.ShouldEqual(0);
+        It should_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeTrue();
+        }
+    }

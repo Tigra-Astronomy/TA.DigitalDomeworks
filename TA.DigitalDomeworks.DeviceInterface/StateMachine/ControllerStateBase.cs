@@ -2,9 +2,10 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateBase.cs  Last modified: 2018-03-28@00:58 by Tim Long
+// File: ControllerStateBase.cs  Last modified: 2018-03-30@03:22 by Tim Long
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog.Fluent;
@@ -14,8 +15,14 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     internal abstract class ControllerStateBase : IControllerState
         {
-        protected ControllerStateMachine machine;
+        protected readonly ControllerStateMachine machine;
         private CancellationTokenSource timeoutCancellation;
+
+        protected ControllerStateBase(ControllerStateMachine machine)
+            {
+            Contract.Requires(machine != null);
+            this.machine = machine;
+            }
 
         public virtual void OnEnter() { }
 

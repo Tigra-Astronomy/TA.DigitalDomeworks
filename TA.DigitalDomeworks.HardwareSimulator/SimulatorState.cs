@@ -6,6 +6,7 @@
 // Last modified: 2016-06-21@10:01 by Tim
 
 using System;
+using System.Diagnostics.Contracts;
 using NLog;
 
 namespace TA.DigitalDomeworks.HardwareSimulator
@@ -135,11 +136,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         ///     Raises the <see cref="StateChanged" /> event.
         /// </summary>
         /// <param name="e">The <see cref="StateEventArgs" /> instance containing the event data.</param>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         private static void RaiseStateChanged(StateEventArgs e)
             {
-            var handler = StateChanged;
-            if (handler != null)
-                handler(e);
+            Contract.Requires(e != null);
+            StateChanged?.Invoke(e);
             }
         #endregion
         }

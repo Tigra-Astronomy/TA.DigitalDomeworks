@@ -27,7 +27,12 @@
               Vital="yes"
               Assembly=".net"
               AssemblyApplication="filSwitchDriverAssembly" />
-        <!-- Registry entries suitable for a LocalServer served class -->
+        <!-- 
+          Registry entries suitable for a LocalServer served class. Registers only in the
+          32-bit registry area (Win64="no") even on a 64-bit system, because the ASCOM
+          LocalServer will always run as 32-bit. Note that on a 64-bit system, Windows
+          virtualizes these entries to the WOW6432Node
+        -->
         <!-- HKCR\CLSID\{driver-guid} -->
         <RegistryKey Root="HKCR" Key="CLSID">
           <RegistryKey Key="$(var.SwitchDriverClsId)">

@@ -2,10 +2,9 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Rotating.cs  Last modified: 2018-03-20@00:57 by Tim Long
+// File: Rotating.cs  Last modified: 2018-03-30@03:23 by Tim Long
 
 using System;
-using NLog.Fluent;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
@@ -14,10 +13,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         {
         private static readonly TimeSpan RotationTimeout = TimeSpan.FromSeconds(5);
 
-        public Rotating(ControllerStateMachine machine)
-            {
-            this.machine = machine;
-            }
+        public Rotating(ControllerStateMachine machine) : base(machine) { }
 
         public override void OnEnter()
             {

@@ -5,6 +5,7 @@
 // File: SimulatorStateMachine.cs  Last modified: 2018-03-28@17:49 by Tim Long
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -57,8 +58,10 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         ///     When <c>true</c> the simulator introduces pauses that are representative of real equipment.
         ///     When <c>false</c>, the simulation proceeds at an accelerated pace with no pauses.
         /// </param>
+        /// <param name="timeSource">A source of the current time.</param>
         public SimulatorStateMachine(bool realTime, IClock timeSource)
             {
+            Contract.Requires(timeSource != null);
             RealTime = realTime;
             this.timeSource = timeSource;
             DomeSupportRingOpen = false;
@@ -298,9 +301,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
 
         internal void InvokeMotorConfigurationChanged(MotorConfigurationEventArgs e)
             {
-            var handler = MotorConfigurationChanged;
-            if (handler != null)
-                handler(null, e);
+            MotorConfigurationChanged?.Invoke(this, e);
             }
 
         /// <summary>
@@ -317,9 +318,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </param>
         internal void InvokeAzimuthChanged(AzimuthChangedEventArgs e)
             {
-            var handler = AzimuthChanged;
-            if (handler != null)
-                handler(null, e);
+            AzimuthChanged?.Invoke(this,e);
             }
 
         /// <summary>
@@ -333,9 +332,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         public void InvokeReceivedData(EventArgs e)
             {
-            var handler = ReceivedData;
-            if (handler != null)
-                handler(null, e);
+            ReceivedData?.Invoke(this, e);
             }
 
         /// <summary>
@@ -349,10 +346,14 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private static void InvokeSentData(EventArgs e)
             {
-            var handler = SentData;
-            if (handler != null)
-                handler(null, e);
+            SentData?.Invoke(null, e);
             }
         #endregion
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+            {
+            Contract.Invariant(InReadyState != null);
+            }
         }
     }

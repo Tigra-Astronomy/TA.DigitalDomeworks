@@ -18,10 +18,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         /// </summary>
         private static readonly TimeSpan shutterTimeout = TimeSpan.FromSeconds(5);
 
-        public ShutterMoving(ControllerStateMachine machine)
-            {
-            this.machine = machine;
-            }
+        public ShutterMoving(ControllerStateMachine machine) : base(machine) { }
 
         public override void OnEnter()
             {

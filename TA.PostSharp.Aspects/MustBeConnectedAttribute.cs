@@ -25,13 +25,11 @@ namespace TA.PostSharp.Aspects
         private static int nesting;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MustBeConnectedAttribute" /> class. Forces
-        ///     the <see cref="ApplyToStateMachine" /> property to false, as this aspect should only
-        ///     check advices upon first entry to any method.
+        ///     Initializes a new instance of the <see cref="MustBeConnectedAttribute" /> class.
         /// </summary>
         public MustBeConnectedAttribute()
             {
-            ApplyToStateMachine = false;
+            SemanticallyAdvisedMethodKinds = SemanticallyAdvisedMethodKinds.None;
             }
 
         public override bool CompileTimeValidate(MethodBase method)
