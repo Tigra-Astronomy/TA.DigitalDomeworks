@@ -1,5 +1,7 @@
 # ASCOM drivers for Digital DomeWorks - 2018 Reboot #
 
+![ASCOM Server Status Display][ddw-status]
+
 ## TL;DR ##
 
 <button type="button" class="btn btn-secondary">[Downloads][download]</button> |
@@ -46,7 +48,8 @@ But we started to experience problems with the old driver and we wre not happy w
 The driver now incorporates the hardware simulator that we developed to assist with our unit testing. The simulator can work in `real time` or `quick time`. In `real time` mode the simulator tries to be as realistic as possible, simulating the timing characteristics of the Digital DomeWorks hardware. In `quick time` mode, everything is done as fast as possible.
 
 The simulator can come in very handy if you need to test software without being close to the actual hardware. Previous versions required a serial port but the new version uses an in-memory communications channel built on the technology in our [Reactive Communications][RxAscom] library. To use the simulator, all that is needed is to check the checkbox in the setup dialog.
-[Simulator checkbox here]
+
+![The setup dialog, showing the simulator checkbox][ddw-setup]
 
 ## Power Automation ##
 
@@ -78,3 +81,5 @@ Hopefully there will be few problems, but if you do find any, or would like to r
 [download]: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks/downloads/ "Download the drivers"
 [git]: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks "Get the source code"
 [project-home]: http://tigra-astronomy.com/ascom-drivers-for-digital-domeworks "ASCOM Drivers for Digital Domeworks, 2018 reboot"
+[ddw-status]: http://tigra-astronomy.com/Media/TigraAstronomy/site-images/Digital-Domeworks-2018/DDW-status-display.png
+[ddw-setup]: http://tigra-astronomy.com/Media/TigraAstronomy/site-images/Digital-Domeworks-2018/DDW-setup-dialog.png
