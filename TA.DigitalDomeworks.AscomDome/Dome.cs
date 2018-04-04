@@ -80,10 +80,7 @@ namespace TA.DigitalDomeworks.AscomDome
             }
 
         [MustBeConnected]
-        public void FindHome()
-            {
-            throw new NotImplementedException();
-            }
+        public void FindHome() => controller.RotateToHomePosition();
 
         [MustBeConnected]
         public void OpenShutter()
@@ -111,7 +108,13 @@ namespace TA.DigitalDomeworks.AscomDome
         [MustBeConnected]
         public void SlewToAzimuth(double Azimuth)
             {
+            try {
             controller.SlewToAzimuth(Azimuth);
+                }
+            catch (ArgumentOutOfRangeException ex)
+                {
+                throw new ASCOM.InvalidValueException(nameof(Azimuth), Azimuth.ToString(), "0.0 <= azimuth < 360.0", ex);
+                }
             }
 
         public void SyncToAzimuth(double Azimuth)

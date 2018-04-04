@@ -66,6 +66,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public bool ShutterMotorActive => stateMachine.ShutterMotorActive;
 
+        public void RotateToHomePosition() => stateMachine.RotateToHomePosition();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Open(bool performOnConnectActions = true)
@@ -263,6 +265,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public void SlewToAzimuth(double azimuth)
             {
+            if (azimuth < 0.0 || azimuth >= 360.0)
+                throw new ArgumentOutOfRangeException(nameof(azimuth),azimuth,"Invalid azimuth. Must be 0.0 <= azimuth < 360.0");
             stateMachine.RotateToAzimuthDegrees(azimuth);
             }
 
