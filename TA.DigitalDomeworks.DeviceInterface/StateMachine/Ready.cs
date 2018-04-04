@@ -12,9 +12,17 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         {
         public Ready(ControllerStateMachine machine) : base(machine) { }
 
-        public override void OnEnter() => machine.InReadyState.Set();
+        public override void OnEnter()
+            {
+            machine.ResetKeepAliveTimer();
+            machine.InReadyState.Set();
+            }
 
-        public override void OnExit() => machine.InReadyState.Reset();
+        public override void OnExit()
+            {
+            machine.InReadyState.Reset();
+            machine.ResetKeepAliveTimer();
+            }
 
         public override void RotationDetected()
             {
@@ -60,6 +68,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.SetUserOutputPins(newState);
             machine.ControllerActions.SetUserOutputPins(newState);
+            }
+
+        public override void RequestHardwareStatus()
+            {
+            base.RequestHardwareStatus();
+            machine.ResetKeepAliveTimer();
+            machine.RequestHardwareStatus();
             }
         }
     }

@@ -69,5 +69,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         ///     Action: set the state of the user output pins
         /// </summary>
         void SetUserOutputPins(Octet newState);
+
+        /// <summary>
+        ///     Request a hardware status update.
+        /// </summary>
+        void RequestHardwareStatus();
         }
     }

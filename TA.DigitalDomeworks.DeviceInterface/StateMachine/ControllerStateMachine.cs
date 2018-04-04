@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NLog.Fluent;
 using PostSharp.Patterns.Model;
@@ -20,6 +21,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     public class ControllerStateMachine : INotifyHardwareStateChanged
         {
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
+        [CanBeNull] internal CancellationTokenSource KeepAliveCancellationSource;
 
         public ControllerStateMachine(IControllerActions controllerActions)
             {
@@ -194,6 +196,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.SetUserOutputPins(newState);
             }
 
+
         #region State triggers 
         public void AzimuthEncoderTickReceived(int encoderPosition)
             {
@@ -208,5 +211,24 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.StatusUpdateReceived(status);
             }
         #endregion State triggers
+
+        internal void ResetKeepAliveTimer()
+            {
+            Log.Debug().Message("Keep-alive timer reset").Write();
+            KeepAliveCancellationSource?.Cancel(); // Cancel any previous timer
+            KeepAliveCancellationSource = new CancellationTokenSource();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            PollStatusAfterKeepAliveIntervalAsync(KeepAliveCancellationSource.Token); // Do not await the result
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            }
+
+        private async Task PollStatusAfterKeepAliveIntervalAsync(CancellationToken token)
+            {
+            await Task.Delay(TimeSpan.FromMinutes(2));
+            Log.Debug()
+                .Message("Keep-alive timer expired - generating status request")
+                .Write();
+            RequestHardwareStatus();
+            }
         }
     }

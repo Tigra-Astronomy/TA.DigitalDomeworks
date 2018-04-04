@@ -107,5 +107,13 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
                 .Write();
             decoratedState.StatusUpdateReceived(status);
             }
+
+        public void RequestHardwareStatus()
+            {
+            Log.Info()
+                .Message($"[{decoratedState.Name}] Action: Request hardware status")
+                .Write();
+            decoratedState.RequestHardwareStatus();
+            }
         }
     }

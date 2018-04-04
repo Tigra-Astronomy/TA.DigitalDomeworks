@@ -93,5 +93,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             timeoutCancellation?.Cancel();
             }
+
+        public virtual void RequestHardwareStatus() {}
         }
     }
