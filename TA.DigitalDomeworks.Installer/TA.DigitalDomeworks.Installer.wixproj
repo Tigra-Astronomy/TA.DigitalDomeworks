@@ -17,19 +17,9 @@
     <IntermediateOutputPath>obj\Debug\x86\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Interactive|x86' ">
-    <OutputPath>bin\Debug-Interactive\x86\</OutputPath>
-    <IntermediateOutputPath>obj\Debug-Interactive\x86\</IntermediateOutputPath>
-    <DefineConstants>Debug</DefineConstants>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\Release\x86\</OutputPath>
     <IntermediateOutputPath>obj\Release\x86\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Interactive|x64' ">
-    <OutputPath>bin\Debug-Interactive\x64\</OutputPath>
-    <IntermediateOutputPath>obj\Debug-Interactive\x64\</IntermediateOutputPath>
-    <DefineConstants>Debug</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <OutputPath>bin\Debug\x64\</OutputPath>
