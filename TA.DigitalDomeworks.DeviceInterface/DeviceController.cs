@@ -109,7 +109,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
                     .Message("Shutter position is indeterminate, attempting to close the shutter.")
                     .Write();
                 stateMachine.CloseShutter();
-                stateMachine.WaitForReady(TimeSpan.FromMinutes(2));
+                stateMachine.WaitForReady(configuration.MaximumFullRotationTime + configuration.MaximumShutterCloseTime);
                 }
             }
 

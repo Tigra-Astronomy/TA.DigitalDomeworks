@@ -13,5 +13,6 @@ namespace TA.DigitalDomeworks.SharedTypes
         public bool PerformShutterRecovery { get; set; } = true;
         public TimeSpan MaximumShutterCloseTime { get; set; }
         public TimeSpan MaximumFullRotationTime { get; set; }
+        public TimeSpan KeepAliveTimerInterval { get; set; }
         }
     }

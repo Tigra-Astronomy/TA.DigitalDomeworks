@@ -100,5 +100,14 @@ namespace TA.DigitalDomeworks.Server.Properties {
                 return ((global::System.TimeSpan)(this["FullRotationTimeout"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:03:00")]
+        public global::System.TimeSpan KeepAliveTimerPeriod {
+            get {
+                return ((global::System.TimeSpan)(this["KeepAliveTimerPeriod"]));
+            }
+        }
     }
 }

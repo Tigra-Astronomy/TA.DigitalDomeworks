@@ -23,14 +23,15 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
         [CanBeNull] internal CancellationTokenSource KeepAliveCancellationSource;
 
-        public ControllerStateMachine(IControllerActions controllerActions)
+        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options)
             {
             ControllerActions = controllerActions;
+            Options = options;
             CurrentState = new Uninitialized();
             }
 
         internal IControllerActions ControllerActions { get; }
-
+        internal DeviceControllerOptions Options { get; }
         internal IControllerState CurrentState { get; private set; }
 
         [CanBeNull]
@@ -224,11 +225,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         private async Task PollStatusAfterKeepAliveIntervalAsync(CancellationToken token)
             {
-            await Task.Delay(TimeSpan.FromMinutes(2));
+            await Task.Delay(Options.KeepAliveTimerInterval);
             Log.Debug()
                 .Message("Keep-alive timer expired - generating status request")
                 .Write();
-            RequestHardwareStatus();
+            CurrentState.RequestHardwareStatus();
             }
         }
     }

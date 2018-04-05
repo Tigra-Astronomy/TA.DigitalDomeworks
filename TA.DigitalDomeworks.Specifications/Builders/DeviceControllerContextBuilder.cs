@@ -40,6 +40,13 @@ namespace TA.DigitalDomeworks.Specifications.Builders
         readonly IClock timeSource = new FakeClock(DateTime.MinValue.ToUniversalTime());
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
+        DeviceControllerOptions controllerOptions = new DeviceControllerOptions
+            {
+            KeepAliveTimerInterval=TimeSpan.FromMinutes(3),
+            MaximumFullRotationTime=TimeSpan.FromMinutes(1),
+            MaximumShutterCloseTime=TimeSpan.FromMinutes(1),
+            PerformShutterRecovery=false
+            };
         PropertyChangedEventHandler propertyChangedAction;
         List<Tuple<string, Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
 
@@ -54,8 +61,8 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             var statusFactory = new ControllerStatusFactory(timeSource);
 
             var controllerActions = new RxControllerActions(channel);
-            var controllerStateMachine = new ControllerStateMachine(controllerActions);
             var controllerOptions = new DeviceControllerOptions();
+            var controllerStateMachine = new ControllerStateMachine(controllerActions, controllerOptions);
 
             // Build the device controller
             var controller = new DeviceController(channel, statusFactory, controllerStateMachine, controllerOptions);

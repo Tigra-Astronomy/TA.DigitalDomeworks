@@ -20,7 +20,14 @@ namespace TA.DigitalDomeworks.Specifications
         Establish context = () =>
             {
             FakeControllerActions = A.Fake<IControllerActions>();
-            Machine = new ControllerStateMachine(FakeControllerActions);
+            var options = new DeviceControllerOptions
+                {
+                KeepAliveTimerInterval=TimeSpan.FromMinutes(3),
+                MaximumFullRotationTime=TimeSpan.FromMinutes(1),
+                MaximumShutterCloseTime=TimeSpan.FromMinutes(1),
+                PerformShutterRecovery=false
+                };
+            Machine = new ControllerStateMachine(FakeControllerActions, options);
             };
         Cleanup after = () =>
             {

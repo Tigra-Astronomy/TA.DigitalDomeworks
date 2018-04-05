@@ -94,7 +94,8 @@ namespace TA.DigitalDomeworks.Server
                 {
                 PerformShutterRecovery = Settings.Default.PerformShutterRecovery,
                 MaximumShutterCloseTime = Settings.Default.ShutterCloseTimeout,
-                MaximumFullRotationTime = Settings.Default.FullRotationTimeout
+                MaximumFullRotationTime = Settings.Default.FullRotationTimeout,
+                KeepAliveTimerInterval = Settings.Default.KeepAliveTimerPeriod
                 };
             return options;
             }
