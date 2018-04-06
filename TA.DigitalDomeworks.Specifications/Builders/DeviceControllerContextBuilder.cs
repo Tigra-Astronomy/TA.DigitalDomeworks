@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-28@18:17 by Tim Long
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-04-06@02:24 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -40,12 +40,12 @@ namespace TA.DigitalDomeworks.Specifications.Builders
         readonly IClock timeSource = new FakeClock(DateTime.MinValue.ToUniversalTime());
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
-        DeviceControllerOptions controllerOptions = new DeviceControllerOptions
+        readonly DeviceControllerOptions controllerOptions = new DeviceControllerOptions
             {
-            KeepAliveTimerInterval=TimeSpan.FromMinutes(3),
-            MaximumFullRotationTime=TimeSpan.FromMinutes(1),
-            MaximumShutterCloseTime=TimeSpan.FromMinutes(1),
-            PerformShutterRecovery=false
+            KeepAliveTimerInterval = TimeSpan.FromMinutes(3),
+            MaximumFullRotationTime = TimeSpan.FromMinutes(1),
+            MaximumShutterCloseTime = TimeSpan.FromMinutes(1),
+            PerformShutterRecovery = true
             };
         PropertyChangedEventHandler propertyChangedAction;
         List<Tuple<string, Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
@@ -61,7 +61,6 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             var statusFactory = new ControllerStatusFactory(timeSource);
 
             var controllerActions = new RxControllerActions(channel);
-            var controllerOptions = new DeviceControllerOptions();
             var controllerStateMachine = new ControllerStateMachine(controllerActions, controllerOptions);
 
             // Build the device controller

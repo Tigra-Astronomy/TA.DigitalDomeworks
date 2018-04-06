@@ -2,11 +2,10 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-03-30@03:37 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-04-06@02:12 by Tim Long
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +30,9 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             }
 
         internal IControllerActions ControllerActions { get; }
+
         internal DeviceControllerOptions Options { get; }
+
         internal IControllerState CurrentState { get; private set; }
 
         [CanBeNull]
@@ -135,7 +136,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void ShutterDirectionReceived(ShutterDirection direction)
             {
-            ShutterMovementDirection = direction;
+            if (direction == ShutterDirection.Closing || direction == ShutterDirection.Opening)
+                ShutterMovementDirection = direction;
             CurrentState.ShutterMovementDetected();
             }
 
@@ -197,22 +199,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.SetUserOutputPins(newState);
             }
 
-
-        #region State triggers 
-        public void AzimuthEncoderTickReceived(int encoderPosition)
-            {
-            AzimuthEncoderPosition = encoderPosition;
-            CurrentState.RotationDetected();
-            }
-
-        public void HardwareStatusReceived(IHardwareStatus status)
-            {
-            HardwareStatus = status;
-            UpdateStatus(status);
-            CurrentState.StatusUpdateReceived(status);
-            }
-        #endregion State triggers
-
         internal void ResetKeepAliveTimer()
             {
             Log.Debug().Message("Keep-alive timer reset").Write();
@@ -231,5 +217,20 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
                 .Write();
             CurrentState.RequestHardwareStatus();
             }
+
+        #region State triggers 
+        public void AzimuthEncoderTickReceived(int encoderPosition)
+            {
+            AzimuthEncoderPosition = encoderPosition;
+            CurrentState.RotationDetected();
+            }
+
+        public void HardwareStatusReceived(IHardwareStatus status)
+            {
+            HardwareStatus = status;
+            UpdateStatus(status);
+            CurrentState.StatusUpdateReceived(status);
+            }
+        #endregion State triggers
         }
     }
