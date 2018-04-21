@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: GlobalAssemblyInfo.cs  Last modified: 2018-04-06@02:26 by Tim Long
+// File: GlobalAssemblyInfo.cs  Last modified: 2018-04-21@21:45 by Tim Long
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("7.0.*")]
-[assembly: AssemblyFileVersion("7.0.0.5")]
-[assembly: AssemblyInformationalVersion("7.0-Beta.5")]
+[assembly: AssemblyFileVersion("7.0.0.6")]
+[assembly: AssemblyInformationalVersion("7.0-Beta.6")]
 [assembly: InternalsVisibleTo("TA.DigitalDomeworks.Specifications")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

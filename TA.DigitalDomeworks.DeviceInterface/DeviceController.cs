@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-04-06@02:13 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-04-21@21:36 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -66,6 +66,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
         public SensorState ShutterPosition => stateMachine.ShutterPosition;
 
         public bool AtHome => stateMachine.AtHome;
+
+        public IHardwareStatus CurrentStatus => stateMachine.HardwareStatus;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
