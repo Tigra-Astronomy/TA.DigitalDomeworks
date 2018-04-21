@@ -70,5 +70,23 @@ namespace TA.DigitalDomeworks.Server
                 aboutBox.ShowDialog();
                 }
             }
+
+        private void PresetHD6_Click(object sender, EventArgs e)
+            {
+            FullRotationTimeSeconds.Value = 60;
+            ShutterOpenCloseTimeSeconds.Value = 120;
+            }
+
+        private void PresetHD10_Click(object sender, EventArgs e)
+            {
+            FullRotationTimeSeconds.Value = 90;
+            ShutterOpenCloseTimeSeconds.Value = 180;
+            }
+
+        private void PresetHD15_Click(object sender, EventArgs e)
+            {
+            FullRotationTimeSeconds.Value = 120;
+            ShutterOpenCloseTimeSeconds.Value = 240;
+            }
         }
     }

@@ -29,6 +29,8 @@ namespace TA.DigitalDomeworks.Server
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupDialogForm));
+            System.Windows.Forms.ToolTip toolTip1;
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.picASCOM = new System.Windows.Forms.PictureBox();
@@ -38,17 +40,30 @@ namespace TA.DigitalDomeworks.Server
             this.CommunicationsGroup = new System.Windows.Forms.GroupBox();
             this.StartupOptionsGroup = new System.Windows.Forms.GroupBox();
             this.PerformShutterRecovery = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ShutterOpenCloseTimeSeconds = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.FullRotationTimeSeconds = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.PresetHD6 = new System.Windows.Forms.Button();
+            this.PresetHD10 = new System.Windows.Forms.Button();
+            this.PresetHD15 = new System.Windows.Forms.Button();
+            toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionErrorProvider)).BeginInit();
             this.CommunicationsGroup.SuspendLayout();
             this.StartupOptionsGroup.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShutterOpenCloseTimeSeconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FullRotationTimeSeconds)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(308, 107);
+            this.cmdOK.Location = new System.Drawing.Point(308, 323);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -60,7 +75,7 @@ namespace TA.DigitalDomeworks.Server
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(308, 137);
+            this.cmdCancel.Location = new System.Drawing.Point(308, 353);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -85,7 +100,7 @@ namespace TA.DigitalDomeworks.Server
             // AboutBox
             // 
             this.AboutBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AboutBox.Location = new System.Drawing.Point(308, 79);
+            this.AboutBox.Location = new System.Drawing.Point(308, 295);
             this.AboutBox.Name = "AboutBox";
             this.AboutBox.Size = new System.Drawing.Size(59, 23);
             this.AboutBox.TabIndex = 8;
@@ -107,6 +122,7 @@ namespace TA.DigitalDomeworks.Server
             this.communicationSettingsControl1.Name = "communicationSettingsControl1";
             this.communicationSettingsControl1.Size = new System.Drawing.Size(253, 36);
             this.communicationSettingsControl1.TabIndex = 7;
+            toolTip1.SetToolTip(this.communicationSettingsControl1, resources.GetString("communicationSettingsControl1.ToolTip"));
             // 
             // CommunicationsGroup
             // 
@@ -123,7 +139,7 @@ namespace TA.DigitalDomeworks.Server
             this.StartupOptionsGroup.Controls.Add(this.PerformShutterRecovery);
             this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 92);
             this.StartupOptionsGroup.Name = "StartupOptionsGroup";
-            this.StartupOptionsGroup.Size = new System.Drawing.Size(262, 70);
+            this.StartupOptionsGroup.Size = new System.Drawing.Size(355, 70);
             this.StartupOptionsGroup.TabIndex = 10;
             this.StartupOptionsGroup.TabStop = false;
             this.StartupOptionsGroup.Text = "Startup Options";
@@ -136,10 +152,128 @@ namespace TA.DigitalDomeworks.Server
             this.PerformShutterRecovery.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "PerformShutterRecovery", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.PerformShutterRecovery.Location = new System.Drawing.Point(7, 20);
             this.PerformShutterRecovery.Name = "PerformShutterRecovery";
-            this.PerformShutterRecovery.Size = new System.Drawing.Size(233, 17);
+            this.PerformShutterRecovery.Size = new System.Drawing.Size(302, 17);
             this.PerformShutterRecovery.TabIndex = 0;
-            this.PerformShutterRecovery.Text = "Close the shutter if the position is not known";
+            this.PerformShutterRecovery.Text = "Close the shutter if the position is not known upon connect";
+            toolTip1.SetToolTip(this.PerformShutterRecovery, resources.GetString("PerformShutterRecovery.ToolTip"));
             this.PerformShutterRecovery.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.PresetHD15);
+            this.groupBox1.Controls.Add(this.PresetHD10);
+            this.groupBox1.Controls.Add(this.PresetHD6);
+            this.groupBox1.Controls.Add(this.FullRotationTimeSeconds);
+            this.groupBox1.Controls.Add(this.ShutterOpenCloseTimeSeconds);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(13, 169);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(261, 111);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Timeouts";
+            // 
+            // ShutterOpenCloseTimeSeconds
+            // 
+            this.ShutterOpenCloseTimeSeconds.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "ShutterOpenCloseTimeSeconds", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ShutterOpenCloseTimeSeconds.Location = new System.Drawing.Point(175, 45);
+            this.ShutterOpenCloseTimeSeconds.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.ShutterOpenCloseTimeSeconds.Name = "ShutterOpenCloseTimeSeconds";
+            this.ShutterOpenCloseTimeSeconds.Size = new System.Drawing.Size(80, 20);
+            this.ShutterOpenCloseTimeSeconds.TabIndex = 1;
+            this.ShutterOpenCloseTimeSeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            toolTip1.SetToolTip(this.ShutterOpenCloseTimeSeconds, resources.GetString("ShutterOpenCloseTimeSeconds.ToolTip"));
+            this.ShutterOpenCloseTimeSeconds.Value = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.ShutterOpenCloseTimeSeconds;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 47);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(147, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Shutter open/close (seconds)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(110, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Full rotation (seconds)";
+            // 
+            // FullRotationTimeSeconds
+            // 
+            this.FullRotationTimeSeconds.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "FullRotationTimeSeconds", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.FullRotationTimeSeconds.Location = new System.Drawing.Point(175, 19);
+            this.FullRotationTimeSeconds.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.FullRotationTimeSeconds.Name = "FullRotationTimeSeconds";
+            this.FullRotationTimeSeconds.Size = new System.Drawing.Size(80, 20);
+            this.FullRotationTimeSeconds.TabIndex = 1;
+            this.FullRotationTimeSeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            toolTip1.SetToolTip(this.FullRotationTimeSeconds, resources.GetString("FullRotationTimeSeconds.ToolTip"));
+            this.FullRotationTimeSeconds.Value = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.FullRotationTimeSeconds;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(2, 76);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(42, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Presets";
+            // 
+            // PresetHD6
+            // 
+            this.PresetHD6.Location = new System.Drawing.Point(61, 71);
+            this.PresetHD6.Name = "PresetHD6";
+            this.PresetHD6.Size = new System.Drawing.Size(51, 23);
+            this.PresetHD6.TabIndex = 2;
+            this.PresetHD6.Text = "HD-6";
+            toolTip1.SetToolTip(this.PresetHD6, "Load default timeouts for a 6ft dome");
+            this.PresetHD6.UseVisualStyleBackColor = true;
+            this.PresetHD6.Click += new System.EventHandler(this.PresetHD6_Click);
+            // 
+            // PresetHD10
+            // 
+            this.PresetHD10.Location = new System.Drawing.Point(118, 71);
+            this.PresetHD10.Name = "PresetHD10";
+            this.PresetHD10.Size = new System.Drawing.Size(51, 23);
+            this.PresetHD10.TabIndex = 2;
+            this.PresetHD10.Text = "HD-10";
+            toolTip1.SetToolTip(this.PresetHD10, "Load default timeouts for a 10ft dome");
+            this.PresetHD10.UseVisualStyleBackColor = true;
+            this.PresetHD10.Click += new System.EventHandler(this.PresetHD10_Click);
+            // 
+            // PresetHD15
+            // 
+            this.PresetHD15.Location = new System.Drawing.Point(175, 71);
+            this.PresetHD15.Name = "PresetHD15";
+            this.PresetHD15.Size = new System.Drawing.Size(51, 23);
+            this.PresetHD15.TabIndex = 2;
+            this.PresetHD15.Text = "HD-15";
+            toolTip1.SetToolTip(this.PresetHD15, "Load default timeouts for a 15ft dome");
+            this.PresetHD15.UseVisualStyleBackColor = true;
+            this.PresetHD15.Click += new System.EventHandler(this.PresetHD15_Click);
+            // 
+            // toolTip1
+            // 
+            toolTip1.AutoPopDelay = 30000;
+            toolTip1.InitialDelay = 200;
+            toolTip1.ReshowDelay = 100;
+            toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            toolTip1.ToolTipTitle = "Settings Help";
             // 
             // SetupDialogForm
             // 
@@ -147,7 +281,8 @@ namespace TA.DigitalDomeworks.Server
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(379, 174);
+            this.ClientSize = new System.Drawing.Size(379, 390);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.StartupOptionsGroup);
             this.Controls.Add(this.CommunicationsGroup);
             this.Controls.Add(this.AboutBox);
@@ -171,6 +306,10 @@ namespace TA.DigitalDomeworks.Server
             this.CommunicationsGroup.PerformLayout();
             this.StartupOptionsGroup.ResumeLayout(false);
             this.StartupOptionsGroup.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShutterOpenCloseTimeSeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FullRotationTimeSeconds)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -187,5 +326,14 @@ namespace TA.DigitalDomeworks.Server
         private System.Windows.Forms.GroupBox CommunicationsGroup;
         private System.Windows.Forms.GroupBox StartupOptionsGroup;
         private System.Windows.Forms.CheckBox PerformShutterRecovery;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.NumericUpDown ShutterOpenCloseTimeSeconds;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button PresetHD15;
+        private System.Windows.Forms.Button PresetHD10;
+        private System.Windows.Forms.Button PresetHD6;
+        private System.Windows.Forms.NumericUpDown FullRotationTimeSeconds;
+        private System.Windows.Forms.Label label3;
     }
 }

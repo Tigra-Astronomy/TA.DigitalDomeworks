@@ -2,8 +2,9 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: CompositionRoot.cs  Last modified: 2018-03-28@22:42 by Tim Long
+// File: CompositionRoot.cs  Last modified: 2018-04-21@20:23 by Tim Long
 
+using System;
 using Ninject;
 using Ninject.Activation;
 using Ninject.Modules;
@@ -93,8 +94,8 @@ namespace TA.DigitalDomeworks.Server
             var options = new DeviceControllerOptions
                 {
                 PerformShutterRecovery = Settings.Default.PerformShutterRecovery,
-                MaximumShutterCloseTime = Settings.Default.ShutterCloseTimeout,
-                MaximumFullRotationTime = Settings.Default.FullRotationTimeout,
+                MaximumShutterCloseTime = TimeSpan.FromSeconds((double) Settings.Default.ShutterOpenCloseTimeSeconds),
+                MaximumFullRotationTime = TimeSpan.FromSeconds((double) Settings.Default.FullRotationTimeSeconds),
                 KeepAliveTimerInterval = Settings.Default.KeepAliveTimerPeriod
                 };
             return options;

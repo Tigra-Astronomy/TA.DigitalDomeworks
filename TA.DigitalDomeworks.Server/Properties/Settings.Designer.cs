@@ -85,28 +85,34 @@ namespace TA.DigitalDomeworks.Server.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:02:00")]
-        public global::System.TimeSpan ShutterCloseTimeout {
-            get {
-                return ((global::System.TimeSpan)(this["ShutterCloseTimeout"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:01:00")]
-        public global::System.TimeSpan FullRotationTimeout {
-            get {
-                return ((global::System.TimeSpan)(this["FullRotationTimeout"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("00:03:00")]
         public global::System.TimeSpan KeepAliveTimerPeriod {
             get {
                 return ((global::System.TimeSpan)(this["KeepAliveTimerPeriod"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public decimal FullRotationTimeSeconds {
+            get {
+                return ((decimal)(this["FullRotationTimeSeconds"]));
+            }
+            set {
+                this["FullRotationTimeSeconds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public decimal ShutterOpenCloseTimeSeconds {
+            get {
+                return ((decimal)(this["ShutterOpenCloseTimeSeconds"]));
+            }
+            set {
+                this["ShutterOpenCloseTimeSeconds"] = value;
             }
         }
     }
