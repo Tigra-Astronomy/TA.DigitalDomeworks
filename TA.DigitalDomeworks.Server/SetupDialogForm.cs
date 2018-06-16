@@ -7,6 +7,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -87,6 +88,21 @@ namespace TA.DigitalDomeworks.Server
             {
             FullRotationTimeSeconds.Value = 120;
             ShutterOpenCloseTimeSeconds.Value = 240;
+            }
+
+        private void IgnoreShutterSensor_CheckedChanged(object sender, EventArgs e)
+            {
+            if (IgnoreShutterSensor.Checked)
+                {
+                var resault = MessageBox.Show(
+                    "This is a potentially unsafe setting.\nPlease be sure you understand the implications\nbefore enabling this!",
+                    "Potentially unsafe configuration", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+                if (resault != DialogResult.OK)
+                    IgnoreShutterSensor.Checked = false;
+                }
+
+            IgnoreShutterSensor.ForeColor = IgnoreShutterSensor.Checked ? Color.DarkRed : DefaultForeColor;
             }
         }
     }

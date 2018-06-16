@@ -17,6 +17,15 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         ///     the state will time out and attempt to request a status update.
         /// </summary>
         private static readonly TimeSpan shutterTimeout = TimeSpan.FromSeconds(5);
+        /// <summary>
+        /// Records the moment when movement was first detected.
+        /// </summary>
+        private DateTime movementStartTime;
+        /// <summary>
+        /// Starts at <c>false</c> and transitions to <c>true</c> when the current draw
+        /// exceeds a specified threshold.
+        /// </summary>
+        private bool currentDrawThresholdReached;
 
         public ShutterMoving(ControllerStateMachine machine) : base(machine) { }
 
@@ -24,6 +33,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.OnEnter();
             ResetTimeout(shutterTimeout);
+            movementStartTime = machine.Clock.GetCurrentTime();
+            currentDrawThresholdReached = false;
             machine.ShutterMotorActive = true;
             }
 
@@ -47,6 +58,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             base.ShutterMovementDetected();
             ResetTimeout(shutterTimeout);
+            InferShutterState(machine.ShutterMotorCurrent);
             }
 
         public override void StatusUpdateReceived(IHardwareStatus status)
@@ -54,6 +66,32 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             base.StatusUpdateReceived(status);
             CancelTimeout();
             machine.TransitionToState(new Ready(machine));
+            }
+
+        private void InferShutterState(int shutterMotorCurrent)
+            {
+            var timeNow = machine.Clock.GetCurrentTime();
+            var elapsedMoveTime = timeNow - movementStartTime;
+            var elapsedSeconds = elapsedMoveTime.TotalSeconds;
+            var minimumRequiredMoveSeconds = machine.Options.MaximumShutterCloseTime.TotalSeconds / 2;
+            if (shutterMotorCurrent >= machine.Options.CurrentDrawDetectionThreshold)
+                currentDrawThresholdReached = true;
+            if (currentDrawThresholdReached && elapsedSeconds >= minimumRequiredMoveSeconds)
+                {
+                switch (machine.ShutterMovementDirection)
+                    {
+                        case ShutterDirection.Closing:
+                            machine.InferredShutterPosition = SensorState.Closed;
+                            break;
+                        case ShutterDirection.Opening:
+                            machine.InferredShutterPosition = SensorState.Open;
+                            break;
+                    }
+                }
+            else
+                {
+                machine.InferredShutterPosition = SensorState.Indeterminate;
+                }
             }
 
         protected override void HandleTimeout()

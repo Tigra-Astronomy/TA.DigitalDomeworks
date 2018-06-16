@@ -22,16 +22,19 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
         [CanBeNull] internal CancellationTokenSource KeepAliveCancellationSource;
 
-        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options)
+        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options, IClock clock)
             {
             ControllerActions = controllerActions;
             Options = options;
+            Clock = clock;
             CurrentState = new Uninitialized();
             }
 
         internal IControllerActions ControllerActions { get; }
 
         internal DeviceControllerOptions Options { get; }
+
+        public IClock Clock { get; }
 
         internal IControllerState CurrentState { get; private set; }
 
@@ -58,6 +61,9 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public bool AzimuthMotorActive { get; internal set; }
 
         public bool ShutterMotorActive { get; internal set; }
+
+        [IgnoreAutoChangeNotification]
+        internal SensorState InferredShutterPosition { get; set; } = SensorState.Indeterminate;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -118,9 +124,20 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             ShutterMotorActive = false;
             ShutterMovementDirection = ShutterDirection.None;
             ShutterMotorCurrent = 0;
-            ShutterPosition = status.ShutterSensor;
+            ShutterPosition = SetInferredShutterPosition(status.ShutterSensor);
             AtHome = status.AtHome;
             UserPins = status.UserPins;
+            }
+
+        private SensorState SetInferredShutterPosition(SensorState statusShutterSensor)
+            {
+            if (!Options.IgnoreHardwareShutterSensor)
+                return statusShutterSensor;
+
+            if (InferredShutterPosition == SensorState.Indeterminate)
+                return statusShutterSensor;
+
+            return InferredShutterPosition;
             }
 
         internal void RequestHardwareStatus()
@@ -209,9 +226,14 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
 
-        private async Task PollStatusAfterKeepAliveIntervalAsync(CancellationToken token)
+        private async Task PollStatusAfterKeepAliveIntervalAsync(CancellationToken cancel)
             {
-            await Task.Delay(Options.KeepAliveTimerInterval);
+            await Task.Delay(Options.KeepAliveTimerInterval, cancel);
+            if (cancel.IsCancellationRequested)
+                {
+                Log.Debug("KeepAlive poll cancelled");
+                return;
+                }
             Log.Debug()
                 .Message("Keep-alive timer expired - generating status request")
                 .Write();
@@ -228,8 +250,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public void HardwareStatusReceived(IHardwareStatus status)
             {
             HardwareStatus = status;
-            UpdateStatus(status);
             CurrentState.StatusUpdateReceived(status);
+            UpdateStatus(status);
             }
         #endregion State triggers
         }

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachineSpecs.cs  Last modified: 2018-03-30@03:34 by Tim Long
+// File: ControllerStateMachineSpecs.cs  Last modified: 2018-06-16@16:54 by Tim Long
 
 using System;
 using FakeItEasy;
@@ -10,6 +10,8 @@ using JetBrains.Annotations;
 using Machine.Specifications;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
+using TA.DigitalDomeworks.Specifications.Fakes;
+using TA.DigitalDomeworks.Specifications.Helpers;
 using TI.DigitalDomeWorks;
 
 namespace TA.DigitalDomeworks.Specifications
@@ -22,12 +24,14 @@ namespace TA.DigitalDomeworks.Specifications
             FakeControllerActions = A.Fake<IControllerActions>();
             var options = new DeviceControllerOptions
                 {
-                KeepAliveTimerInterval=TimeSpan.FromMinutes(3),
-                MaximumFullRotationTime=TimeSpan.FromMinutes(1),
-                MaximumShutterCloseTime=TimeSpan.FromMinutes(1),
-                PerformShutterRecovery=false
+                KeepAliveTimerInterval = TimeSpan.FromMinutes(3),
+                MaximumFullRotationTime = TimeSpan.FromMinutes(1),
+                MaximumShutterCloseTime = TimeSpan.FromMinutes(1),
+                PerformShutterRecovery = false,
+                IgnoreHardwareShutterSensor = false,
+                CurrentDrawDetectionThreshold = 10
                 };
-            Machine = new ControllerStateMachine(FakeControllerActions, options);
+            Machine = new ControllerStateMachine(FakeControllerActions, options, new SystemDateTimeUtcClock());
             };
         Cleanup after = () =>
             {
@@ -38,6 +42,41 @@ namespace TA.DigitalDomeworks.Specifications
         protected static IControllerActions FakeControllerActions;
         protected static ControllerStateMachine Machine;
         protected static bool StatusRequested;
+
+        static void SimulateRequestStatus()
+            {
+            StatusRequested = true;
+            }
+        }
+
+    internal class with_state_machine_that_infers_shutter_position
+        {
+        Establish context = () =>
+            {
+            FakeControllerActions = A.Fake<IControllerActions>();
+            Clock = new FakeClock(new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            var options = new DeviceControllerOptions
+                {
+                KeepAliveTimerInterval = TimeSpan.FromMinutes(3),
+                MaximumFullRotationTime = TimeSpan.FromMinutes(1),
+                MaximumShutterCloseTime = TimeSpan.FromMinutes(1),
+                PerformShutterRecovery = false,
+                IgnoreHardwareShutterSensor = true,
+                CurrentDrawDetectionThreshold = 10,
+                ShutterTickTimeout = TimeSpan.MaxValue
+                };
+            Machine = new ControllerStateMachine(FakeControllerActions, options, Clock);
+            };
+        Cleanup after = () =>
+            {
+            StatusRequested = false;
+            Machine = null;
+            };
+        protected static Exception Exception;
+        protected static IControllerActions FakeControllerActions;
+        protected static ControllerStateMachine Machine;
+        protected static bool StatusRequested;
+        protected static FakeClock Clock;
 
         static void SimulateRequestStatus()
             {
@@ -86,7 +125,6 @@ namespace TA.DigitalDomeworks.Specifications
         It should_finish_in_the_ready_state = () => Machine.CurrentState.Name.ShouldEqual(nameof(Ready));
         }
 
-
     [Subject(typeof(ControllerStateMachine), "local operations")]
     internal class when_idle_and_an_azimuth_encoder_tick_is_received : with_controller_state_machine_in_ready_state
         {
@@ -106,6 +144,63 @@ namespace TA.DigitalDomeworks.Specifications
         It should_not_set_a_shutter_direction =
             () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
         Behaves_like<ShutterMoving> the_shutter_is_moving;
+        }
+
+    [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
+    internal class when_the_shutter_moves_for_a_sufficiently_long_time : with_state_machine_that_infers_shutter_position
+        {
+        Because of = () =>
+            {
+            var minimumRequiredMoveTime = Machine.Options.MaximumShutterCloseTime.TotalSeconds / 2;
+            Machine.Initialize(new Ready(Machine));
+            var factory = new ControllerStatusFactory(Clock);
+            var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
+            Machine.ShutterDirectionReceived(ShutterDirection.Closing);
+            Clock.AdvanceBy(TimeSpan.FromSeconds(minimumRequiredMoveTime));
+            Machine.ShutterMotorCurrentReceived(Machine.Options.CurrentDrawDetectionThreshold);
+            var indeterminateShutter =
+                factory.FromStatusPacket(TestData.FromEmbeddedResource("StatusWithIndeterminateShutter.txt"));
+            Machine.HardwareStatusReceived(indeterminateShutter);
+            };
+        It should_finish_with_shutter_closed = () => Machine.ShutterPosition.ShouldEqual(SensorState.Closed);
+        }
+
+    [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
+    internal class when_the_shutter_moves_for_a_sufficiently_long_time_but_current_draw_is_too_low : with_state_machine_that_infers_shutter_position
+        {
+        Because of = () =>
+            {
+            var minimumRequiredMoveTime = Machine.Options.MaximumShutterCloseTime.TotalSeconds / 2;
+            Machine.Initialize(new Ready(Machine));
+            var factory = new ControllerStatusFactory(Clock);
+            var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
+            Machine.ShutterDirectionReceived(ShutterDirection.Closing);
+            Clock.AdvanceBy(TimeSpan.FromSeconds(minimumRequiredMoveTime));
+            Machine.ShutterMotorCurrentReceived(Machine.Options.CurrentDrawDetectionThreshold - 1);
+            var indeterminateShutter =
+                factory.FromStatusPacket(TestData.FromEmbeddedResource("StatusWithIndeterminateShutter.txt"));
+            Machine.HardwareStatusReceived(indeterminateShutter);
+            };
+        It should_finish_with_shutter_indeterminate = () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
+        }
+
+    [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
+    internal class when_the_shutter_move_is_insufficient : with_state_machine_that_infers_shutter_position
+        {
+        Because of = () =>
+            {
+            var minimumRequiredMoveTime = Machine.Options.MaximumShutterCloseTime.TotalSeconds / 2;
+            Machine.Initialize(new Ready(Machine));
+            var factory = new ControllerStatusFactory(Clock);
+            var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
+            Machine.ShutterDirectionReceived(ShutterDirection.Closing);
+            Clock.AdvanceBy(TimeSpan.FromSeconds(minimumRequiredMoveTime)-TimeSpan.FromTicks(1));
+            Machine.ShutterMotorCurrentReceived(Machine.Options.CurrentDrawDetectionThreshold);
+            var indeterminateShutter =
+                factory.FromStatusPacket(TestData.FromEmbeddedResource("StatusWithIndeterminateShutter.txt"));
+            Machine.HardwareStatusReceived(indeterminateShutter);
+            };
+        It should_finish_with_shutter_indeterminate = () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
         }
 
     [Behaviors]

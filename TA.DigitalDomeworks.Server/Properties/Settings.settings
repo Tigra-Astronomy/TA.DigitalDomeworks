@@ -26,5 +26,14 @@
     <Setting Name="ShutterOpenCloseTimeSeconds" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">120</Value>
     </Setting>
+    <Setting Name="IgnoreHardwareShutterSensor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CurrentDrawDetectionThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ShutterTickTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:00:05</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

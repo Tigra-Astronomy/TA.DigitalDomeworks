@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ConnectionErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="toolTip1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
@@ -161,10 +158,28 @@ operations to complete. Set this to slightly more
 than the worst case time (in seconds)
 for a full 360° rotation of your dome.</value>
   </data>
-  <metadata name="toolTip1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
+  <metadata name="ConnectionErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>203, 17</value>
-  </metadata>
+  <data name="IgnoreShutterSensor.ToolTip" xml:space="preserve">
+    <value>This is a potentially unsafe setting and should not be enabled
+without careful consideration.
+
+When enabled, the driver ignores the shutter position reported
+by Digital Domeworks and uses a heuristic to infer the shutter
+position based on the shutter operation history.
+
+The heuristic takes into account the length of time the shutter
+was detected as moving and how much current was drawn by
+the shutter motor.
+
+This option  is designed to work around a problem where some
+Digital Domeworks installations give an unreliable indication of
+the shutter position. If you get shutter errors in your application
+even when the shutter appears to work correctly, you can try
+enabling this option. The heuristic is not foolproof and this
+option should be used with care.
+
+Default: disabled.</value>
+  </data>
 </root>

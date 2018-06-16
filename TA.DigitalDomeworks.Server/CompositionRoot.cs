@@ -96,7 +96,10 @@ namespace TA.DigitalDomeworks.Server
                 PerformShutterRecovery = Settings.Default.PerformShutterRecovery,
                 MaximumShutterCloseTime = TimeSpan.FromSeconds((double) Settings.Default.ShutterOpenCloseTimeSeconds),
                 MaximumFullRotationTime = TimeSpan.FromSeconds((double) Settings.Default.FullRotationTimeSeconds),
-                KeepAliveTimerInterval = Settings.Default.KeepAliveTimerPeriod
+                KeepAliveTimerInterval = Settings.Default.KeepAliveTimerPeriod,
+                CurrentDrawDetectionThreshold = Settings.Default.CurrentDrawDetectionThreshold,
+                IgnoreHardwareShutterSensor = Settings.Default.IgnoreHardwareShutterSensor,
+                ShutterTickTimeout = Settings.Default.ShutterTickTimeout
                 };
             return options;
             }

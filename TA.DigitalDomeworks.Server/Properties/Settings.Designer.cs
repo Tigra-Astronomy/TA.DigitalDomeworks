@@ -115,5 +115,38 @@ namespace TA.DigitalDomeworks.Server.Properties {
                 this["ShutterOpenCloseTimeSeconds"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IgnoreHardwareShutterSensor {
+            get {
+                return ((bool)(this["IgnoreHardwareShutterSensor"]));
+            }
+            set {
+                this["IgnoreHardwareShutterSensor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int CurrentDrawDetectionThreshold {
+            get {
+                return ((int)(this["CurrentDrawDetectionThreshold"]));
+            }
+            set {
+                this["CurrentDrawDetectionThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:05")]
+        public global::System.TimeSpan ShutterTickTimeout {
+            get {
+                return ((global::System.TimeSpan)(this["ShutterTickTimeout"]));
+            }
+        }
     }
 }
