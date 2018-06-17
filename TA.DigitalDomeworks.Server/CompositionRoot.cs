@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: CompositionRoot.cs  Last modified: 2018-04-21@20:23 by Tim Long
+// File: CompositionRoot.cs  Last modified: 2018-06-17@17:22 by Tim Long
 
 using System;
 using Ninject;
@@ -65,7 +65,7 @@ namespace TA.DigitalDomeworks.Server
             Bind<ICommunicationChannel>()
                 .ToMethod(BuildCommunicationsChannel)
                 .InSessionScope();
-            Bind<ChannelFactory>().ToMethod(BuildChannelFactory).InSingletonScope();
+            Bind<ChannelFactory>().ToMethod(BuildChannelFactory).InSessionScope();
             Bind<IClock>().To<SystemDateTimeUtcClock>().InSingletonScope();
             Bind<IControllerActions>().To<RxControllerActions>().InSessionScope();
             Bind<DeviceControllerOptions>().ToMethod(BuildDeviceOptions).InSessionScope();

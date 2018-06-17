@@ -110,5 +110,5 @@ namespace TA.DigitalDomeworks.Server
             {
             IgnoreShutterSensor.ForeColor = IgnoreShutterSensor.Checked ? Color.DarkRed : DefaultForeColor;
             }
-        }
+    }
     }

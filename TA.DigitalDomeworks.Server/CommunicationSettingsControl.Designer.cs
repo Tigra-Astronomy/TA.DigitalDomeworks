@@ -63,6 +63,7 @@
             this.CommPortName.Size = new System.Drawing.Size(80, 21);
             this.CommPortName.TabIndex = 0;
             this.CommPortName.Text = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.CommPortName;
+            this.CommPortName.SelectedIndexChanged += new System.EventHandler(this.CommPortName_SelectedIndexChanged);
             // 
             // UseSimulator
             // 

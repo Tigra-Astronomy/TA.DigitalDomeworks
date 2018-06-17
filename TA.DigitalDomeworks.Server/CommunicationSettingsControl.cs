@@ -44,8 +44,13 @@ namespace TA.DigitalDomeworks.Server
 
         private void UseSimulator_CheckedChanged(object sender, EventArgs e)
             {
+            CommPortName.Enabled = !UseSimulator.Checked;
+            BuildConnectionString();
+            }
+
+        private void BuildConnectionString()
+            {
             var useSimulator = UseSimulator.Checked;
-            CommPortName.Enabled = !useSimulator;
             if (useSimulator)
                 BuildSimulatorConnectionString();
             else
@@ -63,6 +68,11 @@ namespace TA.DigitalDomeworks.Server
             {
             var candidate = new SerialDeviceEndpoint(CommPortName.Text);
             Settings.Default.ConnectionString = candidate.ToString();
+            }
+
+        private void CommPortName_SelectedIndexChanged(object sender, EventArgs e)
+            {
+            BuildConnectionString();
             }
         }
     }

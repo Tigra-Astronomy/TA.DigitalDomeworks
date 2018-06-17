@@ -38,6 +38,7 @@ namespace TA.DigitalDomeworks.Server
             this.PresetHD6 = new System.Windows.Forms.Button();
             this.PresetHD10 = new System.Windows.Forms.Button();
             this.PresetHD15 = new System.Windows.Forms.Button();
+            this.IgnoreShutterSensor = new System.Windows.Forms.CheckBox();
             this.cmdOK = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.picASCOM = new System.Windows.Forms.PictureBox();
@@ -50,7 +51,6 @@ namespace TA.DigitalDomeworks.Server
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.IgnoreShutterSensor = new System.Windows.Forms.CheckBox();
             toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ShutterOpenCloseTimeSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FullRotationTimeSeconds)).BeginInit();
@@ -88,9 +88,9 @@ namespace TA.DigitalDomeworks.Server
             this.PerformShutterRecovery.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "PerformShutterRecovery", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.PerformShutterRecovery.Location = new System.Drawing.Point(7, 20);
             this.PerformShutterRecovery.Name = "PerformShutterRecovery";
-            this.PerformShutterRecovery.Size = new System.Drawing.Size(302, 17);
+            this.PerformShutterRecovery.Size = new System.Drawing.Size(266, 17);
             this.PerformShutterRecovery.TabIndex = 0;
-            this.PerformShutterRecovery.Text = "Close the shutter if the position is not known upon connect";
+            this.PerformShutterRecovery.Text = "Close shutter if position is not known upon connect";
             toolTip1.SetToolTip(this.PerformShutterRecovery, resources.GetString("PerformShutterRecovery.ToolTip"));
             this.PerformShutterRecovery.UseVisualStyleBackColor = true;
             // 
@@ -159,11 +159,25 @@ namespace TA.DigitalDomeworks.Server
             this.PresetHD15.UseVisualStyleBackColor = true;
             this.PresetHD15.Click += new System.EventHandler(this.PresetHD15_Click);
             // 
+            // IgnoreShutterSensor
+            // 
+            this.IgnoreShutterSensor.AutoSize = true;
+            this.IgnoreShutterSensor.Checked = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.IgnoreHardwareShutterSensor;
+            this.IgnoreShutterSensor.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "IgnoreHardwareShutterSensor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.IgnoreShutterSensor.Location = new System.Drawing.Point(7, 20);
+            this.IgnoreShutterSensor.Name = "IgnoreShutterSensor";
+            this.IgnoreShutterSensor.Size = new System.Drawing.Size(222, 17);
+            this.IgnoreShutterSensor.TabIndex = 0;
+            this.IgnoreShutterSensor.Text = "Enable shutter position inference heuristic";
+            toolTip1.SetToolTip(this.IgnoreShutterSensor, resources.GetString("IgnoreShutterSensor.ToolTip"));
+            this.IgnoreShutterSensor.UseVisualStyleBackColor = true;
+            this.IgnoreShutterSensor.CheckedChanged += new System.EventHandler(this.IgnoreShutterSensor_CheckedChanged);
+            // 
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(308, 323);
+            this.cmdOK.Location = new System.Drawing.Point(327, 323);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -175,7 +189,7 @@ namespace TA.DigitalDomeworks.Server
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(308, 353);
+            this.cmdCancel.Location = new System.Drawing.Point(327, 353);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -188,7 +202,7 @@ namespace TA.DigitalDomeworks.Server
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picASCOM.Image = global::TA.DigitalDomeworks.Server.Properties.Resources.ASCOM;
-            this.picASCOM.Location = new System.Drawing.Point(321, 9);
+            this.picASCOM.Location = new System.Drawing.Point(340, 9);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);
             this.picASCOM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -200,7 +214,7 @@ namespace TA.DigitalDomeworks.Server
             // AboutBox
             // 
             this.AboutBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AboutBox.Location = new System.Drawing.Point(308, 295);
+            this.AboutBox.Location = new System.Drawing.Point(327, 295);
             this.AboutBox.Name = "AboutBox";
             this.AboutBox.Size = new System.Drawing.Size(59, 23);
             this.AboutBox.TabIndex = 8;
@@ -219,7 +233,7 @@ namespace TA.DigitalDomeworks.Server
             this.CommunicationsGroup.Controls.Add(this.communicationSettingsControl1);
             this.CommunicationsGroup.Location = new System.Drawing.Point(12, 12);
             this.CommunicationsGroup.Name = "CommunicationsGroup";
-            this.CommunicationsGroup.Size = new System.Drawing.Size(262, 74);
+            this.CommunicationsGroup.Size = new System.Drawing.Size(303, 74);
             this.CommunicationsGroup.TabIndex = 9;
             this.CommunicationsGroup.TabStop = false;
             this.CommunicationsGroup.Text = "Communications";
@@ -229,7 +243,7 @@ namespace TA.DigitalDomeworks.Server
             this.StartupOptionsGroup.Controls.Add(this.PerformShutterRecovery);
             this.StartupOptionsGroup.Location = new System.Drawing.Point(12, 92);
             this.StartupOptionsGroup.Name = "StartupOptionsGroup";
-            this.StartupOptionsGroup.Size = new System.Drawing.Size(355, 70);
+            this.StartupOptionsGroup.Size = new System.Drawing.Size(303, 70);
             this.StartupOptionsGroup.TabIndex = 10;
             this.StartupOptionsGroup.TabStop = false;
             this.StartupOptionsGroup.Text = "Startup Options";
@@ -246,7 +260,7 @@ namespace TA.DigitalDomeworks.Server
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(13, 169);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(261, 111);
+            this.groupBox1.Size = new System.Drawing.Size(302, 111);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Timeouts";
@@ -283,24 +297,10 @@ namespace TA.DigitalDomeworks.Server
             this.groupBox2.Controls.Add(this.IgnoreShutterSensor);
             this.groupBox2.Location = new System.Drawing.Point(13, 287);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(255, 100);
+            this.groupBox2.Size = new System.Drawing.Size(302, 100);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Experimental";
-            // 
-            // IgnoreShutterSensor
-            // 
-            this.IgnoreShutterSensor.AutoSize = true;
-            this.IgnoreShutterSensor.Checked = global::TA.DigitalDomeworks.Server.Properties.Settings.Default.IgnoreHardwareShutterSensor;
-            this.IgnoreShutterSensor.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::TA.DigitalDomeworks.Server.Properties.Settings.Default, "IgnoreHardwareShutterSensor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.IgnoreShutterSensor.Location = new System.Drawing.Point(7, 20);
-            this.IgnoreShutterSensor.Name = "IgnoreShutterSensor";
-            this.IgnoreShutterSensor.Size = new System.Drawing.Size(208, 17);
-            this.IgnoreShutterSensor.TabIndex = 0;
-            this.IgnoreShutterSensor.Text = "Ignore shutter sensor and infer position";
-            toolTip1.SetToolTip(this.IgnoreShutterSensor, resources.GetString("IgnoreShutterSensor.ToolTip"));
-            this.IgnoreShutterSensor.UseVisualStyleBackColor = true;
-            this.IgnoreShutterSensor.CheckedChanged += new System.EventHandler(this.IgnoreShutterSensor_CheckedChanged);
             // 
             // SetupDialogForm
             // 
@@ -308,7 +308,7 @@ namespace TA.DigitalDomeworks.Server
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(379, 390);
+            this.ClientSize = new System.Drawing.Size(398, 390);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.StartupOptionsGroup);
