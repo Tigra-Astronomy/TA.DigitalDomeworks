@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SetupDialogForm.cs  Last modified: 2018-03-28@22:20 by Tim Long
+// File: SetupDialogForm.cs  Last modified: 2018-06-17@14:27 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -62,6 +62,7 @@ namespace TA.DigitalDomeworks.Server
                 ConnectionErrorProvider.SetError(communicationSettingsControl1,
                     "Connection settings cannot be changed while there are connected clients");
                 }
+            SetControlAppearance();
             }
 
         private void AboutBox_Click(object sender, EventArgs e)
@@ -94,14 +95,19 @@ namespace TA.DigitalDomeworks.Server
             {
             if (IgnoreShutterSensor.Checked)
                 {
-                var resault = MessageBox.Show(
+                var result = MessageBox.Show(
                     "This is a potentially unsafe setting.\nPlease be sure you understand the implications\nbefore enabling this!",
                     "Potentially unsafe configuration", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning,
                     MessageBoxDefaultButton.Button2);
-                if (resault != DialogResult.OK)
+                if (result != DialogResult.OK)
                     IgnoreShutterSensor.Checked = false;
                 }
 
+            SetControlAppearance();
+            }
+
+        private void SetControlAppearance()
+            {
             IgnoreShutterSensor.ForeColor = IgnoreShutterSensor.Checked ? Color.DarkRed : DefaultForeColor;
             }
         }
