@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Constants.cs  Last modified: 2018-03-20@01:19 by Tim Long
+// File: Constants.cs  Last modified: 2018-04-21@21:03 by Tim Long
 
 namespace TI.DigitalDomeWorks
     {
@@ -154,7 +154,8 @@ namespace TI.DigitalDomeWorks
         #endregion
 
         #region Custom Actions
-        internal const string ActionNameDsrSwingoutState = "DomeSupportRingSwingoutState";
+        public const string ActionNameDsrSwingoutState = "DomeSupportRingSwingoutState";
+        public const string ActionNameControllerStatus = "ControllerStatus";
         #endregion Custom Actions
         }
     }

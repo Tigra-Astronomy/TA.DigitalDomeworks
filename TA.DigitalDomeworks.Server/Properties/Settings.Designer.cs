@@ -85,19 +85,67 @@ namespace TA.DigitalDomeworks.Server.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:02:00")]
-        public global::System.TimeSpan ShutterCloseTimeout {
+        [global::System.Configuration.DefaultSettingValueAttribute("00:03:00")]
+        public global::System.TimeSpan KeepAliveTimerPeriod {
             get {
-                return ((global::System.TimeSpan)(this["ShutterCloseTimeout"]));
+                return ((global::System.TimeSpan)(this["KeepAliveTimerPeriod"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public decimal FullRotationTimeSeconds {
+            get {
+                return ((decimal)(this["FullRotationTimeSeconds"]));
+            }
+            set {
+                this["FullRotationTimeSeconds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public decimal ShutterOpenCloseTimeSeconds {
+            get {
+                return ((decimal)(this["ShutterOpenCloseTimeSeconds"]));
+            }
+            set {
+                this["ShutterOpenCloseTimeSeconds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IgnoreHardwareShutterSensor {
+            get {
+                return ((bool)(this["IgnoreHardwareShutterSensor"]));
+            }
+            set {
+                this["IgnoreHardwareShutterSensor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int CurrentDrawDetectionThreshold {
+            get {
+                return ((int)(this["CurrentDrawDetectionThreshold"]));
+            }
+            set {
+                this["CurrentDrawDetectionThreshold"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:01:00")]
-        public global::System.TimeSpan FullRotationTimeout {
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:05")]
+        public global::System.TimeSpan ShutterTickTimeout {
             get {
-                return ((global::System.TimeSpan)(this["FullRotationTimeout"]));
+                return ((global::System.TimeSpan)(this["ShutterTickTimeout"]));
             }
         }
     }

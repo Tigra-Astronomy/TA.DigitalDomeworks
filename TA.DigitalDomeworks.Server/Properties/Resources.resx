@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="GdBannerLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GTD-logo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ASCOM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ASCOM.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TigraAstronomyLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TiGra Astronomy logo 800x900.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="AuroraWideWithText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AuroraWideWithText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ASCOM.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Integra85_2017_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Integra85_2017_transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TigraAstronomyLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TiGra Astronomy logo 800x900.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DigitalDomeworks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DigitalDomeworks.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

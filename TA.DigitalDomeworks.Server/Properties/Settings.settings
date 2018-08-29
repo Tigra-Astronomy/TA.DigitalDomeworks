@@ -1,7 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
-              GeneratedClassNamespace="TA.DigitalDomeworks.Server.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TA.DigitalDomeworks.Server.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="CommPortName" Type="System.String" Scope="User">
@@ -19,11 +17,23 @@
     <Setting Name="PerformShutterRecovery" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ShutterCloseTimeout" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">00:02:00</Value>
+    <Setting Name="KeepAliveTimerPeriod" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:03:00</Value>
     </Setting>
-    <Setting Name="FullRotationTimeout" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">00:01:00</Value>
+    <Setting Name="FullRotationTimeSeconds" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="ShutterOpenCloseTimeSeconds" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">120</Value>
+    </Setting>
+    <Setting Name="IgnoreHardwareShutterSensor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CurrentDrawDetectionThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ShutterTickTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:00:05</Value>
     </Setting>
   </Settings>
 </SettingsFile>

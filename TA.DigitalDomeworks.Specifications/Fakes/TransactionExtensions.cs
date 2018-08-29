@@ -1,9 +1,8 @@
-﻿// This file is part of the AWR Drive System ASCOM Driver project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2007-2017 Tigra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: TransactionExtensions.cs  Created: 2017-03-21@01:29
-// Last modified: 2017-03-21@01:33 by Tim Long
+// File: TransactionExtensions.cs  Last modified: 2018-03-29@21:27 by Tim Long
 
 using System;
 using System.Reflection;
@@ -15,7 +14,7 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
     /// <summary>
     ///     Extension methods for manipulating non-public members of transaction classes.
     /// </summary>
-    static class TransactionExtensions
+    internal static class TransactionExtensions
         {
         /// <summary>
         ///     Sets the protected response property.
@@ -44,11 +43,11 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
             var makeHotMethod = transactionType.GetMethod("MakeHot",
                 BindingFlags.Instance | BindingFlags.NonPublic);
             makeHotMethod.Invoke(transaction, BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder,
-                new object[] {}, null);
+                new object[] { }, null);
             var onCompletedMethod = transactionType.GetMethod("OnCompleted",
                 BindingFlags.Instance | BindingFlags.NonPublic);
             onCompletedMethod.Invoke(transaction, BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder,
-                new object[] {}, null);
+                new object[] { }, null);
             }
 
         /// <summary>

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStatusFactory.cs  Last modified: 2018-03-28@17:43 by Tim Long
+// File: ControllerStatusFactory.cs  Last modified: 2018-03-30@01:42 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,8 @@ namespace TA.DigitalDomeworks.SharedTypes
 
         public ControllerStatusFactory(IClock timeSource)
             {
+            Contract.Requires(timeSource != null);
             this.timeSource = timeSource;
-            // ToDo: use IClock from NodaTime
             }
 
         /// <summary>
@@ -29,6 +29,7 @@ namespace TA.DigitalDomeworks.SharedTypes
         public IHardwareStatus FromStatusPacket(string packet)
             {
             Contract.Requires(!string.IsNullOrEmpty(packet));
+            Contract.Ensures(Contract.Result<IHardwareStatus>() != null);
             var elements = packet.Split(fieldDelimiters);
             switch (elements[0])
                 {

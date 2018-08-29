@@ -2,12 +2,11 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Dome.cs  Last modified: 2018-03-25@04:52 by Tim Long
+// File: Dome.cs  Last modified: 2018-04-21@21:39 by Tim Long
 
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using ASCOM;
 using ASCOM.DeviceInterface;
 using JetBrains.Annotations;
@@ -15,6 +14,7 @@ using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Server;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.PostSharp.Aspects;
+using TI.DigitalDomeWorks;
 using NotImplementedException = ASCOM.NotImplementedException;
 
 namespace TA.DigitalDomeworks.AscomDome
@@ -42,7 +42,15 @@ namespace TA.DigitalDomeworks.AscomDome
 
         public string Action(string ActionName, string ActionParameters)
             {
-            throw new NotImplementedException();
+            switch (ActionName)
+                {
+                    case Constants.ActionNameControllerStatus:
+                        return CustomActionControllerStatus();
+                    case Constants.ActionNameDsrSwingoutState:
+                        return CustomActionDsrSwingoutSensorState();
+                    default:
+                        throw new ActionNotImplementedException(ActionName);
+                }
             }
 
         public void CommandBlind(string Command, bool Raw = false)
@@ -80,10 +88,7 @@ namespace TA.DigitalDomeworks.AscomDome
             }
 
         [MustBeConnected]
-        public void FindHome()
-            {
-            throw new NotImplementedException();
-            }
+        public void FindHome() => controller.RotateToHomePosition();
 
         [MustBeConnected]
         public void OpenShutter()
@@ -111,7 +116,14 @@ namespace TA.DigitalDomeworks.AscomDome
         [MustBeConnected]
         public void SlewToAzimuth(double Azimuth)
             {
-            controller.SlewToAzimuth(Azimuth);
+            try
+                {
+                controller.SlewToAzimuth(Azimuth);
+                }
+            catch (ArgumentOutOfRangeException ex)
+                {
+                throw new InvalidValueException(nameof(Azimuth), Azimuth.ToString(), "0.0 <= azimuth < 360.0", ex);
+                }
             }
 
         public void SyncToAzimuth(double Azimuth)
@@ -151,7 +163,11 @@ Copyright © 2018 Tigra Astronomy";
 
         public string Name => "Digital Domeworks 2018 Reboot";
 
-        public ArrayList SupportedActions => new ArrayList();
+        public ArrayList SupportedActions => new ArrayList
+            {
+            Constants.ActionNameDsrSwingoutState,
+            Constants.ActionNameControllerStatus
+            };
 
         public double Altitude => throw new PropertyNotImplementedException(nameof(Altitude), accessorSet: false);
 
@@ -205,5 +221,18 @@ Copyright © 2018 Tigra Astronomy";
 
         [MustBeConnected]
         public bool Slewing => controller.IsMoving;
+
+        [NotNull]
+        private string CustomActionDsrSwingoutSensorState()
+            {
+            return controller?.CurrentStatus?.DsrSensor.ToString() ?? SensorState.Indeterminate.ToString();
+            }
+
+        [NotNull]
+        private string CustomActionControllerStatus()
+            {
+            var status = controller.CurrentStatus;
+            return status?.ToString() ?? string.Empty;
+            }
         }
     }

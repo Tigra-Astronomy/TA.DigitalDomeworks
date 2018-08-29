@@ -1,9 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2014 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: StateShutterMoving.cs  Created: 2014-10-05@00:56
-// Last modified: 2014-11-12@05:56 by Tim
+// File: StateShutterMoving.cs  Last modified: 2018-04-06@01:49 by Tim Long
 
 using System;
 using System.Timers;
@@ -61,7 +60,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         private void ShutterTickTimerElapsed(object sender, ElapsedEventArgs e)
             {
             shutter_tick_timer.Stop();
-            Machine.WriteLine(string.Format("Z{0:D3}", motorCurrent.Next(6, 12)));
+            Machine.WriteLine(string.Format("SZ{0:D3}", motorCurrent.Next(6, 25)));
             if (--ShutterTicksRemaining > 0)
                 shutter_tick_timer.Start();
             else

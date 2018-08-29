@@ -2,13 +2,11 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-03-21@18:34 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-04-21@21:36 by Tim Long
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -26,9 +24,9 @@ namespace TA.DigitalDomeworks.DeviceInterface
     public class DeviceController : INotifyPropertyChanged
         {
         [NotNull] private readonly ICommunicationChannel channel;
+        private readonly DeviceControllerOptions configuration;
         [NotNull] private readonly List<IDisposable> disposableSubscriptions = new List<IDisposable>();
         [NotNull] private readonly ControllerStateMachine stateMachine;
-        private readonly DeviceControllerOptions configuration;
         [NotNull] private readonly ControllerStatusFactory statusFactory;
 
         public DeviceController(ICommunicationChannel channel, ControllerStatusFactory factory,
@@ -65,7 +63,15 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public bool ShutterMotorActive => stateMachine.ShutterMotorActive;
 
+        public SensorState ShutterPosition => stateMachine.ShutterPosition;
+
+        public bool AtHome => stateMachine.AtHome;
+
+        public IHardwareStatus CurrentStatus => stateMachine.HardwareStatus;
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RotateToHomePosition() => stateMachine.RotateToHomePosition();
 
         public void Open(bool performOnConnectActions = true)
             {
@@ -76,23 +82,12 @@ namespace TA.DigitalDomeworks.DeviceInterface
             else
                 stateMachine.Initialize(new Ready(stateMachine));
             stateMachine.WaitForReady(TimeSpan.FromSeconds(5));
-            if (performOnConnectActions && configuration.PerformShutterRecovery)
-                {
-                /*
-                 * Perform shutter recovery if configured.
-                 * This can throw a TimeoutException which indicates a fatal
-                 * unrecoverable situation, so we allow the exception to
-                 * propagate up. The shutter position may still be 'indeterminate'
-                 * even if no exception is thrown and it is up to the client application
-                 * to decide what to do about that.
-                 */
-                PerformShutterRecovery();
-                }
+            if (performOnConnectActions && configuration.PerformShutterRecovery) PerformShutterRecovery();
             }
 
         /// <summary>
-        /// Tries to establish a known shutter condition at startup.
-        /// Assumes that a valid status packet has already been received.
+        ///     Tries to establish a known shutter condition at startup.
+        ///     Assumes that a valid status packet has already been received.
         /// </summary>
         /// <exception cref="TimeoutException">
         ///     Thrown if shutter recovery does not complete within the
@@ -106,13 +101,10 @@ namespace TA.DigitalDomeworks.DeviceInterface
                     .Message("Shutter position is indeterminate, attempting to close the shutter.")
                     .Write();
                 stateMachine.CloseShutter();
-                stateMachine.WaitForReady(TimeSpan.FromMinutes(2));
+                stateMachine.WaitForReady(configuration.MaximumFullRotationTime +
+                                          configuration.MaximumShutterCloseTime);
                 }
             }
-
-        public SensorState ShutterPosition => stateMachine.ShutterPosition;
-
-        public bool AtHome => stateMachine.AtHome;
 
         private void SubscribeControllerEvents()
             {
@@ -154,13 +146,6 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         private void SubscribeShutterDirection()
             {
-            // Note: The zero-based index in the string must match the ordinal values in ShutterDirection
-            const string shutterMovementIndicators = "SCO";
-            var shutterDirectionSequence = from c in channel.ObservableReceivedCharacters
-                                           where shutterMovementIndicators.Contains(c)
-                                           let ordinal = shutterMovementIndicators.IndexOf(c)
-                                           let direction = (ShutterDirection) ordinal
-                                           select direction;
             var shutterDirectionSubscription = channel.ObservableReceivedCharacters.ShutterDirectionUpdates()
                 //.ObserveOn(Scheduler.Default)
                 .Subscribe(
@@ -262,6 +247,9 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public void SlewToAzimuth(double azimuth)
             {
+            if (azimuth < 0.0 || azimuth >= 360.0)
+                throw new ArgumentOutOfRangeException(nameof(azimuth), azimuth,
+                    "Invalid azimuth. Must be 0.0 <= azimuth < 360.0");
             stateMachine.RotateToAzimuthDegrees(azimuth);
             }
 
@@ -276,8 +264,8 @@ namespace TA.DigitalDomeworks.DeviceInterface
             }
 
         /// <summary>
-        /// Parks the dome by closing the shutter.
-        /// Blocks until completed or an error occurs.
+        ///     Parks the dome by closing the shutter.
+        ///     Blocks until completed or an error occurs.
         /// </summary>
         public void Park()
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -26,6 +27,7 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
         /// <param name="fakeResponse">Implementation of the injected dependency.</param>
         public FakeCommunicationChannel(string fakeResponse)
             {
+            Contract.Requires(fakeResponse != null);
             Endpoint = new InvalidEndpoint();
             Response = fakeResponse;
             receivedCharacters = fakeResponse.ToCharArray().ToObservable();

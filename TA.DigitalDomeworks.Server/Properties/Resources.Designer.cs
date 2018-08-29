@@ -71,6 +71,16 @@ namespace TA.DigitalDomeworks.Server.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AuroraWideWithText {
+            get {
+                object obj = ResourceManager.GetObject("AuroraWideWithText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon DefaultIcon {
@@ -83,19 +93,9 @@ namespace TA.DigitalDomeworks.Server.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GdBannerLogo {
+        internal static System.Drawing.Bitmap DigitalDomeworks {
             get {
-                object obj = ResourceManager.GetObject("GdBannerLogo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Integra85_2017_transparent {
-            get {
-                object obj = ResourceManager.GetObject("Integra85_2017_transparent", resourceCulture);
+                object obj = ResourceManager.GetObject("DigitalDomeworks", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

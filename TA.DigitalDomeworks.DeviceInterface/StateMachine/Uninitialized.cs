@@ -62,5 +62,10 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             {
             throw uninitialized;
             }
+
+        public void RequestHardwareStatus()
+            {
+            throw uninitialized;
+            }
         }
     }

@@ -11,10 +11,7 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     {
     internal sealed class RequestStatus : ControllerStateBase
         {
-        public RequestStatus(ControllerStateMachine machine)
-            {
-            this.machine = machine;
-            }
+        public RequestStatus(ControllerStateMachine machine) : base(machine) { }
 
         public override void OnEnter()
             {

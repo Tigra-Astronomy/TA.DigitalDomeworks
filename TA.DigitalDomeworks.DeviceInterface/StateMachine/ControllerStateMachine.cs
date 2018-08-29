@@ -2,12 +2,13 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-03-25@18:17 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-04-06@02:12 by Tim Long
 
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NLog.Fluent;
 using PostSharp.Patterns.Model;
@@ -19,14 +20,21 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
     public class ControllerStateMachine : INotifyHardwareStateChanged
         {
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
+        [CanBeNull] internal CancellationTokenSource KeepAliveCancellationSource;
 
-        public ControllerStateMachine(IControllerActions controllerActions)
+        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options, IClock clock)
             {
             ControllerActions = controllerActions;
+            Options = options;
+            Clock = clock;
             CurrentState = new Uninitialized();
             }
 
         internal IControllerActions ControllerActions { get; }
+
+        internal DeviceControllerOptions Options { get; }
+
+        public IClock Clock { get; }
 
         internal IControllerState CurrentState { get; private set; }
 
@@ -36,6 +44,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public bool AtHome { get; set; }
 
         public SensorState ShutterPosition { get; set; }
+
+        /// <summary>
+        ///     The state of the user output pins. Bits 0..3 are significant, other bits are unused.
+        /// </summary>
+        public Octet UserPins { get; private set; } = Octet.Zero;
 
         public int AzimuthEncoderPosition { get; internal set; }
 
@@ -48,6 +61,9 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public bool AzimuthMotorActive { get; internal set; }
 
         public bool ShutterMotorActive { get; internal set; }
+
+        [IgnoreAutoChangeNotification]
+        internal SensorState InferredShutterPosition { get; set; } = SensorState.Indeterminate;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -108,15 +124,21 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             ShutterMotorActive = false;
             ShutterMovementDirection = ShutterDirection.None;
             ShutterMotorCurrent = 0;
-            ShutterPosition = status.ShutterSensor;
+            ShutterPosition = SetInferredShutterPosition(status.ShutterSensor);
             AtHome = status.AtHome;
             UserPins = status.UserPins;
             }
 
-        /// <summary>
-        /// The state of the user output pins. Bits 0..3 are significant, other bits are unused.
-        /// </summary>
-        public Octet UserPins { get; private set; } = Octet.Zero;
+        private SensorState SetInferredShutterPosition(SensorState statusShutterSensor)
+            {
+            if (!Options.IgnoreHardwareShutterSensor)
+                return statusShutterSensor;
+
+            if (InferredShutterPosition == SensorState.Indeterminate)
+                return statusShutterSensor;
+
+            return InferredShutterPosition;
+            }
 
         internal void RequestHardwareStatus()
             {
@@ -131,7 +153,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void ShutterDirectionReceived(ShutterDirection direction)
             {
-            ShutterMovementDirection = direction;
+            if (direction == ShutterDirection.Closing || direction == ShutterDirection.Opening)
+                ShutterMovementDirection = direction;
             CurrentState.ShutterMovementDetected();
             }
 
@@ -182,21 +205,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             CurrentState.CloseShutter();
             }
 
-        #region State triggers 
-        public void AzimuthEncoderTickReceived(int encoderPosition)
-            {
-            AzimuthEncoderPosition = encoderPosition;
-            CurrentState.RotationDetected();
-            }
-
-        public void HardwareStatusReceived(IHardwareStatus status)
-            {
-            HardwareStatus = status;
-            UpdateStatus(status);
-            CurrentState.StatusUpdateReceived(status);
-            }
-        #endregion State triggers
-
         public void RotateToHomePosition()
             {
             CurrentState.RotateToHomePosition();
@@ -207,5 +215,44 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
             UserPins = newState;
             CurrentState.SetUserOutputPins(newState);
             }
+
+        internal void ResetKeepAliveTimer()
+            {
+            Log.Debug().Message("Keep-alive timer reset").Write();
+            KeepAliveCancellationSource?.Cancel(); // Cancel any previous timer
+            KeepAliveCancellationSource = new CancellationTokenSource();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            PollStatusAfterKeepAliveIntervalAsync(KeepAliveCancellationSource.Token); // Do not await the result
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            }
+
+        private async Task PollStatusAfterKeepAliveIntervalAsync(CancellationToken cancel)
+            {
+            await Task.Delay(Options.KeepAliveTimerInterval, cancel);
+            if (cancel.IsCancellationRequested)
+                {
+                Log.Debug("KeepAlive poll cancelled");
+                return;
+                }
+            Log.Debug()
+                .Message("Keep-alive timer expired - generating status request")
+                .Write();
+            CurrentState.RequestHardwareStatus();
+            }
+
+        #region State triggers 
+        public void AzimuthEncoderTickReceived(int encoderPosition)
+            {
+            AzimuthEncoderPosition = encoderPosition;
+            CurrentState.RotationDetected();
+            }
+
+        public void HardwareStatusReceived(IHardwareStatus status)
+            {
+            HardwareStatus = status;
+            CurrentState.StatusUpdateReceived(status);
+            UpdateStatus(status);
+            }
+        #endregion State triggers
         }
     }

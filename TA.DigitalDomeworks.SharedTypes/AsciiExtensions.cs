@@ -1,11 +1,11 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2014 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: AsciiExtensions.cs  Created: 2014-10-29@20:45
-// Last modified: 2014-11-12@05:56 by Tim
+// File: AsciiExtensions.cs  Last modified: 2018-03-30@01:48 by Tim Long
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace TA.DigitalDomeworks.SharedTypes
@@ -13,28 +13,32 @@ namespace TA.DigitalDomeworks.SharedTypes
     public static class AsciiExtensions
         {
         /// <summary>
-        ///   Utility function. Expands non-printable ASCII characters into mnemonic human-readable form.
+        ///     Utility function. Expands non-printable ASCII characters into mnemonic human-readable form.
         /// </summary>
         /// <returns>
-        ///   Returns a new string with non-printing characters replaced by human-readable mnemonics.
+        ///     Returns a new string with non-printing characters replaced by human-readable mnemonics.
         /// </returns>
         public static string ExpandAscii(this string text)
             {
-            var expanded = new StringBuilder(Math.Max(64, text.Length*3));
-            foreach (char c in text)
+            Contract.Requires(text != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+            var expanded = new StringBuilder();
+            foreach (var c in text)
                 {
-                var b = (byte)c;
-                var strASCII = Enum.GetName(typeof(AsciiSymbols), b);
-                if (strASCII != null)
-                    expanded.Append("<" + strASCII + ">");
+                var b = (byte) c;
+                var strAscii = Enum.GetName(typeof(AsciiSymbols), b);
+                if (strAscii != null)
+                    expanded.Append("<" + strAscii + ">");
                 else
                     expanded.Append(c);
                 }
+
             return expanded.ToString();
             }
 
         public static string ExpandAscii(this char c)
             {
+            Contract.Ensures(Contract.Result<string>() != null);
             return c.ToString().ExpandAscii();
             }
         }
