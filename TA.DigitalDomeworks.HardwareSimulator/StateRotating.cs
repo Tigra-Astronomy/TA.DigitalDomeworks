@@ -6,6 +6,7 @@
 
 using System;
 using System.Timers;
+using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.HardwareSimulator
     {
@@ -34,7 +35,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             {
             base.OnEnter();
             int target;
-            var azimuth = machine.HardwareStatus.CurrentAzimuth;
+            var azimuth = Machine.HardwareStatus.CurrentAzimuth;
 
             /*
              * If the Dome Support Ring is open and we are in the Home position,
@@ -42,17 +43,17 @@ namespace TA.DigitalDomeworks.HardwareSimulator
              * the target azimuth (i.e. no rotation required) then we allow the operation
              * to continue, so that shutter operations can complete even when DSR is open.
              */
-            if (machine.DomeSupportRingOpen)
-                if (machine.InHomeRange(azimuth) && azimuth != machine.TargetAzimuthTicks)
+            if (Machine.DomeSupportRingOpen)
+                if (Machine.InHomeRange(azimuth) && azimuth != Machine.TargetAzimuthTicks)
                     {
-                    Transition(new StateSendStatus(machine));
+                    Transition(new StateSendStatus(Machine));
                     return;
                     }
 
-            if (machine.TargetAzimuthTicks < machine.HardwareStatus.CurrentAzimuth)
-                target = machine.TargetAzimuthTicks + 360;
+            if (Machine.TargetAzimuthTicks < Machine.HardwareStatus.CurrentAzimuth)
+                target = Machine.TargetAzimuthTicks + 360;
             else
-                target = machine.TargetAzimuthTicks;
+                target = Machine.TargetAzimuthTicks;
 
             var clockwiseDistance = target - azimuth;
             var counterclockwiseDistance = 360 - clockwiseDistance;
@@ -72,14 +73,14 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 direction = RotationDirection.Clockwise;
                 azimuthMotorConfiguration = MotorConfiguration.Forward;
                 delta = clockwiseDistance;
-                machine.WriteLine("R");
+                Machine.WriteLine("R");
                 }
             else
                 {
                 direction = RotationDirection.CounterClockwise;
                 azimuthMotorConfiguration = MotorConfiguration.Reverse;
                 delta = counterclockwiseDistance;
-                machine.WriteLine("L");
+                Machine.WriteLine("L");
                 }
 
             Log.Debug("Rotating {0} delta={1} ticks", direction, delta);
@@ -88,8 +89,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 AzimuthMotor = azimuthMotorConfiguration,
                 ShutterMotor = MotorConfiguration.Stopped
                 };
-            machine.InvokeMotorConfigurationChanged(motorEventArgs);
-            rotationTimer.Interval = machine.RealTime
+            Machine.InvokeMotorConfigurationChanged(motorEventArgs);
+            rotationTimer.Interval = Machine.RealTime
                 ? Properties.Settings.Default.RotationRateMsPerTick
                 : 1;
             rotationTimer.Elapsed += RotationTimerElapsed;
@@ -105,8 +106,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             rotationTimer.Stop();
             rotationTimer.Elapsed -= RotationTimerElapsed;
             // Set the AtHome property.
-            machine.HardwareStatus.AtHome =
-                machine.InHomeRange(machine.HardwareStatus.CurrentAzimuth);
+            Machine.HardwareStatus.AtHome =
+                Machine.InHomeRange(Machine.HardwareStatus.CurrentAzimuth);
             }
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void Stimulus(char value)
             {
             base.Stimulus(value);
-            Transition(new StateEmergencyStop(machine));
+            Transition(new StateEmergencyStop(Machine));
             }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs" /> instance containing the event data.</param>
         private void RotationTimerElapsed(object sender, ElapsedEventArgs e)
             {
-            if (machine.HardwareStatus.CurrentAzimuth == machine.TargetAzimuthTicks)
+            if (Machine.HardwareStatus.CurrentAzimuth == Machine.TargetAzimuthTicks)
                 {
                 rotationTimer.Stop();
                 TransitionToNextState();
@@ -138,10 +139,10 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 switch (direction)
                     {
                         case RotationDirection.CounterClockwise:
-                            newAzimuth = machine.HardwareStatus.CurrentAzimuth - 1;
+                            newAzimuth = Machine.HardwareStatus.CurrentAzimuth - 1;
                             break;
                         case RotationDirection.Clockwise:
-                            newAzimuth = machine.HardwareStatus.CurrentAzimuth + 1;
+                            newAzimuth = Machine.HardwareStatus.CurrentAzimuth + 1;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -150,17 +151,17 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 // When wrapping the azimuth value, remember that if the circumference is 360 encoder ticks,
                 // then those are numbered 0 to 359, so the highest azimuth position is actually one less
                 // than the circumference.
-                if (newAzimuth >= machine.HardwareStatus.DomeCircumference)
+                if (newAzimuth >= Machine.HardwareStatus.DomeCircumference)
                     newAzimuth = 0;
                 if (newAzimuth < 0)
-                    newAzimuth = machine.HardwareStatus.DomeCircumference - 1;
-                machine.HardwareStatus.CurrentAzimuth = newAzimuth;
-                machine.SetAzimuthDependentSensorsAndStates();
+                    newAzimuth = Machine.HardwareStatus.DomeCircumference - 1;
+                Machine.HardwareStatus.CurrentAzimuth = newAzimuth;
+                Machine.SetAzimuthDependentSensorsAndStates();
 
                 var tx = string.Format("P{0:D3}", newAzimuth);
                 Log.Debug("=>{0}", tx);
-                machine.WriteLine(tx);
-                machine.InvokeAzimuthChanged(new AzimuthChangedEventArgs {NewAzimuth = newAzimuth});
+                Machine.WriteLine(tx);
+                Machine.InvokeAzimuthChanged(new AzimuthChangedEventArgs {NewAzimuth = newAzimuth});
                 rotationTimer.Start(); // Prime the pump for the next tick.
                 }
             }
@@ -171,7 +172,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         protected virtual void TransitionToNextState()
             {
-            Transition(new StateSendStatus(machine));
+            Transition(new StateSendStatus(Machine));
             }
         }
     }

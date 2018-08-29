@@ -1,9 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2014 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: StateShutterMoving.cs  Created: 2014-10-05@00:56
-// Last modified: 2014-11-12@05:56 by Tim
+// File: StateShutterMoving.cs  Last modified: 2018-04-06@01:49 by Tim Long
 
 using System;
 using System.Timers;
@@ -35,18 +34,18 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnEnter()
             {
             base.OnEnter();
-            ShutterTicksRemaining = machine.HardwareStatus.ShutterSensor == SensorState.Indeterminate
+            ShutterTicksRemaining = Machine.HardwareStatus.ShutterSensor == SensorState.Indeterminate
                 ? 20
                 : 40;
-            machine.HardwareStatus.ShutterSensor = SensorState.Indeterminate;
-            machine.SimulatedShutterSensor = SensorState.Indeterminate;
+            Machine.HardwareStatus.ShutterSensor = SensorState.Indeterminate;
+            Machine.SimulatedShutterSensor = SensorState.Indeterminate;
             //SimulatorStateMachine.InvokeStatusChanged(new StatusChangedEventArgs(SimulatorStateMachine.HardwareStatus));
-            machine.InvokeMotorConfigurationChanged(new MotorConfigurationEventArgs
+            Machine.InvokeMotorConfigurationChanged(new MotorConfigurationEventArgs
                 {
                 AzimuthMotor = MotorConfiguration.Stopped,
                 ShutterMotor = direction
                 });
-            shutter_tick_timer.Interval = machine.RealTime
+            shutter_tick_timer.Interval = Machine.RealTime
                 ? Properties.Settings.Default.RotationRateMsPerTick
                 : 1;
             shutter_tick_timer.Elapsed += ShutterTickTimerElapsed;
@@ -61,11 +60,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         private void ShutterTickTimerElapsed(object sender, ElapsedEventArgs e)
             {
             shutter_tick_timer.Stop();
-            machine.WriteLine(string.Format("Z{0:D3}", motorCurrent.Next(6, 12)));
+            Machine.WriteLine(string.Format("SZ{0:D3}", motorCurrent.Next(6, 25)));
             if (--ShutterTicksRemaining > 0)
                 shutter_tick_timer.Start();
             else
-                Transition(new StateSendStatus(machine));
+                Transition(new StateSendStatus(Machine));
             }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void Stimulus(char value)
             {
             base.Stimulus(value);
-            Transition(new StateEmergencyStop(machine));
+            Transition(new StateEmergencyStop(Machine));
             }
         }
     }

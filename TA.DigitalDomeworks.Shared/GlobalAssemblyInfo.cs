@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: GlobalAssemblyInfo.cs  Last modified: 2018-04-21@21:45 by Tim Long
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -9,7 +15,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("Tigra Astronomy")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("0.0.*")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
-[assembly: AssemblyInformationalVersion("0.0-Integration")]
+[assembly: AssemblyVersion("7.0.*")]
+[assembly: AssemblyFileVersion("7.0.0.8")]
+[assembly: AssemblyInformationalVersion("7.0-Beta.8")]
 [assembly: InternalsVisibleTo("TA.DigitalDomeworks.Specifications")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

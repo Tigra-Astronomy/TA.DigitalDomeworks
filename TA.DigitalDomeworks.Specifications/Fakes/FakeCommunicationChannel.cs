@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
+using Machine.Specifications.Model;
+using NLog.Fluent;
 using TA.Ascom.ReactiveCommunications;
 
 namespace TA.DigitalDomeworks.Specifications.Fakes
@@ -13,6 +17,7 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
     public class FakeCommunicationChannel : ICommunicationChannel
         {
         readonly IObservable<char> receivedCharacters;
+        readonly Subject<char> receiveChannelSubject = new Subject<char>();
         readonly StringBuilder sendLog;
 
         /// <summary>
@@ -22,10 +27,10 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
         /// <param name="fakeResponse">Implementation of the injected dependency.</param>
         public FakeCommunicationChannel(string fakeResponse)
             {
+            Contract.Requires(fakeResponse != null);
             Endpoint = new InvalidEndpoint();
             Response = fakeResponse;
             receivedCharacters = fakeResponse.ToCharArray().ToObservable();
-            ObservableReceivedCharacters = receivedCharacters.Concat(Observable.Never<char>());
             sendLog = new StringBuilder();
             IsOpen = false;
             }
@@ -67,10 +72,15 @@ namespace TA.DigitalDomeworks.Specifications.Fakes
 
         public void Send(string txData)
             {
+            Log.Info().Message($"Send: {txData}").Property(nameof(txData), txData).Write();
             sendLog.Append(txData);
+            foreach (char c in Response)
+                {
+                receiveChannelSubject.OnNext(c);
+                }
             }
 
-        public IObservable<char> ObservableReceivedCharacters { get; }
+        public IObservable<char> ObservableReceivedCharacters => receiveChannelSubject.AsObservable();
 
         public bool IsOpen { get; set; }
 

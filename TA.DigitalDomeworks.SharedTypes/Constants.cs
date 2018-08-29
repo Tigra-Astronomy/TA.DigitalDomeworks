@@ -1,8 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2015-2016 Tigra Networks., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Constants.cs  Last modified: 2016-09-13@00:03 by Tim Long
+// File: Constants.cs  Last modified: 2018-04-21@21:03 by Tim Long
 
 namespace TI.DigitalDomeWorks
     {
@@ -42,6 +42,12 @@ namespace TI.DigitalDomeWorks
             "V4,437,427,2,419,0,1,0,1,422,433,7,128,255,255,255,255,255,255,255,68,3,0";
 
         #region DDW Command Codes
+        /// <summary>
+        ///     Command to stop all movement. The Digital Domeworks controller will actually accept
+        ///     pretty much any spurious character for this purpose.
+        /// </summary>
+        public const string CmdEmergencyStop = "STOP\n";
+
         /// <summary>
         ///     DDW command to cancel the 4-minute auto-park timeout.
         /// </summary>
@@ -148,7 +154,8 @@ namespace TI.DigitalDomeWorks
         #endregion
 
         #region Custom Actions
-        internal const string ActionNameDsrSwingoutState = "DomeSupportRingSwingoutState";
+        public const string ActionNameDsrSwingoutState = "DomeSupportRingSwingoutState";
+        public const string ActionNameControllerStatus = "ControllerStatus";
         #endregion Custom Actions
         }
     }

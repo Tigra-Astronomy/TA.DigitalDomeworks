@@ -1,7 +1,15 @@
-﻿using NodaTime;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: IHardwareStatus.cs  Last modified: 2018-03-28@17:43 by Tim Long
 
-namespace TA.DigitalDomeworks.SharedTypes {
-    public interface IControllerStatus {
+using System;
+
+namespace TA.DigitalDomeworks.SharedTypes
+    {
+    public interface IHardwareStatus
+        {
         /// <summary>
         ///     Indicates when the dome is in the Home Position.
         ///     Note that the home position covers a small range of encoder ticks and is not
@@ -119,7 +127,7 @@ namespace TA.DigitalDomeworks.SharedTypes {
         /// <value>
         ///     A DateTime object recording the date and time that the status packet was parsed.
         /// </value>
-        Instant TimeStamp { get; }
+        DateTime TimeStamp { get; }
 
         /// <summary>
         ///     The state of all of the user output pins

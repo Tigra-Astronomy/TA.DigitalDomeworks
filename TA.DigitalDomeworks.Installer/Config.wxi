@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Include>
+  <!-- User Configuration - you must ensure all these variables have correct values for your project -->
+  <?define InstallName = "ASCOM Drivers for Digital Domeworks" ?>
+  <?define Manufacturer = "Tigra Astronomy" ?>
+  <?define InstallDirectory = "$(var.InstallName)" ?>
+  <?define AscomServerAppId = "{0bac7ff1-ebe6-4df7-87df-d433a81d65cb}" ?>
+  <?define CopyrightNotice="Copyright © 2018 Tigra Astronomy, all rights reserved" ?>
+  <?define DomeDriverProgId = "ASCOM.DigitalDomeworks2018.Dome" ?>
+  <?define DomeDriverClsId = "{CCF89F7D-2889-4A9D-891D-E28760A0FFCA}" ?>
+  <?define DomeDriverTypeName = "$(var.DomeDriverProgId)" ?>
+  <?define SwitchDriverProgId = "ASCOM.DigitalDomeworks2018.Switch" ?>
+  <?define SwitchDriverClsId = "{8f3d72d5-7fb8-4f8a-8f73-3c724a8a375c}" ?>
+  <?define SwitchDriverTypeName = "$(var.DomeDriverProgId)" ?>
+  <?define DriverDescription = "Digital Domeworks 2018" ?>
+  <!-- UpgradeCode should be unique to each product and once set should never change -->
+  <?define UpgradeCode = "{0977a9dc-29ce-40f0-949a-54d9e82b255b}"?>
+  <!-- End of User Configuration - do not edit anything beyond this point -->
+
+  <!-- Define platform-specific names and locations -->
+  <?if $(var.Platform) = x64 ?>
+  <?define ProductName = "$(var.InstallName) (x64)" ?>
+  <?define Win64 = "yes" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+  <?define PlatformCommonFilesFolder = "CommonFiles64Folder" ?>
+  <?else ?>
+  <?define ProductName = "$(var.InstallName) (x86)" ?>
+  <?define Win64 = "no" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+  <?define PlatformCommonFilesFolder = "CommonFilesFolder" ?>
+  <?endif ?>
+
+  <!-- Set installer version based on the file version of the main assembly. -->
+  <?define ProductVersion="!(bind.FileVersion.filLocalServerAssembly)"?>
+</Include>

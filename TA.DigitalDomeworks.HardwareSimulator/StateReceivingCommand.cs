@@ -29,13 +29,13 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void Stimulus(char value)
             {
             base.Stimulus(value);
-            machine.ReceivedChars.Append(value);
-            machine.InvokeReceivedData(EventArgs.Empty);
-            if (machine.ReceivedChars.Length >= 4) // All DDW commands are 4 characters.
+            Machine.ReceivedChars.Append(value);
+            Machine.InvokeReceivedData(EventArgs.Empty);
+            if (Machine.ReceivedChars.Length >= 4) // All DDW commands are 4 characters.
                 {
-                Transition(new StateExecutingCommand(machine));
+                Transition(new StateExecutingCommand(Machine));
                 }
-            else if (machine.RealTime)
+            else if (Machine.RealTime)
                 {
                 // Reset the inter-character timeout.
                 interCharTimeout.Stop();
@@ -49,8 +49,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         public override void OnExit()
             {
-            machine.InReadyState.Reset(); // Signal dependent threads that they have to wait for us.
-            if (machine.RealTime)
+            Machine.InReadyState.Reset(); // Signal dependent threads that they have to wait for us.
+            if (Machine.RealTime)
                 {
                 interCharTimeout.Stop(); // Ensure the timeout timer is stopped.
                 interCharTimeout.Elapsed -= InterCharTimeoutElapsed; // Withdraw our delegate.
@@ -66,10 +66,10 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnEnter()
             {
             base.OnEnter();
-            machine.ReceivedChars.Clear();
-            if (machine.RealTime)
+            Machine.ReceivedChars.Clear();
+            if (Machine.RealTime)
                 interCharTimeout.Elapsed += InterCharTimeoutElapsed;
-            machine.InReadyState.Set(); // Signal waiting threads that we are ready to rock.
+            Machine.InReadyState.Set(); // Signal waiting threads that we are ready to rock.
             }
 
         /// <summary>

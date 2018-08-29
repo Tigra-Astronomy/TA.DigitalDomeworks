@@ -1,7 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PostSharp.5.0.46\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.5.0.46\build\PostSharp.props')" />
+  <Import Project="..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.props" Condition="Exists('..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.props')" />
+  <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestObjectInvariants>True</CodeContractsSuggestObjectInvariants>
+    <CodeContractsMissingPublicEnsuresAsWarnings>True</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -20,7 +59,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -37,25 +76,27 @@
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NodaTime, Version=2.2.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.2.2.4\lib\net45\NodaTime.dll</HintPath>
+    <Reference Include="PostSharp, Version=5.0.48.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Redist.5.0.48\lib\net45\PostSharp.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp, Version=5.0.46.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Redist.5.0.46\lib\net45\PostSharp.dll</HintPath>
+    <Reference Include="PostSharp.Patterns.Aggregation, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Aggregation.Redist.5.0.48\lib\net45\PostSharp.Patterns.Aggregation.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp.Patterns.Aggregation, Version=5.0.46.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Aggregation.Redist.5.0.46\lib\net45\PostSharp.Patterns.Aggregation.dll</HintPath>
+    <Reference Include="PostSharp.Patterns.Common, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Common.Redist.5.0.48\lib\net46\PostSharp.Patterns.Common.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp.Patterns.Common, Version=5.0.46.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Common.Redist.5.0.46\lib\net46\PostSharp.Patterns.Common.dll</HintPath>
+    <Reference Include="PostSharp.Patterns.Model, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Model.Redist.5.0.48\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp.Patterns.Model, Version=5.0.46.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Patterns.Model.Redist.5.0.46\lib\net40\PostSharp.Patterns.Model.dll</HintPath>
+    <Reference Include="PostSharp.Patterns.Threading, Version=5.0.48.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.Redist.5.0.48\lib\net45\PostSharp.Patterns.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net46\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -71,6 +112,9 @@
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,26 +122,44 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TA.Ascom.ReactiveCommunications, Version=0.5.6641.38047, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TA.Ascom.ReactiveCommunications.0.5.1\lib\net45\TA.Ascom.ReactiveCommunications.dll</HintPath>
+    <Reference Include="TA.Ascom.ReactiveCommunications, Version=1.0.6648.39513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TA.Ascom.ReactiveCommunications.1.0.0\lib\net45\TA.Ascom.ReactiveCommunications.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationsStackBuilder.cs" />
     <Compile Include="DeviceController.cs" />
+    <Compile Include="INotifyHardwareStateChanged.cs" />
     <Compile Include="ITransactionProcessorFactory.cs" />
+    <Compile Include="ObservableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactiveTransactionProcessorFactory.cs" />
+    <Compile Include="StateMachine\ControllerStateBase.cs" />
+    <Compile Include="StateMachine\ControllerStateMachine.cs" />
+    <Compile Include="StateMachine\IControllerActions.cs" />
+    <Compile Include="StateMachine\IControllerState.cs" />
+    <Compile Include="StateMachine\Ready.cs" />
+    <Compile Include="StateMachine\RequestStatus.cs" />
+    <Compile Include="StateMachine\Rotating.cs" />
+    <Compile Include="StateMachine\RxControllerActions.cs" />
+    <Compile Include="StateMachine\ShutterMoving.cs" />
+    <Compile Include="StateMachine\StateLoggingDecorator.cs" />
+    <Compile Include="StateMachine\Uninitialized.cs" />
     <Compile Include="StatusTransaction.cs" />
     <Compile Include="TransactionException.cs" />
     <Compile Include="TransactionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj">
+      <Project>{86B17C99-41B6-4611-AD1D-26B7D6C70A22}</Project>
+      <Name>TA.DigitalDomeworks.HardwareSimulator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
       <Project>{adbb1165-e995-4c75-8de9-1dbffcf34d6f}</Project>
       <Name>TA.DigitalDomeworks.SharedTypes</Name>
@@ -109,8 +171,11 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\PostSharp.5.0.46\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.46\build\PostSharp.props'))" />
-    <Error Condition="!Exists('..\packages\PostSharp.5.0.46\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.46\build\PostSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\PostSharp.5.0.48\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.48\build\PostSharp.props'))" />
+    <Error Condition="!Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.5.0.48\build\PostSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.targets'))" />
   </Target>
-  <Import Project="..\packages\PostSharp.5.0.46\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.5.0.46\build\PostSharp.targets')" />
+  <Import Project="..\packages\PostSharp.5.0.48\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.5.0.48\build\PostSharp.targets')" />
+  <Import Project="..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.targets" Condition="Exists('..\packages\CodeContracts.MSBuild.1.12.0\build\CodeContracts.MSBuild.targets')" />
 </Project>

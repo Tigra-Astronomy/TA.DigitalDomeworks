@@ -26,11 +26,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnEnter()
             {
             base.OnEnter();
-            machine.InvokeMotorConfigurationChanged(MotorConfigurationEventArgs.AllStopped);
-            if (machine.RealTime)
+            Machine.InvokeMotorConfigurationChanged(MotorConfigurationEventArgs.AllStopped);
+            if (Machine.RealTime)
                 {
                 pauseTimer.Elapsed += PauseTimerElapsed;
-                pauseTimer.Interval = machine.RealTime ? 500 : 1;
+                pauseTimer.Interval = Machine.RealTime ? 500 : 1;
                 pauseTimer.Start();
                 }
             else
@@ -53,14 +53,14 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         private void SendStatus()
             {
             // Update state that could have been affected by the last operation.
-            machine.SetAzimuthDependentSensorsAndStates();
-            machine.WriteLine(machine.HardwareStatus.ToString());
-            Transition(new StateReceivingCommand(machine));
+            Machine.SetAzimuthDependentSensorsAndStates();
+            Machine.WriteLine(Machine.HardwareStatus.ToString());
+            Transition(new StateReceivingCommand(Machine));
             }
 
         public override void OnExit()
             {
-            if (machine.RealTime)
+            if (Machine.RealTime)
                 {
                 pauseTimer.Stop();
                 pauseTimer.Elapsed -= PauseTimerElapsed;

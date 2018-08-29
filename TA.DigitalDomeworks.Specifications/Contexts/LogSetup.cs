@@ -22,7 +22,10 @@ namespace TA.DigitalDomeworks.Specifications.Contexts
             var configuration = new LoggingConfiguration();
             var unitTestRunnerTarget = new TraceTarget();
             configuration.AddTarget("Unit test runner", unitTestRunnerTarget);
-            var logEverything = new LoggingRule("*", LogLevel.Debug, unitTestRunnerTarget);
+            unitTestRunnerTarget.Layout =
+                "${time}|${pad:padding=-5:inner=${uppercase:${level}}}|${pad:padding=-16:inner=${callsite:className=true:fileName=false:includeSourcePath=false:methodName=false:includeNamespace=false}}|${message}";
+            unitTestRunnerTarget.RawWrite = true;
+            var logEverything = new LoggingRule("*", LogLevel.Trace, unitTestRunnerTarget);
             configuration.LoggingRules.Add(logEverything);
             LogManager.Configuration = configuration;
             log = LogManager.GetCurrentClassLogger();

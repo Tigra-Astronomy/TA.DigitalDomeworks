@@ -1,18 +1,17 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2016 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SimulatorStateMachine.cs  Created: 2016-06-20@18:14
-// Last modified: 2016-09-11@00:43 by Tim
+// File: SimulatorStateMachine.cs  Last modified: 2018-03-28@17:49 by Tim Long
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 using NLog;
-using NodaTime;
 using TA.DigitalDomeworks.SharedTypes;
 
 namespace TA.DigitalDomeworks.HardwareSimulator
@@ -30,13 +29,13 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly Subject<char> receiveSubject = new Subject<char>();
         private readonly IDisposable receiveSubscription;
-        private readonly SystemClock timeSource = SystemClock.Instance;
+        private readonly IClock timeSource;
         private readonly Subject<char> transmitSubject = new Subject<char>();
 
         /// <summary>
         ///     Stores all of the parameters for the simulated hardware status.
         /// </summary>
-        internal ControllerStatus HardwareStatus;
+        internal HardwareStatus HardwareStatus;
 
         /// <summary>
         ///     Characters received from the serial port, which accumulate until a valid command has been received.
@@ -55,18 +54,19 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <summary>
         ///     Initializes a new instance of the <see cref="SimulatorStateMachine" /> class.
         /// </summary>
-        /// <param name="port">A pre-configured and opened <see cref="System.IO.Ports.SerialPort" /> instance.</param>
-        /// <param name="startupState">The state in which to start.</param>
         /// <param name="realTime">
         ///     When <c>true</c> the simulator introduces pauses that are representative of real equipment.
         ///     When <c>false</c>, the simulation proceeds at an accelerated pace with no pauses.
         /// </param>
-        public SimulatorStateMachine(bool realTime)
+        /// <param name="timeSource">A source of the current time.</param>
+        public SimulatorStateMachine(bool realTime, IClock timeSource)
             {
+            Contract.Requires(timeSource != null);
             RealTime = realTime;
+            this.timeSource = timeSource;
             DomeSupportRingOpen = false;
             ShutterStuck = false;
-            HardwareStatus = new ControllerStatus
+            HardwareStatus = new HardwareStatus
                 {
                 AtHome = false,
                 Coast = 1,
@@ -86,7 +86,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
                 Snow = 255,
                 // For weather items, 255 means no data
                 Temperature = 255,
-                TimeStamp = timeSource.GetCurrentInstant(),
+                TimeStamp = timeSource.GetCurrentTime(),
                 UserPins = 0,
                 WeatherAge = 128,
                 WindDirection = 255,
@@ -102,8 +102,16 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             receiveSubscription = receiveObservable.Subscribe(InputStimulus, EndOfSimulation);
             }
 
+        /// <summary>
+        ///     An observable sequence of characters that simulates data arriving from
+        ///     the dome controller to the PC serial port.
+        /// </summary>
         public IObservable<char> ObservableResponses => transmitSubject.AsObservable();
 
+        /// <summary>
+        ///     Simulate sending characters to the dome controller by calling the observer's
+        ///     <see cref="IObserver{T}.OnNext" /> method.
+        /// </summary>
         public IObserver<char> InputObserver => receiveSubject.AsObserver();
 
         /// <summary>
@@ -136,7 +144,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         /// <value>The azimuth.</value>
         /// <remarks>
-        ///     When setting the value, the result is 'wrapped' at <see cref="DdwStatus.DomeCircumference" />.
+        ///     When setting the value, the result is 'wrapped' at <see cref="SharedTypes.HardwareStatus.DomeCircumference" />.
         /// </remarks>
         internal int AzimuthTicks
             {
@@ -219,8 +227,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         /// <param name="azimuth">The azimuth.</param>
         /// <returns>
-        ///     <c>true</c> if the azimuth is between <see cref="IDdwStatus.HomeCounterClockwise" />
-        ///     and <see cref="IDdwStatus.HomeClockwise" />.
+        ///     <c>true</c> if the azimuth is between <see cref="IHardwareStatus.HomeCounterClockwise" />
+        ///     and <see cref="IHardwareStatus.HomeClockwise" />.
         /// </returns>
         public bool InHomeRange(int azimuth)
             {
@@ -293,9 +301,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
 
         internal void InvokeMotorConfigurationChanged(MotorConfigurationEventArgs e)
             {
-            var handler = MotorConfigurationChanged;
-            if (handler != null)
-                handler(null, e);
+            MotorConfigurationChanged?.Invoke(this, e);
             }
 
         /// <summary>
@@ -312,9 +318,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </param>
         internal void InvokeAzimuthChanged(AzimuthChangedEventArgs e)
             {
-            var handler = AzimuthChanged;
-            if (handler != null)
-                handler(null, e);
+            AzimuthChanged?.Invoke(this,e);
             }
 
         /// <summary>
@@ -328,9 +332,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         public void InvokeReceivedData(EventArgs e)
             {
-            var handler = ReceivedData;
-            if (handler != null)
-                handler(null, e);
+            ReceivedData?.Invoke(this, e);
             }
 
         /// <summary>
@@ -344,10 +346,14 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private static void InvokeSentData(EventArgs e)
             {
-            var handler = SentData;
-            if (handler != null)
-                handler(null, e);
+            SentData?.Invoke(null, e);
             }
         #endregion
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+            {
+            Contract.Invariant(InReadyState != null);
+            }
         }
     }

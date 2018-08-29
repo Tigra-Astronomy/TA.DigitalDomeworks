@@ -16,7 +16,7 @@ namespace TA.DigitalDomeworks.DeviceInterface {
             this.factory = factory;
             }
 
-        public IControllerStatus ControllerStatus { get; private set; }
+        public IHardwareStatus HardwareStatus { get; private set; }
 
         public override void ObserveResponse(IObservable<char> source)
             {
@@ -33,7 +33,7 @@ namespace TA.DigitalDomeworks.DeviceInterface {
                 {
                 var responseString = Response.Single();
                 var status = factory.FromStatusPacket(responseString);
-                ControllerStatus = status;
+                HardwareStatus = status;
                 }
             base.OnCompleted();
             }

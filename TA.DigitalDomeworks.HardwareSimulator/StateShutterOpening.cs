@@ -26,8 +26,8 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         public override void OnEnter()
             {
-            if (machine.SimulatedShutterSensor == SensorState.Open || machine.ShutterStuck)
-                Transition(new StateSendStatus(machine));
+            if (Machine.SimulatedShutterSensor == SensorState.Open || Machine.ShutterStuck)
+                Transition(new StateSendStatus(Machine));
             else
                 base.OnEnter();
             }
@@ -35,11 +35,11 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         public override void OnExit()
             {
             base.OnExit();
-            if (!machine.ShutterStuck)
-                machine.SimulatedShutterSensor = ShutterTicksRemaining > 0
+            if (!Machine.ShutterStuck)
+                Machine.SimulatedShutterSensor = ShutterTicksRemaining > 0
                     ? SensorState.Indeterminate
                     : SensorState.Open;
-            machine.HardwareStatus.ShutterSensor = machine.SimulatedShutterSensor;
+            Machine.HardwareStatus.ShutterSensor = Machine.SimulatedShutterSensor;
             }
         }
     }

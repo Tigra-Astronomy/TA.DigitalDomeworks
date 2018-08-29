@@ -2,19 +2,19 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceControllerContextBuilder.cs  Last modified: 2018-03-08@19:17 by Tim Long
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-06-16@16:53 by Tim Long
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-using NodaTime;
-using NodaTime.Testing;
 using TA.Ascom.ReactiveCommunications;
 using TA.DigitalDomeworks.DeviceInterface;
+using TA.DigitalDomeworks.DeviceInterface.StateMachine;
+using TA.DigitalDomeworks.HardwareSimulator;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.Fakes;
-using TA.DigitalDomeworks.Specifications.Helpers;
 
 namespace TA.DigitalDomeworks.Specifications.Builders
     {
@@ -27,21 +27,31 @@ namespace TA.DigitalDomeworks.Specifications.Builders
                 p => p.StartsWith("Fake", StringComparison.InvariantCultureIgnoreCase),
                 connection => new FakeEndpoint(),
                 endpoint => new FakeCommunicationChannel(fakeResponseBuilder.ToString())
-                );
+            );
             channelFactory.RegisterChannelType(
                 SimulatorEndpoint.IsConnectionStringValid,
                 SimulatorEndpoint.FromConnectionString,
                 endpoint => new SimulatorCommunicationsChannel(endpoint as SimulatorEndpoint)
-                );
+            );
             }
 
         bool channelShouldBeOpen;
         readonly StringBuilder fakeResponseBuilder = new StringBuilder();
-        readonly IClock timeSource = new FakeClock(Instant.MinValue);
-        bool useFakeChannel;
+        readonly IClock timeSource = new FakeClock(DateTime.MinValue.ToUniversalTime());
         readonly ChannelFactory channelFactory;
         string connectionString = "Fake";
+        readonly DeviceControllerOptions controllerOptions = new DeviceControllerOptions
+            {
+            KeepAliveTimerInterval = TimeSpan.FromMinutes(3),
+            MaximumFullRotationTime = TimeSpan.FromMinutes(1),
+            MaximumShutterCloseTime = TimeSpan.FromMinutes(1),
+            PerformShutterRecovery = true,
+            CurrentDrawDetectionThreshold = 10,
+            IgnoreHardwareShutterSensor = false,
+            ShutterTickTimeout = TimeSpan.FromSeconds(5)
+            };
         PropertyChangedEventHandler propertyChangedAction;
+        List<Tuple<string, Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
 
         public DeviceControllerContext Build()
             {
@@ -53,21 +63,23 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             // Build the ControllerStatusFactory
             var statusFactory = new ControllerStatusFactory(timeSource);
 
+            var controllerActions = new RxControllerActions(channel);
+            var controllerStateMachine = new ControllerStateMachine(controllerActions, controllerOptions, timeSource);
+
             // Build the device controller
-            var controller = new DeviceController(channel, statusFactory);
+            var controller = new DeviceController(channel, statusFactory, controllerStateMachine, controllerOptions);
 
             // Assemble the device controller test context
             var context = new DeviceControllerContext
                 {
                 Channel = channel,
-                Controller = controller
+                Controller = controller,
+                StateMachine = controllerStateMachine,
+                Actions = controllerActions
                 };
 
             // Wire up any Property Changed notifications
-            if (propertyChangedAction != null)
-                {
-                controller.PropertyChanged += propertyChangedAction;
-                }
+            if (propertyChangedAction != null) controller.PropertyChanged += propertyChangedAction;
 
             return context;
             }

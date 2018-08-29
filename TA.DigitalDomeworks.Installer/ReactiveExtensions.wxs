@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="INSTALLDIRECTORY"/>
+    <ComponentGroup Id="cgReactiveExtensions" Directory="INSTALLDIRECTORY" >
+      <Component Id="cmpReactiveCore" Guid="*" Win64="no" >
+        <File Id="filReactiveCore"        Source="$(var.AscomServer.TargetDir)System.Reactive.Core.dll"              Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="cmpReactiveInterfaces" Guid="*" Win64="no" >
+        <File Id="filReactiveInterfaces"  Source="$(var.AscomServer.TargetDir)System.Reactive.Interfaces.dll"        Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="cmpReactiveLinq" Guid="*" Win64="no" >
+        <File Id="filReactiveLinq"        Source="$(var.AscomServer.TargetDir)System.Reactive.Linq.dll"              Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="cmpReactivePlatform" Guid="*" Win64="no" >
+        <File Id="filReactivePlatform"    Source="$(var.AscomServer.TargetDir)System.Reactive.PlatformServices.dll"  Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="cmpReactiveThreading" Guid="*" Win64="no" >
+        <File Id="filReactiveThreading"   Source="$(var.AscomServer.TargetDir)System.Reactive.Windows.Threading.dll" Vital="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

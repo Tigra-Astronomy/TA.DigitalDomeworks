@@ -22,7 +22,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         protected override void TransitionToNextState()
             {
-            Transition(new StateShutterClosing(machine));
+            Transition(new StateShutterClosing(Machine));
             }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
         /// </summary>
         public override void OnEnter()
             {
-            machine.TargetAzimuthTicks = machine.HardwareStatus.HomePosition;
+            Machine.TargetAzimuthTicks = Machine.HardwareStatus.HomePosition;
             base.OnEnter();
             }
         }

@@ -26,12 +26,12 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             try
                 {
                 // If all initialization succeeded, immediately transition to the Ready state.
-                Transition(new StateReceivingCommand(machine));
+                Transition(new StateReceivingCommand(Machine));
                 }
             catch (Exception ex)
                 {
                 Log.Error(ex, "Exception opening serial port");
-                Transition(new StateStalled(machine));
+                Transition(new StateStalled(Machine));
                 }
             }
         }

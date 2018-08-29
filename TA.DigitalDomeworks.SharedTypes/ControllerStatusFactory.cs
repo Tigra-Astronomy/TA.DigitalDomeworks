@@ -1,38 +1,46 @@
-﻿using System;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: ControllerStatusFactory.cs  Last modified: 2018-03-30@01:42 by Tim Long
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using NLog;
-using NodaTime;
 
-namespace TA.DigitalDomeworks.SharedTypes {
-    public sealed class ControllerStatusFactory {
-        private readonly IClock timeSource;
+namespace TA.DigitalDomeworks.SharedTypes
+    {
+    public sealed class ControllerStatusFactory
+        {
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private static readonly char[] fieldDelimiters = {','};
+        private readonly IClock timeSource;
 
         public ControllerStatusFactory(IClock timeSource)
             {
+            Contract.Requires(timeSource != null);
             this.timeSource = timeSource;
-            // ToDo: use IClock from NodaTime
             }
 
         /// <summary>
-        ///     Creates a <see cref="IControllerStatus" /> object from the text of a status packet
+        ///     Creates a <see cref="IHardwareStatus" /> object from the text of a status packet
         /// </summary>
-        public IControllerStatus FromStatusPacket(string packet)
+        public IHardwareStatus FromStatusPacket(string packet)
             {
             Contract.Requires(!string.IsNullOrEmpty(packet));
+            Contract.Ensures(Contract.Result<IHardwareStatus>() != null);
             var elements = packet.Split(fieldDelimiters);
             switch (elements[0])
                 {
                     case "V4":
-                        return (IControllerStatus)ParseV4StatusElements(elements);
+                        return ParseV4StatusElements(elements);
                     default:
                         throw new ApplicationException("Unsupported firmware version");
                 }
             }
 
-        private ControllerStatus ParseV4StatusElements(IReadOnlyList<string> elements)
+        private HardwareStatus ParseV4StatusElements(IReadOnlyList<string> elements)
             {
             log.Info("V4 status");
             var elementsLength = elements.Count;
@@ -49,9 +57,9 @@ namespace TA.DigitalDomeworks.SharedTypes {
 
             try
                 {
-                var status = new ControllerStatus
+                var status = new HardwareStatus
                     {
-                    TimeStamp = timeSource.GetCurrentInstant(),
+                    TimeStamp = timeSource.GetCurrentTime(),
                     FirmwareVersion = elements[0],
                     DomeCircumference = Convert.ToInt16(elements[1]),
                     HomePosition = Convert.ToInt16(elements[2]),

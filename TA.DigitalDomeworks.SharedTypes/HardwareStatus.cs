@@ -1,19 +1,17 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2014 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStatus.cs  Created: 2014-10-05@00:56
-// Last modified: 2014-11-12@05:54 by Tim
+// File: HardwareStatus.cs  Last modified: 2018-03-28@17:43 by Tim Long
 
 using System;
-using NodaTime;
 
 namespace TA.DigitalDomeworks.SharedTypes
     {
     /// <summary>
     ///     An immutable class representing the state of the dome controller hardware at a point in time.
     /// </summary>
-    public sealed class ControllerStatus : IControllerStatus
+    public sealed class HardwareStatus : IHardwareStatus
         {
         /// <summary>
         ///     Indicates when the dome is in the Home Position.
@@ -132,7 +130,7 @@ namespace TA.DigitalDomeworks.SharedTypes
         /// <value>
         ///     A value recording the date and time that the status packet was createdS.
         /// </value>
-        public Instant TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         /// <summary>
         ///     The state of all of the user output pins
@@ -198,7 +196,7 @@ namespace TA.DigitalDomeworks.SharedTypes
             {
             const string statusFormat =
                 "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22}";
-            return String.Format(
+            return string.Format(
                 statusFormat,
                 FirmwareVersion,
                 DomeCircumference,
@@ -206,12 +204,12 @@ namespace TA.DigitalDomeworks.SharedTypes
                 Coast,
                 CurrentAzimuth,
                 Slaved ? 1 : 0,
-                (int)ShutterSensor,
-                (int)DsrSensor,
+                (int) ShutterSensor,
+                (int) DsrSensor,
                 AtHome ? 0 : 1,
                 HomeCounterClockwise,
                 HomeClockwise,
-                (byte)UserPins,
+                (byte) UserPins,
                 WeatherAge,
                 WindDirection,
                 WindSpeed,
