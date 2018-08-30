@@ -2,15 +2,12 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ObservableExtensionSpecs.cs  Last modified: 2018-03-13@19:21 by Tim Long
+// File: ObservableExtensionSpecs.cs  Last modified: 2018-08-30@01:43 by Tim Long
 
 using System;
 using System.Collections.Generic;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Threading;
 using Machine.Specifications;
-using Microsoft.Reactive.Testing;
 using TA.Ascom.ReactiveCommunications.Diagnostics;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Specifications.Helpers;
@@ -40,6 +37,5 @@ namespace TA.DigitalDomeworks.Specifications
         static List<int> elementHistory = new List<int>();
         static List<int> expectedElements = new List<int> {8, 10, 11};
         static IObservable<char> source;
-
         }
     }

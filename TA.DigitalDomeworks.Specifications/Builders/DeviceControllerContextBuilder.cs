@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceControllerContextBuilder.cs  Last modified: 2018-06-16@16:53 by Tim Long
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-08-30@01:18 by Tim Long
 
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: LocalServer.cs  Last modified: 2018-03-28@22:20 by Tim Long
+// File: LocalServer.cs  Last modified: 2018-08-30@01:23 by Tim Long
 
 using System;
 using System.Collections;
@@ -259,7 +259,6 @@ namespace TA.DigitalDomeworks.Server
             REGCLS_SUSPENDED = 4,
             REGCLS_SURROGATE = 8
             }
-
 
         // CoInitializeEx() can be used to set the apartment model
         // of individual threads.
