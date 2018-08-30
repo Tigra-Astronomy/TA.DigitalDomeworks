@@ -92,6 +92,7 @@
     <Compile Include="DeviceInterface\ControllerStateMachineSpecs.cs" />
     <Compile Include="DeviceInterface\ControllerStatusSpecs.cs" />
     <Compile Include="DeviceInterface\MovementUpdateSpecs.cs" />
+    <Compile Include="DeviceInterface\ControllerStateMachineBehaviours.cs" />
     <Compile Include="Fakes\FakeClock.cs" />
     <Compile Include="Fakes\FakeCommunicationChannel.cs" />
     <Compile Include="Fakes\FakeEndpoint.cs" />

@@ -2,17 +2,17 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachineSpecs.cs  Last modified: 2018-06-16@16:54 by Tim Long
+// File: ControllerStateMachineSpecs.cs  Last modified: 2018-08-30@02:45 by Tim Long
 
 using System;
 using FakeItEasy;
-using JetBrains.Annotations;
 using Machine.Specifications;
 using TA.DigitalDomeworks.DeviceInterface.StateMachine;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Fakes;
 using TA.DigitalDomeworks.Specifications.Helpers;
 using TI.DigitalDomeWorks;
+using ShutterMoving = TA.DigitalDomeworks.Specifications.DeviceInterface.ShutterMoving;
 
 namespace TA.DigitalDomeworks.Specifications
     {
@@ -72,11 +72,10 @@ namespace TA.DigitalDomeworks.Specifications
             StatusRequested = false;
             Machine = null;
             };
-        protected static Exception Exception;
+        protected static FakeClock Clock;
         protected static IControllerActions FakeControllerActions;
         protected static ControllerStateMachine Machine;
         protected static bool StatusRequested;
-        protected static FakeClock Clock;
 
         static void SimulateRequestStatus()
             {
@@ -143,7 +142,7 @@ namespace TA.DigitalDomeworks.Specifications
         It should_update_the_shutter_current_property = () => Machine.ShutterMotorCurrent.ShouldEqual(15);
         It should_not_set_a_shutter_direction =
             () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
-        Behaves_like<ShutterMoving> the_shutter_is_moving;
+        Behaves_like<ShutterMoving> the_shutter_is_moving = () => { };
         }
 
     [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
@@ -166,7 +165,9 @@ namespace TA.DigitalDomeworks.Specifications
         }
 
     [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
-    internal class when_the_shutter_moves_for_a_sufficiently_long_time_but_current_draw_is_too_low : with_state_machine_that_infers_shutter_position
+    internal class
+        when_the_shutter_moves_for_a_sufficiently_long_time_but_current_draw_is_too_low :
+            with_state_machine_that_infers_shutter_position
         {
         Because of = () =>
             {
@@ -181,7 +182,8 @@ namespace TA.DigitalDomeworks.Specifications
                 factory.FromStatusPacket(TestData.FromEmbeddedResource("StatusWithIndeterminateShutter.txt"));
             Machine.HardwareStatusReceived(indeterminateShutter);
             };
-        It should_finish_with_shutter_indeterminate = () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
+        It should_finish_with_shutter_indeterminate =
+            () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
         }
 
     [Subject(typeof(ControllerStateMachine), "inferred shutter position")]
@@ -194,34 +196,13 @@ namespace TA.DigitalDomeworks.Specifications
             var factory = new ControllerStatusFactory(Clock);
             var newStatus = factory.FromStatusPacket(Constants.StrSimulatedStatusResponse);
             Machine.ShutterDirectionReceived(ShutterDirection.Closing);
-            Clock.AdvanceBy(TimeSpan.FromSeconds(minimumRequiredMoveTime)-TimeSpan.FromTicks(1));
+            Clock.AdvanceBy(TimeSpan.FromSeconds(minimumRequiredMoveTime) - TimeSpan.FromTicks(1));
             Machine.ShutterMotorCurrentReceived(Machine.Options.CurrentDrawDetectionThreshold);
             var indeterminateShutter =
                 factory.FromStatusPacket(TestData.FromEmbeddedResource("StatusWithIndeterminateShutter.txt"));
             Machine.HardwareStatusReceived(indeterminateShutter);
             };
-        It should_finish_with_shutter_indeterminate = () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
-        }
-
-    [Behaviors]
-    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    internal class ShutterMoving
-        {
-        [UsedImplicitly] protected static ControllerStateMachine Machine;
-        It should_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeTrue();
-        It should_not_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeFalse();
-        It should_not_indicate_rotation_direction = () => Machine.AzimuthDirection.ShouldEqual(RotationDirection.None);
-        }
-
-    [Behaviors]
-    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    internal class AzimuthRotation
-        {
-        [UsedImplicitly] protected static ControllerStateMachine Machine;
-        It should_not_indicate_shutter_motor_active = () => Machine.ShutterMotorActive.ShouldBeFalse();
-        It should_not_indicate_shutter_direction =
-            () => Machine.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
-        It should_not_indicate_any_shutter_motor_current = () => Machine.ShutterMotorCurrent.ShouldEqual(0);
-        It should_indicate_azimuth_movement = () => Machine.AzimuthMotorActive.ShouldBeTrue();
+        It should_finish_with_shutter_indeterminate =
+            () => Machine.ShutterPosition.ShouldEqual(SensorState.Indeterminate);
         }
     }

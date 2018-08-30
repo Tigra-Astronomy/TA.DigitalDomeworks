@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: HardwareStatus.cs  Last modified: 2018-03-28@17:43 by Tim Long
+// File: HardwareStatus.cs  Last modified: 2018-08-30@02:17 by Tim Long
 
 using System;
 
@@ -185,14 +185,13 @@ namespace TA.DigitalDomeworks.SharedTypes
         public int Offset { get; set; }
 
         /// <summary>
-        ///     Returns a <see cref="string" /> that represents this instance. The string is formatted as a Digital
-        ///     DomeWorks
+        ///     Returns the status in the exact same format as a Digital DomeWorks
         ///     valid status packet, that could be transmitted over the serial port 'as-is'.
         /// </summary>
         /// <returns>
         ///     A <see cref="string" /> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public string ToDdwStatusString()
             {
             const string statusFormat =
                 "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22}";
@@ -221,6 +220,12 @@ namespace TA.DigitalDomeworks.SharedTypes
                 Lx200Azimuth,
                 DeadZone,
                 Offset);
+            }
+
+        public override string ToString()
+            {
+            return
+                $"{nameof(TimeStamp)}: {TimeStamp}, {nameof(CurrentAzimuth)}: {CurrentAzimuth}, {nameof(AtHome)}: {AtHome}, {nameof(ShutterSensor)}: {ShutterSensor}, {nameof(DsrSensor)}: {DsrSensor}, {nameof(DeadZone)}: {DeadZone}, {nameof(DomeCircumference)}: {DomeCircumference}, {nameof(HomeClockwise)}: {HomeClockwise}, {nameof(HomeCounterClockwise)}: {HomeCounterClockwise}, {nameof(HomePosition)}: {HomePosition}, {nameof(UserPins)}: {UserPins}, {nameof(Offset)}: {Offset}";
             }
         }
     }

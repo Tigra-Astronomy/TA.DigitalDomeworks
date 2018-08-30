@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-04-21@21:36 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-08-30@02:23 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -51,6 +51,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// </summary>
         public bool IsMoving => stateMachine.AzimuthMotorActive || stateMachine.ShutterMotorActive;
 
+        [IgnoreAutoChangeNotification]
         public bool IsConnected => channel.IsOpen;
 
         public bool AzimuthMotorActive => stateMachine.AzimuthMotorActive;

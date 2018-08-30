@@ -1,9 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2014 TiGra Astronomy, all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: StateSendStatus.cs  Created: 2014-10-05@00:56
-// Last modified: 2014-11-12@05:56 by Tim
+// File: StateSendStatus.cs  Last modified: 2018-08-30@02:17 by Tim Long
 
 using System.Timers;
 
@@ -54,7 +53,7 @@ namespace TA.DigitalDomeworks.HardwareSimulator
             {
             // Update state that could have been affected by the last operation.
             Machine.SetAzimuthDependentSensorsAndStates();
-            Machine.WriteLine(Machine.HardwareStatus.ToString());
+            Machine.WriteLine(Machine.HardwareStatus.ToDdwStatusString());
             Transition(new StateReceivingCommand(Machine));
             }
 
