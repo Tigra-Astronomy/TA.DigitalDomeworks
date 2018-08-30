@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-08-30@02:23 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-08-30@04:34 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -96,6 +96,10 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// </exception>
         private void PerformShutterRecovery()
             {
+            Log.Debug()
+                .Message("Shutter recovery heuristic.")
+                .Property(nameof(ShutterPosition), ShutterPosition)
+                .Write();
             if (ShutterPosition == SensorState.Indeterminate)
                 {
                 Log.Info()
@@ -105,6 +109,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 stateMachine.WaitForReady(configuration.MaximumFullRotationTime +
                                           configuration.MaximumShutterCloseTime);
                 }
+            Log.Debug("Shutter recovery heuristic finished");
             }
 
         private void SubscribeControllerEvents()

@@ -218,9 +218,6 @@
     <PackageReference Include="NLog">
       <Version>4.5.9</Version>
     </PackageReference>
-    <PackageReference Include="NLog.Schema">
-      <Version>4.5.9</Version>
-    </PackageReference>
     <PackageReference Include="PostSharp">
       <Version>6.0.26</Version>
     </PackageReference>
