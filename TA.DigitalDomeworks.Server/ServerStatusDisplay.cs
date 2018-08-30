@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ServerStatusDisplay.cs  Last modified: 2018-03-28@22:20 by Tim Long
+// File: ServerStatusDisplay.cs  Last modified: 2018-08-30@09:12 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,6 @@ namespace TA.DigitalDomeworks.Server
             AtHomeAnnunciator.Cadence = CadencePattern.Wink;
             annunciators.ForEach(p => p.Mute = true);
             }
-
 
         private void ObserveClientStatusChanged(EventPattern<EventArgs> eventPattern)
             {
@@ -258,7 +257,6 @@ namespace TA.DigitalDomeworks.Server
             ShutterOpeningAnnunciator.Mute = direction != ShutterDirection.Opening;
             ShutterClosingAnnunciator.Mute = direction != ShutterDirection.Closing;
             }
-
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
             {

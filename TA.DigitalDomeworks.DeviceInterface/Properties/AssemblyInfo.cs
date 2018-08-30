@@ -1,11 +1,13 @@
-﻿using System.Reflection;
-using System.Runtime.InteropServices;
+﻿// This file is part of the TA.DigitalDomeworks project
+// 
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
+// 
+// File: AssemblyInfo.cs  Last modified: 2018-08-30@11:25 by Tim Long
+
+using System.Reflection;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TA.DigitalDomeworks.DeviceInterface")]
-[assembly: AssemblyDescription("Hardware interface layer")]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("020924b9-23d5-4b92-b5b1-461423bbe23c")]
+[assembly: AssemblyDescription("Hardware Interface Layer")]

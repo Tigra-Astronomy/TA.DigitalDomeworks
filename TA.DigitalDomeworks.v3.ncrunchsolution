@@ -2,6 +2,5 @@
   <Settings>
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
     <SolutionConfigured>True</SolutionConfigured>
-    <UseCPUArchitecture>x86</UseCPUArchitecture>
   </Settings>
 </SolutionConfiguration>

@@ -23,156 +23,12 @@ namespace TA.DigitalDomeworks.HardwareSimulator.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM10")]
-        public string CommPortName {
-            get {
-                return ((string)(this["CommPortName"]));
-            }
-            set {
-                this["CommPortName"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9600")]
-        public int BaudRate {
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int DomeCircumferenceTicks {
             get {
-                return ((int)(this["BaudRate"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
-        public int DataBits {
-            get {
-                return ((int)(this["DataBits"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DiscardNull {
-            get {
-                return ((bool)(this["DiscardNull"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DTREnable {
-            get {
-                return ((bool)(this["DTREnable"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public global::System.IO.Ports.Handshake Handshake {
-            get {
-                return ((global::System.IO.Ports.Handshake)(this["Handshake"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public global::System.IO.Ports.Parity Parity {
-            get {
-                return ((global::System.IO.Ports.Parity)(this["Parity"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("256")]
-        public int ReadBufferSize {
-            get {
-                return ((int)(this["ReadBufferSize"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2000")]
-        public int ReadTimeoutMilliseconds {
-            get {
-                return ((int)(this["ReadTimeoutMilliseconds"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int ReceivedBytesThreshold {
-            get {
-                return ((int)(this["ReceivedBytesThreshold"]));
-            }
-            set {
-                this["ReceivedBytesThreshold"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool RTSEnable {
-            get {
-                return ((bool)(this["RTSEnable"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("One")]
-        public global::System.IO.Ports.StopBits StopBits {
-            get {
-                return ((global::System.IO.Ports.StopBits)(this["StopBits"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("32")]
-        public int WriteBufferSize {
-            get {
-                return ((int)(this["WriteBufferSize"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int WriteTimeoutMilliseconds {
-            get {
-                return ((int)(this["WriteTimeoutMilliseconds"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool InvertHomeSense {
-            get {
-                return ((bool)(this["InvertHomeSense"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShutterMotorInstalled {
-            get {
-                return ((bool)(this["ShutterMotorInstalled"]));
-            }
-            set {
-                this["ShutterMotorInstalled"] = value;
+                return ((int)(this["DomeCircumferenceTicks"]));
             }
         }
         
@@ -185,45 +41,12 @@ namespace TA.DigitalDomeworks.HardwareSimulator.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("400")]
-        public int DomeCircumferenceTicks {
-            get {
-                return ((int)(this["DomeCircumferenceTicks"]));
-            }
-            set {
-                this["DomeCircumferenceTicks"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int DomeHomeAzimuthTicks {
-            get {
-                return ((int)(this["DomeHomeAzimuthTicks"]));
-            }
-            set {
-                this["DomeHomeAzimuthTicks"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public int RotationRateMsPerTick {
             get {
                 return ((int)(this["RotationRateMsPerTick"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\n")]
-        public string NewLine {
-            get {
-                return ((string)(this["NewLine"]));
             }
         }
     }
