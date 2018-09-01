@@ -17,13 +17,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.Specifi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.Server", "TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj", "{FF0B89E7-3601-4B5F-B0DA-17C329D2EE2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomeworks.AscomSwitch", "TA.DigitalDomeworks.AscomSwitch\TA.DigitalDomeworks.AscomSwitch.csproj", "{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TA.DigitalDomewoks.AscomDome", "TA.DigitalDomewoks.AscomDome\TA.DigitalDomewoks.AscomDome.csproj", "{2067D7E2-410A-4B8B-9D07-425D27BACE10}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{1224a06b-5a84-452f-af63-cf8ef7d6713e}*SharedItemsImports = 4
+		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{2067d7e2-410a-4b8b-9d07-425d27bace10}*SharedItemsImports = 4
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{393c3897-d66d-46f4-abc2-1d59ec96095b}*SharedItemsImports = 4
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{7b39350a-905b-4d14-8408-fd74334e53d3}*SharedItemsImports = 4
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{b22c42b7-6a0f-4fc4-bca3-7037fc920a3b}*SharedItemsImports = 13
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{c0e526b9-e19d-42b4-8aee-08a775d9e0b6}*SharedItemsImports = 4
+		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{ca37561d-cadc-4416-8be1-57bcb8b7ccbc}*SharedItemsImports = 4
 		TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems*{f1cf8488-83a4-447d-a0a3-ea6a04d4aae6}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +61,14 @@ Global
 		{FF0B89E7-3601-4B5F-B0DA-17C329D2EE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF0B89E7-3601-4B5F-B0DA-17C329D2EE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF0B89E7-3601-4B5F-B0DA-17C329D2EE2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2067D7E2-410A-4B8B-9D07-425D27BACE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2067D7E2-410A-4B8B-9D07-425D27BACE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2067D7E2-410A-4B8B-9D07-425D27BACE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2067D7E2-410A-4B8B-9D07-425D27BACE10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
