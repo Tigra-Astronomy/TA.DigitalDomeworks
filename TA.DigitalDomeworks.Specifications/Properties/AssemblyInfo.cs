@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: AssemblyInfo.cs  Last modified: 2018-08-30@11:43 by Tim Long
+// File: AssemblyInfo.cs  Last modified: 2018-09-03@14:25 by Tim Long
 
 using System.Reflection;
 
@@ -10,4 +10,4 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TA.DigitalDomeworks.Specifications")]
-[assembly: AssemblyDescription("Unit tests")]
+[assembly: AssemblyDescription("")]
