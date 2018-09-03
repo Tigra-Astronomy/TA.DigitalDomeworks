@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Settings.cs  Last modified: 2018-08-30@20:08 by Tim Long
+// File: Settings.cs  Last modified: 2018-09-03@04:35 by Tim Long
 
 using System.ComponentModel;
 using System.Configuration;

@@ -3,9 +3,9 @@
   <Import Project="..\packages\WiX.3.11.1\build\wix.props" Condition="Exists('..\packages\WiX.3.11.1\build\wix.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>2c681424-f616-46f6-a26f-7bac4a1d5339</ProjectGuid>
+    <ProjectGuid>{2c681424-f616-46f6-a26f-7bac4a1d5339}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>TA.DigitalDomeworks.Installer</OutputName>
     <OutputType>Package</OutputType>
@@ -22,19 +22,10 @@
     <IntermediateOutputPath>obj\Release\x86\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DefineConstants>Debug</DefineConstants>
     <OutputPath>bin\Debug\x64\</OutputPath>
     <IntermediateOutputPath>obj\Debug\x64\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DefineConstants>Debug</DefineConstants>
     <SuppressSpecificWarnings>1076</SuppressSpecificWarnings>
-    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>bin\Release\x64\</OutputPath>
