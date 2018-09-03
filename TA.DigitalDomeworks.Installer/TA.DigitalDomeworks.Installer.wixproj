@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>62bc6e28-4239-47f9-b0bc-69ccdcea6f75</ProjectGuid>
+    <ProjectGuid>{2c681424-f616-46f6-a26f-7bac4a1d5339}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>TA.DigitalDomeworks.Installer</OutputName>
     <OutputType>Package</OutputType>
@@ -55,18 +55,18 @@
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixNetFxExtension">
-      <HintPath>..\packages\WiX.3.11.0\tools\WixNetFxExtension.dll</HintPath>
+      <HintPath>..\packages\WiX.3.11.1\tools\WixNetFxExtension.dll</HintPath>
       <Name>WixNetFxExtension</Name>
     </WixExtension>
     <WixExtension Include="WixUtilExtension">
-      <HintPath>..\packages\WiX.3.11.0\tools\WixUtilExtension.dll</HintPath>
+      <HintPath>..\packages\WiX.3.11.1\tools\WixUtilExtension.dll</HintPath>
       <Name>WixUtilExtension</Name>
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TA.DigitalDomeworks.AscomDome\TA.DigitalDomeworks.AscomDome.csproj">
+    <ProjectReference Include="..\TA.DigitalDomewoks.AscomDome\TA.DigitalDomewoks.AscomDome.csproj">
       <Name>AscomDome</Name>
-      <Project>{0b22461b-2d19-4342-a87d-4e90efd3e2a9}</Project>
+      <Project>{2067d7e2-410a-4b8b-9d07-425d27bace10}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -74,7 +74,15 @@
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.AscomSwitch\TA.DigitalDomeworks.AscomSwitch.csproj">
       <Name>AscomSwitch</Name>
-      <Project>{f95208c4-450f-4b51-810a-c805a8efbb7a}</Project>
+      <Project>{ca37561d-cadc-4416-8be1-57bcb8b7ccbc}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\TA.DigitalDomeworks.Aspects\TA.DigitalDomeworks.Aspects.csproj">
+      <Name>Aspects</Name>
+      <Project>{7b39350a-905b-4d14-8408-fd74334e53d3}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -82,7 +90,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
       <Name>DeviceInterface</Name>
-      <Project>{020924b9-23d5-4b92-b5b1-461423bbe23c}</Project>
+      <Project>{c0e526b9-e19d-42b4-8aee-08a775d9e0b6}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -90,7 +98,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.HardwareSimulator\TA.DigitalDomeworks.HardwareSimulator.csproj">
       <Name>HardwareSimulator</Name>
-      <Project>{86b17c99-41b6-4611-ad1d-26b7d6c70a22}</Project>
+      <Project>{393c3897-d66d-46f4-abc2-1d59ec96095b}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -98,7 +106,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj">
       <Name>AscomServer</Name>
-      <Project>{3689a2cb-94c5-4012-a5cf-7e7d1dd27143}</Project>
+      <Project>{ff0b89e7-3601-4b5f-b0da-17c329d2ee2d}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -106,15 +114,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
       <Name>SharedTypes</Name>
-      <Project>{adbb1165-e995-4c75-8de9-1dbffcf34d6f}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj">
-      <Name>Aspects</Name>
-      <Project>{9cdcf319-dadc-41eb-b787-de3862017e95}</Project>
+      <Project>{1224a06b-5a84-452f-af63-cf8ef7d6713e}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -153,6 +153,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('..\packages\WiX.3.11.1\build\wix.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WiX.3.11.1\build\wix.props'))" />
     <Error Condition="!Exists('..\packages\WiX.3.11.1\build\wix.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WiX.3.11.1\build\wix.props'))" />
   </Target>
 </Project>

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Settings.cs  Last modified: 2018-03-28@22:20 by Tim Long
+// File: Settings.cs  Last modified: 2018-09-03@04:35 by Tim Long
 
 using System.ComponentModel;
 using System.Configuration;
@@ -49,7 +49,7 @@ namespace TA.DigitalDomeworks.Server.Properties
 
         private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
             {
-            log.Warn($"Saving settings");
+            log.Warn("Saving settings");
             }
         }
     }
