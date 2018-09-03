@@ -179,6 +179,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\..\Desktop\About-Box-Masthead.png" />
     <Content Include="Resources\ASCOM.bmp" />
     <Content Include="Resources\ASCOM.ico" />
     <Content Include="Resources\ASCOM.png" />
