@@ -41,6 +41,12 @@
             <RegistryValue Name="AppID" Value="$(var.AscomServerAppId)" Type="string" />
           </RegistryKey>
         </RegistryKey>
+        <!-- HKLM\Software\Classes\AppId\{my-app-id} force LocalServer to run non-elevated -->
+        <RegistryKey Root="HKLM" Key="Software\Classes\AppID">
+          <RegistryKey Key="$(var.AscomServerAppId)">
+            <RegistryValue Name="RunAs" Value="Interactive User" Type="string" />
+          </RegistryKey>
+        </RegistryKey>
       </Component>
     </ComponentGroup>
   </Fragment>
