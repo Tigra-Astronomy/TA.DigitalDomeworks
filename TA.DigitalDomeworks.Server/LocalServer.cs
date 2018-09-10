@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: LocalServer.cs  Last modified: 2018-08-30@01:23 by Tim Long
+// File: LocalServer.cs  Last modified: 2018-09-10@23:51 by Tim Long
 
 using System;
 using System.Collections;
@@ -451,25 +451,25 @@ namespace TA.DigitalDomeworks.Server
             //
             // Local server's DCOM/AppID information
             //
+            var appIdKey = Registry.LocalMachine.CreateSubKey(@"Software\Classes\AppID");
+            var serverAppIdKey = appIdKey.CreateSubKey(s_appId);
             try
                 {
                 //
-                // HKCR\APPID\appid
+                // HKLM\Software\Classes\AppID\{server-app-id}
                 //
-                using (var key = Registry.ClassesRoot.CreateSubKey("APPID\\" + s_appId))
-                    {
-                    key.SetValue(null, assyDescription);
-                    key.SetValue("AppID", s_appId);
-                    key.SetValue("AuthenticationLevel", 1, RegistryValueKind.DWord);
-                    }
+                serverAppIdKey.SetValue(null, assyDescription);
+                serverAppIdKey.SetValue("AppID", s_appId);
+                serverAppIdKey.SetValue("AuthenticationLevel", 1, RegistryValueKind.DWord);
+                serverAppIdKey.SetValue("RunAs", "Interactive User");
 
                 //
-                // HKCR\APPID\exename.ext
+                // HKLM\Software\Classes\AppID\{server-executable-filename}
                 //
-                using (var key = Registry.ClassesRoot.CreateSubKey(string.Format("APPID\\{0}",
-                    Application.ExecutablePath.Substring(Application.ExecutablePath.LastIndexOf('\\') + 1))))
+                var executableFileName = Path.GetFileName(Application.ExecutablePath);
+                using (var executableKey = appIdKey.CreateSubKey(executableFileName))
                     {
-                    key.SetValue("AppID", s_appId);
+                    executableKey?.SetValue("AppID", s_appId, RegistryValueKind.String);
                     }
                 }
             catch (Exception ex)
@@ -478,7 +478,11 @@ namespace TA.DigitalDomeworks.Server
                     "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
                 }
-            finally { }
+            finally
+                {
+                appIdKey?.Dispose();
+                serverAppIdKey?.Dispose();
+                }
 
             //
             // For each of the driver assemblies
@@ -489,14 +493,14 @@ namespace TA.DigitalDomeworks.Server
                 try
                     {
                     //
-                    // HKCR\CLSID\clsid
+                    // HKLM\Software\Classes\ClsID\{clsid}
                     //
                     var clsid = Marshal.GenerateGuidForType(type).ToString("B");
                     var progid = Marshal.GenerateProgIdForType(type);
                     //PWGS Generate device type from the Class name
-                    var deviceType = type.Name;
+                    var deviceType = type.Name; //[TPL] unsafe assumption
 
-                    using (var key = Registry.ClassesRoot.CreateSubKey(string.Format("CLSID\\{0}", clsid)))
+                    using (var key = Registry.LocalMachine.CreateSubKey($@"Software\Classes\CLSID\{clsid}"))
                         {
                         key.SetValue(null, progid); // Could be assyTitle/Desc??, but .NET components show ProgId here
                         key.SetValue("AppId", s_appId);
@@ -518,9 +522,9 @@ namespace TA.DigitalDomeworks.Server
                         }
 
                     //
-                    // HKCR\progid
+                    // HKLM\Software\Classes\{progid}
                     //
-                    using (var key = Registry.ClassesRoot.CreateSubKey(progid))
+                    using (var key = Registry.LocalMachine.CreateSubKey($@"Software\Classes\{progid}"))
                         {
                         key.SetValue(null, assyTitle);
                         using (var key2 = key.CreateSubKey("CLSID"))
@@ -537,7 +541,7 @@ namespace TA.DigitalDomeworks.Server
                     // Pull the display name from the ServedClassName attribute.
                     attr = Attribute.GetCustomAttribute(type, typeof(ServedClassNameAttribute));
                     //PWGS Changed to search type for attribute rather than assembly
-                    var chooserName = ((ServedClassNameAttribute) attr).DisplayName ?? "MultiServer";
+                    var chooserName = ((ServedClassNameAttribute) attr).DisplayName ?? $"Server for {type.Name}";
                     using (var P = new Profile())
                         {
                         P.DeviceType = deviceType;
@@ -550,7 +554,6 @@ namespace TA.DigitalDomeworks.Server
                         "ASCOM LocalServer", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     bFail = true;
                     }
-                finally { }
 
                 if (bFail) break;
                 }
@@ -573,9 +576,10 @@ namespace TA.DigitalDomeworks.Server
             //
             // Local server's DCOM/AppID information
             //
-            Registry.ClassesRoot.DeleteSubKey(string.Format("APPID\\{0}", s_appId), false);
-            Registry.ClassesRoot.DeleteSubKey(string.Format("APPID\\{0}",
-                Application.ExecutablePath.Substring(Application.ExecutablePath.LastIndexOf('\\') + 1)), false);
+            var exePath = Path.GetFileName(Application.ExecutablePath);
+            var appIdRoot = Registry.LocalMachine.OpenSubKey(@"Software\Classes\APPID", writable: true);
+            appIdRoot?.DeleteSubKey(s_appId, false);
+            appIdRoot?.DeleteSubKey(exePath, false);
 
             //
             // For each of the driver assemblies
@@ -585,26 +589,15 @@ namespace TA.DigitalDomeworks.Server
                 var clsid = Marshal.GenerateGuidForType(type).ToString("B");
                 var progid = Marshal.GenerateProgIdForType(type);
                 var deviceType = type.Name;
-                //
+
                 // Best efforts
-                //
-                //
-                // HKCR\progid
-                //
-                Registry.ClassesRoot.DeleteSubKey(string.Format("{0}\\CLSID", progid), false);
-                Registry.ClassesRoot.DeleteSubKey(progid, false);
-                //
-                // HKCR\CLSID\clsid
-                //
-                Registry.ClassesRoot.DeleteSubKey(
-                    string.Format("CLSID\\{0}\\Implemented Categories\\{{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}}",
-                        clsid),
-                    false);
-                Registry.ClassesRoot.DeleteSubKey(string.Format("CLSID\\{0}\\Implemented Categories", clsid), false);
-                Registry.ClassesRoot.DeleteSubKey(string.Format("CLSID\\{0}\\ProgId", clsid), false);
-                Registry.ClassesRoot.DeleteSubKey(string.Format("CLSID\\{0}\\LocalServer32", clsid), false);
-                Registry.ClassesRoot.DeleteSubKey(string.Format("CLSID\\{0}\\Programmable", clsid), false);
-                Registry.ClassesRoot.DeleteSubKey(string.Format("CLSID\\{0}", clsid), false);
+                // HKLM\Software\Classes\{progid}
+                var classesRoot = Registry.LocalMachine.OpenSubKey(@"Software\Classes");
+                classesRoot.DeleteSubKeyTree(progid, throwOnMissingSubKey: false);
+
+                // HKLM\Software\Classes\CLSID\{clsid}
+                classesRoot.DeleteSubKeyTree($@"CLSID\{clsid}", throwOnMissingSubKey: false);
+
                 try
                     {
                     //
@@ -616,7 +609,10 @@ namespace TA.DigitalDomeworks.Server
                         P.Unregister(progid);
                         }
                     }
-                catch (Exception) { }
+                catch (Exception)
+                    {
+                    // Fail silently
+                    }
                 }
             }
         #endregion
