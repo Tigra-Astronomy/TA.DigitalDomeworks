@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-08-30@06:37 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-09-14@18:13 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -53,6 +53,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         [IgnoreAutoChangeNotification]
         internal SensorState InferredShutterPosition { get; set; } = SensorState.Indeterminate;
+
+        public bool IsMoving => AzimuthMotorActive || ShutterMotorActive;
 
         public int AzimuthEncoderPosition { get; internal set; }
 

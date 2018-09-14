@@ -49,7 +49,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// <summary>
         ///     <c>true</c> if any part of the building is moving.
         /// </summary>
-        public bool IsMoving => stateMachine.AzimuthMotorActive || stateMachine.ShutterMotorActive;
+        public bool IsMoving => stateMachine.IsMoving;
 
         [IgnoreAutoChangeNotification]
         public bool IsConnected => channel.IsOpen;
