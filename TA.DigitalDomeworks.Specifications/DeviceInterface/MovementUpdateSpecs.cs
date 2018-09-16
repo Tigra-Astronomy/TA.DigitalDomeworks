@@ -2,13 +2,14 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: MovementUpdateSpecs.cs  Last modified: 2018-03-14@00:31 by Tim Long
+// File: MovementUpdateSpecs.cs  Last modified: 2018-09-16@15:47 by Tim Long
 
 using Machine.Specifications;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.SharedTypes;
 using TA.DigitalDomeworks.Specifications.Contexts;
 using TA.DigitalDomeworks.Specifications.DeviceInterface.Behaviours;
+using TI.DigitalDomeWorks;
 
 #pragma warning disable 0169    // Field not used, triggers on Behaves_like<>
 
@@ -98,6 +99,56 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
         Behaves_like<a_dome_with_a_moving_shutter> _;
         }
 
+    [Subject(typeof(DeviceController), "Shutter redundant operations")]
+    internal class when_shutter_close_received_and_shutter_not_closed : with_device_controller_context
+        {
+        Establish context = () => Context = DeviceControllerContextBuilder
+            .WithStateMachineInitializedAndReady("Fake")
+            .WithIndeterminateShutter()
+            .Build();
+        Because of = () => Controller.CloseShutter();
+        It should_be_closing = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.Closing);
+        It should_send_the_close_command = () => FakeChannel.SendLog.ShouldEqual(Constants.CmdClose);
+        }
+
+    [Subject(typeof(DeviceController), "Shutter redundant operations")]
+    internal class when_shutter_open_received_and_shutter_not_open : with_device_controller_context
+        {
+        Establish context = () => Context = DeviceControllerContextBuilder
+            .WithStateMachineInitializedAndReady("Fake")
+            .WithIndeterminateShutter()
+            .Build();
+        Because of = () => Controller.OpenShutter();
+        It should_be_opening = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.Opening);
+        It should_send_the_open_command = () => FakeChannel.SendLog.ShouldEqual(Constants.CmdOpen);
+        }
+
+    [Subject(typeof(DeviceController), "Shutter redundant operations")]
+    internal class when_shutter_open_received_and_shutter_already_open : with_device_controller_context
+        {
+        Establish context = () => Context = DeviceControllerContextBuilder
+            .WithStateMachineInitializedAndReady("Fake")
+            .WithOpenShutter()
+            .Build();
+        Because of = () => { Controller.OpenShutter(); };
+        It should_not_move = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
+        It should_be_open = () => Controller.ShutterPosition.ShouldEqual(SensorState.Open);
+        It should_not_send_any_command = () => FakeChannel.SendLog.ShouldBeEmpty();
+        }
+
+    [Subject(typeof(DeviceController), "Shutter redundant operations")]
+    internal class when_shutter_close_received_and_shutter_already_closed : with_device_controller_context
+        {
+        Establish context = () => Context = DeviceControllerContextBuilder
+            .WithStateMachineInitializedAndReady("Fake")
+            .WithClosedShutter()
+            .Build();
+        Because of = () => { Controller.CloseShutter(); };
+        It should_not_move = () => Controller.ShutterMovementDirection.ShouldEqual(ShutterDirection.None);
+        It should_be_closed = () => Controller.ShutterPosition.ShouldEqual(SensorState.Closed);
+        It should_not_send_any_command = () => FakeChannel.SendLog.ShouldBeEmpty();
+        }
+
     [Subject(typeof(DeviceController), "Shutter Direction")]
     internal class when_the_shutter_begins_to_open : with_device_controller_context
         {
@@ -121,6 +172,7 @@ namespace TA.DigitalDomeworks.Specifications.DeviceInterface
             .WithOpenConnection("Fake")
             .Build();
         Because of = () => Controller.RequestEmergencyStop();
-        It should_send_the_emergency_stop_command_three_times = () => FakeChannel.SendLog.ShouldEqual("STOP\nSTOP\nSTOP\n");
+        It should_send_the_emergency_stop_command_three_times =
+            () => FakeChannel.SendLog.ShouldEqual("STOP\nSTOP\nSTOP\n");
         }
     }

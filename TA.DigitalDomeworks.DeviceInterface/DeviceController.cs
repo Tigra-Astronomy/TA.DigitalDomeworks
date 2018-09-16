@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-08-30@04:34 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-09-16@15:44 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -261,11 +261,29 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public void OpenShutter()
             {
+            if (ShutterPosition == SensorState.Open)
+                {
+                Log.Warn()
+                    .Message("Ignoring OpenShutter request because ShutterPosition is {state}")
+                    .Property("state", ShutterPosition)
+                    .Write();
+                return;
+                }
+            Log.Info().Message("Closing shutter").Write();
             stateMachine.OpenShutter();
             }
 
         public void CloseShutter()
             {
+            if (ShutterPosition == SensorState.Closed)
+                {
+                Log.Warn()
+                    .Message("Ignoring CloseShutter request because ShutterPosition is {state}")
+                    .Property("state", ShutterPosition)
+                    .Write();
+                return;
+                }
+            Log.Info().Message("Closing shutter").Write();
             stateMachine.CloseShutter();
             }
 
