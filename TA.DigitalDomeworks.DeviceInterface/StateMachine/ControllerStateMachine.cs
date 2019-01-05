@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: ControllerStateMachine.cs  Last modified: 2018-04-06@02:12 by Tim Long
+// File: ControllerStateMachine.cs  Last modified: 2018-09-14@18:13 by Tim Long
 
 using System;
 using System.ComponentModel;
@@ -22,7 +22,8 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         internal readonly ManualResetEvent InReadyState = new ManualResetEvent(false);
         [CanBeNull] internal CancellationTokenSource KeepAliveCancellationSource;
 
-        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options, IClock clock)
+        public ControllerStateMachine(IControllerActions controllerActions, DeviceControllerOptions options,
+            IClock clock)
             {
             ControllerActions = controllerActions;
             Options = options;
@@ -50,6 +51,11 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         /// </summary>
         public Octet UserPins { get; private set; } = Octet.Zero;
 
+        [IgnoreAutoChangeNotification]
+        internal SensorState InferredShutterPosition { get; set; } = SensorState.Indeterminate;
+
+        public bool IsMoving => AzimuthMotorActive || ShutterMotorActive;
+
         public int AzimuthEncoderPosition { get; internal set; }
 
         public int ShutterMotorCurrent { get; internal set; }
@@ -61,9 +67,6 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
         public bool AzimuthMotorActive { get; internal set; }
 
         public bool ShutterMotorActive { get; internal set; }
-
-        [IgnoreAutoChangeNotification]
-        internal SensorState InferredShutterPosition { get; set; } = SensorState.Indeterminate;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -249,9 +252,16 @@ namespace TA.DigitalDomeworks.DeviceInterface.StateMachine
 
         public void HardwareStatusReceived(IHardwareStatus status)
             {
+            Log.Info()
+                .Message("Status update {status}", status)
+                .Write();
+            /*
+             * [TPL] update the status records first, before allowing the state machine to transition.
+             * Otherwise there could be a race condition where a new state sees the old status data.
+             */
             HardwareStatus = status;
-            CurrentState.StatusUpdateReceived(status);
             UpdateStatus(status);
+            CurrentState.StatusUpdateReceived(status);
             }
         #endregion State triggers
         }

@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Switch.cs  Last modified: 2018-03-28@01:08 by Tim Long
+// File: Switch.cs  Last modified: 2018-09-01@17:45 by Tim Long
 
 using System;
 using System.Collections;
@@ -10,9 +10,9 @@ using System.Runtime.InteropServices;
 using ASCOM;
 using ASCOM.DeviceInterface;
 using JetBrains.Annotations;
+using TA.DigitalDomeworks.Aspects;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Server;
-using TA.PostSharp.Aspects;
 using NotImplementedException = ASCOM.NotImplementedException;
 
 namespace TA.DigitalDomeworks.AscomSwitch
@@ -31,6 +31,42 @@ namespace TA.DigitalDomeworks.AscomSwitch
         public Switch()
             {
             clientId = SharedResources.ConnectionManager.RegisterClient("ASCOM Switch");
+            }
+
+        public string Description => "ASCOM Dome driver for Digital Domeworks";
+
+        public string DriverInfo => @"ASCOM Dome driver for Digital Domeworks, 2018 reboot
+An open source ASCOM driver by Tigra Astronomy
+Home page: http://tigra-astronomy.com
+Source code: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks
+License: https://tigra.mit-license.org/
+Copyright © 2018 Tigra Astronomy";
+
+        public string DriverVersion => "7.0";
+
+        public short InterfaceVersion => 2;
+
+        public string Name => "Digital Domeworks 2018 Reboot";
+
+        public ArrayList SupportedActions => new ArrayList();
+
+        public short MaxSwitch => 4;
+
+        public bool Connected
+            {
+            get => controller?.IsConnected ?? false;
+            set
+                {
+                if (value)
+                    {
+                    controller = SharedResources.ConnectionManager.GoOnline(clientId);
+                    }
+                else
+                    {
+                    SharedResources.ConnectionManager.GoOffline(clientId);
+                    controller = null; //[Sentinel]
+                    }
+                }
             }
 
         public void SetupDialog()
@@ -93,41 +129,5 @@ namespace TA.DigitalDomeworks.AscomSwitch
 
         [MustBeConnected]
         public void SetSwitchValue(short id, double value) => SetSwitch(id, value >= 0.5);
-
-        public bool Connected
-            {
-            get => controller?.IsConnected ?? false;
-            set
-                {
-                if (value)
-                    {
-                    controller = SharedResources.ConnectionManager.GoOnline(clientId);
-                    }
-                else
-                    {
-                    SharedResources.ConnectionManager.GoOffline(clientId);
-                    controller = null; //[Sentinel]
-                    }
-                }
-            }
-
-        public string Description => "ASCOM Dome driver for Digital Domeworks";
-
-        public string DriverInfo => @"ASCOM Dome driver for Digital Domeworks, 2018 reboot
-An open source ASCOM driver by Tigra Astronomy
-Home page: http://tigra-astronomy.com
-Source code: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks
-License: https://tigra.mit-license.org/
-Copyright © 2018 Tigra Astronomy";
-
-        public string DriverVersion => "7.0";
-
-        public short InterfaceVersion => 2;
-
-        public string Name => "Digital Domeworks 2018 Reboot";
-
-        public ArrayList SupportedActions => new ArrayList();
-
-        public short MaxSwitch => 4;
         }
     }

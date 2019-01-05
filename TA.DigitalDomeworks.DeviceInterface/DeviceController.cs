@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceController.cs  Last modified: 2018-04-21@21:36 by Tim Long
+// File: DeviceController.cs  Last modified: 2018-09-16@15:44 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -49,8 +49,9 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// <summary>
         ///     <c>true</c> if any part of the building is moving.
         /// </summary>
-        public bool IsMoving => stateMachine.AzimuthMotorActive || stateMachine.ShutterMotorActive;
+        public bool IsMoving => stateMachine.IsMoving;
 
+        [IgnoreAutoChangeNotification]
         public bool IsConnected => channel.IsOpen;
 
         public bool AzimuthMotorActive => stateMachine.AzimuthMotorActive;
@@ -95,6 +96,10 @@ namespace TA.DigitalDomeworks.DeviceInterface
         /// </exception>
         private void PerformShutterRecovery()
             {
+            Log.Debug()
+                .Message("Shutter recovery heuristic.")
+                .Property(nameof(ShutterPosition), ShutterPosition)
+                .Write();
             if (ShutterPosition == SensorState.Indeterminate)
                 {
                 Log.Info()
@@ -104,6 +109,7 @@ namespace TA.DigitalDomeworks.DeviceInterface
                 stateMachine.WaitForReady(configuration.MaximumFullRotationTime +
                                           configuration.MaximumShutterCloseTime);
                 }
+            Log.Debug("Shutter recovery heuristic finished");
             }
 
         private void SubscribeControllerEvents()
@@ -255,11 +261,29 @@ namespace TA.DigitalDomeworks.DeviceInterface
 
         public void OpenShutter()
             {
+            if (ShutterPosition == SensorState.Open)
+                {
+                Log.Warn()
+                    .Message("Ignoring OpenShutter request because ShutterPosition is {state}")
+                    .Property("state", ShutterPosition)
+                    .Write();
+                return;
+                }
+            Log.Info().Message("Closing shutter").Write();
             stateMachine.OpenShutter();
             }
 
         public void CloseShutter()
             {
+            if (ShutterPosition == SensorState.Closed)
+                {
+                Log.Warn()
+                    .Message("Ignoring CloseShutter request because ShutterPosition is {state}")
+                    .Property("state", ShutterPosition)
+                    .Write();
+                return;
+                }
+            Log.Info().Message("Closing shutter").Write();
             stateMachine.CloseShutter();
             }
 

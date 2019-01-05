@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: DeviceControllerContextBuilder.cs  Last modified: 2018-06-16@16:53 by Tim Long
+// File: DeviceControllerContextBuilder.cs  Last modified: 2018-09-16@14:01 by Tim Long
 
 using System;
 using System.Collections.Generic;
@@ -52,6 +52,8 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             };
         PropertyChangedEventHandler propertyChangedAction;
         List<Tuple<string, Action>> propertyChangeObservers = new List<Tuple<string, Action>>();
+        SensorState initialShutterState;
+        bool startInReadyState;
 
         public DeviceControllerContext Build()
             {
@@ -65,6 +67,9 @@ namespace TA.DigitalDomeworks.Specifications.Builders
 
             var controllerActions = new RxControllerActions(channel);
             var controllerStateMachine = new ControllerStateMachine(controllerActions, controllerOptions, timeSource);
+            controllerStateMachine.ShutterPosition = initialShutterState;
+            if (startInReadyState)
+                controllerStateMachine.Initialize(new Ready(controllerStateMachine));
 
             // Build the device controller
             var controller = new DeviceController(channel, statusFactory, controllerStateMachine, controllerOptions);
@@ -91,6 +96,16 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             return this;
             }
 
+        /// <summary>
+        ///     Start with the state machine initialized and in the Ready state. Implies an open channel.
+        /// </summary>
+        /// <param name="connectionString">The connection string to use when creating and opening the channel.</param>
+        public DeviceControllerContextBuilder WithStateMachineInitializedAndReady(string connectionString)
+            {
+            startInReadyState = true;
+            return WithOpenConnection(connectionString);
+            }
+
         public DeviceControllerContextBuilder WithFakeResponse(string fakeResponse)
             {
             fakeResponseBuilder.Append(fakeResponse);
@@ -101,6 +116,24 @@ namespace TA.DigitalDomeworks.Specifications.Builders
             {
             connectionString = connection;
             channelShouldBeOpen = false;
+            return this;
+            }
+
+        public DeviceControllerContextBuilder WithClosedShutter()
+            {
+            initialShutterState = SensorState.Closed;
+            return this;
+            }
+
+        public DeviceControllerContextBuilder WithOpenShutter()
+            {
+            initialShutterState = SensorState.Open;
+            return this;
+            }
+
+        public DeviceControllerContextBuilder WithIndeterminateShutter()
+            {
+            initialShutterState = SensorState.Indeterminate;
             return this;
             }
 

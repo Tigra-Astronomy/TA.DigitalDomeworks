@@ -2,9 +2,9 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: IAscomDriver.cs  Last modified: 2018-03-29@02:55 by Tim Long
+// File: IAscomDriver.cs  Last modified: 2018-08-30@11:07 by Tim Long
 
-namespace TA.PostSharp.Aspects
+namespace TA.DigitalDomeworks.Aspects
     {
     public interface IAscomDriver
         {

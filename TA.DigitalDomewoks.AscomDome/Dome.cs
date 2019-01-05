@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: Dome.cs  Last modified: 2018-04-21@21:39 by Tim Long
+// File: Dome.cs  Last modified: 2018-09-01@18:14 by Tim Long
 
 using System;
 using System.Collections;
@@ -10,10 +10,10 @@ using System.Runtime.InteropServices;
 using ASCOM;
 using ASCOM.DeviceInterface;
 using JetBrains.Annotations;
+using TA.DigitalDomeworks.Aspects;
 using TA.DigitalDomeworks.DeviceInterface;
 using TA.DigitalDomeworks.Server;
 using TA.DigitalDomeworks.SharedTypes;
-using TA.PostSharp.Aspects;
 using TI.DigitalDomeWorks;
 using NotImplementedException = ASCOM.NotImplementedException;
 
@@ -33,6 +33,97 @@ namespace TA.DigitalDomeworks.AscomDome
         public Dome()
             {
             clientId = SharedResources.ConnectionManager.RegisterClient("ASCOM Dome");
+            }
+
+        public string Description => "ASCOM Dome driver for Digital Domeworks";
+
+        public string DriverInfo => @"ASCOM Dome driver for Digital Domeworks, 2018 reboot
+An open source ASCOM driver by Tigra Astronomy
+Home page: http://tigra-astronomy.com
+Source code: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks
+License: https://tigra.mit-license.org/
+Copyright © 2018 Tigra Astronomy";
+
+        public string DriverVersion => "7.0";
+
+        public short InterfaceVersion => 2;
+
+        public string Name => "Digital Domeworks 2018 Reboot";
+
+        public ArrayList SupportedActions => new ArrayList
+            {
+            Constants.ActionNameDsrSwingoutState,
+            Constants.ActionNameControllerStatus
+            };
+
+        public double Altitude => throw new PropertyNotImplementedException(nameof(Altitude), accessorSet: false);
+
+        [MustBeConnected]
+        public bool AtHome => controller.AtHome;
+
+        [MustBeConnected]
+        public bool AtPark { get; private set; }
+
+        [MustBeConnected]
+        public double Azimuth => controller.AzimuthDegrees;
+
+        public bool CanFindHome => true;
+
+        public bool CanPark => true;
+
+        public bool CanSetAltitude => false;
+
+        public bool CanSetAzimuth => true;
+
+        public bool CanSetPark => false;
+
+        public bool CanSetShutter => true;
+
+        public bool CanSlave => false;
+
+        public bool CanSyncAzimuth => false;
+
+        [MustBeConnected]
+        public ShutterState ShutterStatus
+            {
+            get
+                {
+                if (controller.ShutterMovementDirection == ShutterDirection.Closing)
+                    return ShutterState.shutterClosing;
+                if (controller.ShutterMovementDirection == ShutterDirection.Opening)
+                    return ShutterState.shutterOpening;
+                if (controller.ShutterPosition == SensorState.Closed)
+                    return ShutterState.shutterClosed;
+                if (controller.ShutterPosition == SensorState.Open)
+                    return ShutterState.shutterOpen;
+                return ShutterState.shutterError;
+                }
+            }
+
+        public bool Slaved
+            {
+            get => false;
+            set => throw new NotImplementedException();
+            }
+
+        [MustBeConnected]
+        public bool Slewing => controller.IsMoving;
+
+        public bool Connected
+            {
+            get => controller?.IsConnected ?? false;
+            set
+                {
+                if (value)
+                    {
+                    controller = SharedResources.ConnectionManager.GoOnline(clientId);
+                    }
+                else
+                    {
+                    SharedResources.ConnectionManager.GoOffline(clientId);
+                    controller = null; //[Sentinel]
+                    }
+                }
             }
 
         public void SetupDialog()
@@ -130,97 +221,6 @@ namespace TA.DigitalDomeworks.AscomDome
             {
             throw new NotImplementedException();
             }
-
-        public bool Connected
-            {
-            get => controller?.IsConnected ?? false;
-            set
-                {
-                if (value)
-                    {
-                    controller = SharedResources.ConnectionManager.GoOnline(clientId);
-                    }
-                else
-                    {
-                    SharedResources.ConnectionManager.GoOffline(clientId);
-                    controller = null; //[Sentinel]
-                    }
-                }
-            }
-
-        public string Description => "ASCOM Dome driver for Digital Domeworks";
-
-        public string DriverInfo => @"ASCOM Dome driver for Digital Domeworks, 2018 reboot
-An open source ASCOM driver by Tigra Astronomy
-Home page: http://tigra-astronomy.com
-Source code: https://bitbucket.org/tigra-astronomy/ta.digitaldomeworks
-License: https://tigra.mit-license.org/
-Copyright © 2018 Tigra Astronomy";
-
-        public string DriverVersion => "7.0";
-
-        public short InterfaceVersion => 2;
-
-        public string Name => "Digital Domeworks 2018 Reboot";
-
-        public ArrayList SupportedActions => new ArrayList
-            {
-            Constants.ActionNameDsrSwingoutState,
-            Constants.ActionNameControllerStatus
-            };
-
-        public double Altitude => throw new PropertyNotImplementedException(nameof(Altitude), accessorSet: false);
-
-        [MustBeConnected]
-        public bool AtHome => controller.AtHome;
-
-        [MustBeConnected]
-        public bool AtPark { get; private set; }
-
-        [MustBeConnected]
-        public double Azimuth => controller.AzimuthDegrees;
-
-        public bool CanFindHome => true;
-
-        public bool CanPark => true;
-
-        public bool CanSetAltitude => false;
-
-        public bool CanSetAzimuth => true;
-
-        public bool CanSetPark => false;
-
-        public bool CanSetShutter => true;
-
-        public bool CanSlave => false;
-
-        public bool CanSyncAzimuth => false;
-
-        [MustBeConnected]
-        public ShutterState ShutterStatus
-            {
-            get
-                {
-                if (controller.ShutterMovementDirection == ShutterDirection.Closing)
-                    return ShutterState.shutterClosing;
-                if (controller.ShutterMovementDirection == ShutterDirection.Opening)
-                    return ShutterState.shutterOpening;
-                if (controller.ShutterPosition == SensorState.Closed)
-                    return ShutterState.shutterClosed;
-                if (controller.ShutterPosition == SensorState.Open)
-                    return ShutterState.shutterOpen;
-                return ShutterState.shutterError;
-                }
-            }
-
-        public bool Slaved
-            {
-            get => false;
-            set => throw new NotImplementedException();
-            }
-
-        [MustBeConnected]
-        public bool Slewing => controller.IsMoving;
 
         [NotNull]
         private string CustomActionDsrSwingoutSensorState()

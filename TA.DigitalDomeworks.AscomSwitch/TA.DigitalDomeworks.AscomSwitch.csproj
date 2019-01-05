@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F95208C4-450F-4B51-810A-C805A8EFBB7A}</ProjectGuid>
+    <ProjectGuid>{CA37561D-CADC-4416-8BE1-57BCB8B7CCBC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TA.DigitalDomeworks.AscomSwitch</RootNamespace>
     <AssemblyName>TA.DigitalDomeworks.AscomSwitch</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,50 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASCOM.Astrometry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Astrometry.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Attributes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Controls, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Controls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.DeviceInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.DeviceInterfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.DriverAccess, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.DriverAccess.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Exceptions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Exceptions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Internal.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Internal.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.SettingsProvider, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.SettingsProvider.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Utilities, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Utilities.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ASCOM.Utilities.Video, Version=6.1.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASCOM.Platform.6.3.2\lib\net45\ASCOM.Utilities.Video.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="PostSharp, Version=5.0.48.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -84,30 +41,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Switch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Switch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TA.DigitalDomeworks.Aspects\TA.DigitalDomeworks.Aspects.csproj">
+      <Project>{7b39350a-905b-4d14-8408-fd74334e53d3}</Project>
+      <Name>TA.DigitalDomeworks.Aspects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.DeviceInterface\TA.DigitalDomeworks.DeviceInterface.csproj">
-      <Project>{020924B9-23D5-4B92-B5B1-461423BBE23C}</Project>
+      <Project>{c0e526b9-e19d-42b4-8aee-08a775d9e0b6}</Project>
       <Name>TA.DigitalDomeworks.DeviceInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.Server\TA.DigitalDomeworks.Server.csproj">
-      <Project>{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}</Project>
+      <Project>{ff0b89e7-3601-4b5f-b0da-17c329d2ee2d}</Project>
       <Name>TA.DigitalDomeworks.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\TA.DigitalDomeworks.SharedTypes\TA.DigitalDomeworks.SharedTypes.csproj">
-      <Project>{ADBB1165-E995-4C75-8DE9-1DBFFCF34D6F}</Project>
+      <Project>{1224a06b-5a84-452f-af63-cf8ef7d6713e}</Project>
       <Name>TA.DigitalDomeworks.SharedTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TA.PostSharp.Aspects\TA.PostSharp.Aspects.csproj">
-      <Project>{9CDCF319-DADC-41EB-B787-DE3862017E95}</Project>
-      <Name>TA.PostSharp.Aspects</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <PackageReference Include="GitVersionTask">
+      <Version>4.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="JetBrains.Annotations">
+      <Version>2018.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="PostSharp">
+      <Version>6.0.32</Version>
+    </PackageReference>
   </ItemGroup>
+  <Import Project="..\TA.DigitalDomeworks.SharedCode\TA.DigitalDomeworks.SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

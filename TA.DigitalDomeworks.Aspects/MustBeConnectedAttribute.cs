@@ -2,7 +2,7 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: MustBeConnectedAttribute.cs  Last modified: 2018-03-29@02:55 by Tim Long
+// File: MustBeConnectedAttribute.cs  Last modified: 2018-08-30@11:18 by Tim Long
 
 using System;
 using System.Reflection;
@@ -11,7 +11,7 @@ using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
 using PostSharp.Extensibility;
 
-namespace TA.PostSharp.Aspects
+namespace TA.DigitalDomeworks.Aspects
     {
     /// <summary>
     ///     MustBeConnected aspect. Verifies that the controlled device is connected and if not,

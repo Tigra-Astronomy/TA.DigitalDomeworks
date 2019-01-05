@@ -1,8 +1,8 @@
-﻿// This file is part of the TI.DigitalDomeWorks project
+﻿// This file is part of the TA.DigitalDomeworks project
 // 
-// Copyright © 2015-2016 Tigra Networks., all rights reserved.
+// Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: NLogTraceWithArgumentsAttribute.cs  Last modified: 2016-09-13@00:23 by Tim Long
+// File: NLogTraceWithArgumentsAttribute.cs  Last modified: 2018-08-30@11:07 by Tim Long
 
 using System;
 using System.Reflection;
@@ -12,7 +12,7 @@ using NLog;
 using PostSharp.Aspects;
 using PostSharp.Aspects.Dependencies;
 
-namespace TA.PostSharp.Aspects
+namespace TA.DigitalDomeworks.Aspects
     {
     /// <summary>
     ///     Class NLogTraceWithArgumentsAttribute. This class cannot be inherited. Traces member entry and exit, with
@@ -104,7 +104,9 @@ namespace TA.PostSharp.Aspects
             foreach (var argument in args.Arguments)
                 {
                 if (argument == null)
+                    {
                     builder.Append("null");
+                    }
                 else
                     {
                     builder.Append(argument.GetType().Name);

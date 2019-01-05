@@ -2,13 +2,13 @@
 // 
 // Copyright © 2016-2018 Tigra Astronomy, all rights reserved.
 // 
-// File: SimulatorEndpointSpecs.cs  Last modified: 2018-03-28@18:30 by Tim Long
+// File: SimulatorEndpointSpecs.cs  Last modified: 2018-09-03@14:54 by Tim Long
 
 using System;
 using Machine.Specifications;
 using TA.DigitalDomeworks.HardwareSimulator;
 
-namespace TA.DigitalDomeworks.Specifications
+namespace TA.DigitalDomeworks.Specifications.Simulator
     {
     [Subject(typeof(SimulatorEndpoint), "code contracts")]
     internal class when_violating_a_code_contract
